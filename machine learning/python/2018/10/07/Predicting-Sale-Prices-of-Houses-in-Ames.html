@@ -1,0 +1,481 @@
+<h1 id="predicting-sale-prices-of-houses-in-ames">Predicting Sale Prices of Houses in Ames</h1>
+
+<p>In this tutorial I will discuss how you can go from a raw dataset to a predictive model. For this tutorial we will make use of the <a href="http://ww2.amstat.org/publications/jse/v19n3/decock.pdf">Ames Dataset</a> and see whether we can predict house prices based on characteristics provided in the dataset.</p>
+
+<p>The analysis in this tutorial is done in Python using the <code class="highlighter-rouge">pandas</code>, <code class="highlighter-rouge">scikit-learn</code> and <code class="highlighter-rouge">matplotlib</code> packages. We will start by exploring the raw data and see whether we can already see some patterns in the data or that some features should be discarded right away. Next, we will make a straight-forward pipeline that will transform our dataset and fit a linear regression model. Finally, we will evaluate the performance of this model.</p>
+
+<p>I do have limited knowledge with data analysis (I mainly use <code class="highlighter-rouge">R</code>), so this tutorial will be most informative for people like me: beginners!</p>
+
+<h2 id="raw-data--initial-analysis">Raw Data &amp; Initial Analysis</h2>
+
+<p>First, we need to download the dataset provided in the link above (direct download link <a href="https://ww2.amstat.org/publications/jse/v19n3/decock/AmesHousing.txt">here</a>).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelBinarizer</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># Do not display warnings
+</span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">)</span>
+
+<span class="c1"># Import the Ames Housing data (put this in the same folder as your Python file)
+</span><span class="n">house_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"AmesHousing.txt"</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">"</span><span class="se">\t</span><span class="s">"</span><span class="p">)</span>
+
+<span class="c1"># I do not like spaces in the column names of a dataset so I first replace spaces
+# by underscores
+</span><span class="n">house_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">' '</span><span class="p">,</span> <span class="s">'_'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Next we want to get a feeling for what exactly we can find in the dataset, so let’s look at some relevant information.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Get some feeling for the data
+</span><span class="k">print</span><span class="p">(</span><span class="n">house_data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">house_info</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="n">house_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Order        PID  MS_SubClass MS_Zoning  Lot_Frontage  Lot_Area Street  \
+0      1  526301100           20        RL         141.0     31770   Pave   
+1      2  526350040           20        RH          80.0     11622   Pave   
+2      3  526351010           20        RL          81.0     14267   Pave   
+3      4  526353030           20        RL          93.0     11160   Pave   
+4      5  527105010           60        RL          74.0     13830   Pave   
+5      6  527105030           60        RL          78.0      9978   Pave   
+6      7  527127150          120        RL          41.0      4920   Pave   
+7      8  527145080          120        RL          43.0      5005   Pave   
+8      9  527146030          120        RL          39.0      5389   Pave   
+9     10  527162130           60        RL          60.0      7500   Pave   
+
+  Alley Lot_Shape Land_Contour    ...     Pool_Area Pool_QC  Fence  \
+0   NaN       IR1          Lvl    ...             0     NaN    NaN   
+1   NaN       Reg          Lvl    ...             0     NaN  MnPrv   
+2   NaN       IR1          Lvl    ...             0     NaN    NaN   
+3   NaN       Reg          Lvl    ...             0     NaN    NaN   
+4   NaN       IR1          Lvl    ...             0     NaN  MnPrv   
+5   NaN       IR1          Lvl    ...             0     NaN    NaN   
+6   NaN       Reg          Lvl    ...             0     NaN    NaN   
+7   NaN       IR1          HLS    ...             0     NaN    NaN   
+8   NaN       IR1          Lvl    ...             0     NaN    NaN   
+9   NaN       Reg          Lvl    ...             0     NaN    NaN   
+
+  Misc_Feature Misc_Val Mo_Sold Yr_Sold Sale_Type  Sale_Condition  SalePrice  
+0          NaN        0       5    2010       WD           Normal     215000  
+1          NaN        0       6    2010       WD           Normal     105000  
+2         Gar2    12500       6    2010       WD           Normal     172000  
+3          NaN        0       4    2010       WD           Normal     244000  
+4          NaN        0       3    2010       WD           Normal     189900  
+5          NaN        0       6    2010       WD           Normal     195500  
+6          NaN        0       4    2010       WD           Normal     213500  
+7          NaN        0       1    2010       WD           Normal     191500  
+8          NaN        0       3    2010       WD           Normal     236500  
+9          NaN        0       6    2010       WD           Normal     189000  
+
+[10 rows x 82 columns]
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 2930 entries, 0 to 2929
+Data columns (total 82 columns):
+Order              2930 non-null int64
+PID                2930 non-null int64
+MS_SubClass        2930 non-null int64
+MS_Zoning          2930 non-null object
+Lot_Frontage       2440 non-null float64
+Lot_Area           2930 non-null int64
+Street             2930 non-null object
+Alley              198 non-null object
+Lot_Shape          2930 non-null object
+Land_Contour       2930 non-null object
+Utilities          2930 non-null object
+Lot_Config         2930 non-null object
+Land_Slope         2930 non-null object
+Neighborhood       2930 non-null object
+Condition_1        2930 non-null object
+Condition_2        2930 non-null object
+Bldg_Type          2930 non-null object
+House_Style        2930 non-null object
+Overall_Qual       2930 non-null int64
+Overall_Cond       2930 non-null int64
+Year_Built         2930 non-null int64
+Year_Remod/Add     2930 non-null int64
+Roof_Style         2930 non-null object
+Roof_Matl          2930 non-null object
+Exterior_1st       2930 non-null object
+Exterior_2nd       2930 non-null object
+Mas_Vnr_Type       2907 non-null object
+Mas_Vnr_Area       2907 non-null float64
+Exter_Qual         2930 non-null object
+Exter_Cond         2930 non-null object
+Foundation         2930 non-null object
+Bsmt_Qual          2850 non-null object
+Bsmt_Cond          2850 non-null object
+Bsmt_Exposure      2847 non-null object
+BsmtFin_Type_1     2850 non-null object
+BsmtFin_SF_1       2929 non-null float64
+BsmtFin_Type_2     2849 non-null object
+BsmtFin_SF_2       2929 non-null float64
+Bsmt_Unf_SF        2929 non-null float64
+Total_Bsmt_SF      2929 non-null float64
+Heating            2930 non-null object
+Heating_QC         2930 non-null object
+Central_Air        2930 non-null object
+Electrical         2929 non-null object
+1st_Flr_SF         2930 non-null int64
+2nd_Flr_SF         2930 non-null int64
+Low_Qual_Fin_SF    2930 non-null int64
+Gr_Liv_Area        2930 non-null int64
+Bsmt_Full_Bath     2928 non-null float64
+Bsmt_Half_Bath     2928 non-null float64
+Full_Bath          2930 non-null int64
+Half_Bath          2930 non-null int64
+Bedroom_AbvGr      2930 non-null int64
+Kitchen_AbvGr      2930 non-null int64
+Kitchen_Qual       2930 non-null object
+TotRms_AbvGrd      2930 non-null int64
+Functional         2930 non-null object
+Fireplaces         2930 non-null int64
+Fireplace_Qu       1508 non-null object
+Garage_Type        2773 non-null object
+Garage_Yr_Blt      2771 non-null float64
+Garage_Finish      2771 non-null object
+Garage_Cars        2929 non-null float64
+Garage_Area        2929 non-null float64
+Garage_Qual        2771 non-null object
+Garage_Cond        2771 non-null object
+Paved_Drive        2930 non-null object
+Wood_Deck_SF       2930 non-null int64
+Open_Porch_SF      2930 non-null int64
+Enclosed_Porch     2930 non-null int64
+3Ssn_Porch         2930 non-null int64
+Screen_Porch       2930 non-null int64
+Pool_Area          2930 non-null int64
+Pool_QC            13 non-null object
+Fence              572 non-null object
+Misc_Feature       106 non-null object
+Misc_Val           2930 non-null int64
+Mo_Sold            2930 non-null int64
+Yr_Sold            2930 non-null int64
+Sale_Type          2930 non-null object
+Sale_Condition     2930 non-null object
+SalePrice          2930 non-null int64
+dtypes: float64(11), int64(28), object(43)
+memory usage: 1.8+ MB
+</code></pre></div></div>
+
+<p>Since we want to build a model that predicts the house price given a set of features of this given house, let’s first check these prices by creating a histogram.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">house_data</span><span class="o">.</span><span class="n">SalePrice</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"House price (in $)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Frequency"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Pandas also provides a built-in plotting env
+# house_data.SalePrice.plot.hist()
+</span></code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_5_0.png" alt="png" /></p>
+
+<p>The <code class="highlighter-rouge">Year_Built</code> feature would be a candidate to give insights in the sale price of a house. Below we report the density of the year that each house in the dataset is built.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">house_data</span><span class="p">[</span><span class="s">'Year_Built'</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">kde</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1a1ab908d0&gt;
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_7_1.png" alt="png" /></p>
+
+<p>We can check the relationship between the sale price and the year houses are built by creating a scatter plot.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">house_data</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'Year_Built'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'SalePrice'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1a19375160&gt;
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_9_1.png" alt="png" /></p>
+
+<p>This plot suggest that houses that are built more recently tend to have a higher sale price (on average). Note that this probably due to the geographical area we are considering. In old cities, like Amsterdam, we can imagine that (part) of the old houses are momumental buildings and therefore have higher sale price.</p>
+
+<p>In the analysis above, we have looked into the relationship of the sale price and a numerical feature. A scatter plot is usually a good option to check if there might be an interesting relationship, however for categorical features we need different techniques.</p>
+
+<p>We have information on the type of sale for each house, e.g., some houses are sold with adjecent land, or a family member bought the house. A tool to look at the relationship between this (categorical) feature and the sale price is to look at the histogram for each type of sale condition.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">house_data</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">house_data</span><span class="p">[</span><span class="s">'Sale_Condition'</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[&lt;matplotlib.axes._subplots.AxesSubplot object at 0x1a1ad44eb8&gt;,
+        &lt;matplotlib.axes._subplots.AxesSubplot object at 0x1a1acd0f98&gt;],
+       [&lt;matplotlib.axes._subplots.AxesSubplot object at 0x1a1af29208&gt;,
+        &lt;matplotlib.axes._subplots.AxesSubplot object at 0x1a1a944470&gt;],
+       [&lt;matplotlib.axes._subplots.AxesSubplot object at 0x1a1ac636d8&gt;,
+        &lt;matplotlib.axes._subplots.AxesSubplot object at 0x1a1ae64940&gt;]],
+      dtype=object)
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_11_1.png" alt="png" /></p>
+
+<p>Another feature that is likely to have an influence on the sale price is in what neighbourhood the house is located. We could again create histograms of the sale price for each neighbourhood, but since there are more than 20 neighbourhoods, we can do something else. We take the mean of the sale price for each neighbourhood and present this in a bar plot.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Check saleprice per neighbourhood
+</span><span class="n">avg_price_neigh</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'Neighborhood'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s">'SalePrice'</span> <span class="p">:</span> <span class="s">'mean'</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">avg_price_neigh</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'Neighborhood'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'SalePrice'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1a1b026dd8&gt;
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_13_1.png" alt="png" /></p>
+
+<h2 id="feature-selection">Feature Selection</h2>
+
+<p>The dataset provides more than 80 features, and not all features are equally informative for sale price. Selecting good features and transforming existing features is often a rather ad-hoc procedure, since every dataset is unique. However, there are a few standard procedures that usually help in creating a significantly better dataset.</p>
+
+<h3 id="trimming">Trimming</h3>
+
+<p>One of these techniques is to delete outliers from your dataset. Whether or not this is necesarry also depends on the type of model that is used, e.g., linear models are usually very sensitive to outliers.</p>
+
+<p>Let’s look at a scatter plot of the living area and sale price.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Check living space and sale price (there seems to be 5 outliers...)
+</span><span class="n">house_data</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'Gr_Liv_Area'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'SalePrice'</span><span class="p">)</span>
+<span class="n">house_data</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">'Gr_Liv_Area &lt; 4000'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_15_0.png" alt="png" /></p>
+
+<p>There seem to be 4-5 outliers with very high living areas. For this analysis we will remove these, however if the goal of your model is to also have good predictions for these outliers it might be worthwhile to keep them.</p>
+
+<h3 id="feature-enhancement">Feature enhancement</h3>
+
+<p>There are many ways to enhance existing features. Here, I will show how categorical variables can be improved. To do this, I select all features that are of the type <code class="highlighter-rouge">object</code> and save the histogram for these features in a folder <code class="highlighter-rouge">figures</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Check categorical variables and see if we need to delete them
+</span><span class="n">house_data_cat</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s">'object'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">house_data_cat</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">house_data_cat</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'figures/'</span> <span class="o">+</span> <span class="n">col</span> <span class="o">+</span> <span class="s">'_hist.pdf'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+    
+<span class="n">house_data_cat</span><span class="p">[</span><span class="s">'Bsmt_Qual'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'Basement Quality'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1a1d629be0&gt;
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_17_1.png" alt="png" /></p>
+
+<p>There are a considerable number of categorical features that are ordinal, that is, the categories have a certain ordering. In this case, we have information about whether the feature has a value Poor, Fair, Average, Good or Excellent. However, especially the most extreme outcomes are rather unlikely. As we will later see this results in a large number of features (when we one hot encode them) with only minimal extra predictive power. Therefore we combine certain groups.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ord_groups</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Fa'</span><span class="p">:</span> <span class="s">'Bad'</span><span class="p">,</span> <span class="s">'Po'</span><span class="p">:</span> <span class="s">'Bad'</span><span class="p">,</span> <span class="s">'TA'</span><span class="p">:</span> <span class="s">'Average'</span><span class="p">,</span> <span class="s">'Gd'</span><span class="p">:</span> <span class="s">'Good'</span><span class="p">,</span> <span class="s">'Ex'</span><span class="p">:</span><span class="s">'Good'</span><span class="p">}</span>
+<span class="n">columns_ord</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Bsmt_Cond'</span><span class="p">,</span> <span class="s">'Bsmt_Qual'</span><span class="p">,</span> <span class="s">'Exter_Cond'</span><span class="p">,</span> <span class="s">'Exter_Qual'</span><span class="p">,</span> <span class="s">'Fireplace_Qu'</span><span class="p">,</span> 
+               <span class="s">'Garage_Cond'</span><span class="p">,</span> <span class="s">'Garage_Qual'</span><span class="p">,</span> <span class="s">'Heating_QC'</span><span class="p">,</span> <span class="s">'Kitchen_Qual'</span><span class="p">,</span> <span class="s">'Pool_QC'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns_ord</span><span class="p">:</span>
+    <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ord_groups</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">'category'</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="s">'Bad'</span><span class="p">,</span> <span class="s">'Average'</span><span class="p">,</span> <span class="s">'Good'</span><span class="p">],</span> <span class="n">ordered</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="missing-values">Missing Values</h3>
+
+<p>Most real-life datasets have missing values for a subset of its features. There are different ways to deal with these missing values. Usually, when a feature’s value is missing in most of the samples, it is better to just discard them. Let’s see if we have any of these variables.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">missing_vals</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">missing_vals</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Order                0
+PID                  0
+MS_SubClass          0
+MS_Zoning            0
+Lot_Frontage       490
+Lot_Area             0
+Street               0
+Alley             2727
+Lot_Shape            0
+Land_Contour         0
+Utilities            0
+Lot_Config           0
+Land_Slope           0
+Neighborhood         0
+Condition_1          0
+Condition_2          0
+Bldg_Type            0
+House_Style          0
+Overall_Qual         0
+Overall_Cond         0
+Year_Built           0
+Year_Remod/Add       0
+Roof_Style           0
+Roof_Matl            0
+Exterior_1st         0
+Exterior_2nd         0
+Mas_Vnr_Type        23
+Mas_Vnr_Area        23
+Exter_Qual           0
+Exter_Cond           0
+                  ... 
+Bedroom_AbvGr        0
+Kitchen_AbvGr        0
+Kitchen_Qual         0
+TotRms_AbvGrd        0
+Functional           0
+Fireplaces           0
+Fireplace_Qu      1422
+Garage_Type        157
+Garage_Yr_Blt      159
+Garage_Finish      159
+Garage_Cars          1
+Garage_Area          1
+Garage_Qual        159
+Garage_Cond        159
+Paved_Drive          0
+Wood_Deck_SF         0
+Open_Porch_SF        0
+Enclosed_Porch       0
+3Ssn_Porch           0
+Screen_Porch         0
+Pool_Area            0
+Pool_QC           2914
+Fence             2354
+Misc_Feature      2820
+Misc_Val             0
+Mo_Sold              0
+Yr_Sold              0
+Sale_Type            0
+Sale_Condition       0
+SalePrice            0
+Length: 82, dtype: int64
+</code></pre></div></div>
+
+<p>Let’s get rid of features that have many missing values.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">house_data</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'Alley'</span><span class="p">,</span> <span class="s">'Fireplace_Qu'</span><span class="p">,</span> <span class="s">'Pool_QC'</span><span class="p">,</span>
+                                      <span class="s">'Misc_Feature'</span><span class="p">,</span> <span class="s">'Misc_Val'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>For some features a missing value is not really missing, since it can indicate that the value of this feature is zero when it’s missing. <code class="highlighter-rouge">Fence</code> and <code class="highlighter-rouge">Pool_Area</code> belong to this group. For these features we decide to create a binary variable indicating whether or not the house has this feature (and we do not care about the type or size of feature).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Make some variables useful
+</span><span class="n">house_data</span><span class="p">[</span><span class="s">'Fence'</span><span class="p">]</span> <span class="o">=</span> <span class="n">house_data</span><span class="p">[</span><span class="s">'Fence'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+<span class="n">house_data</span><span class="p">[</span><span class="s">'Pool'</span><span class="p">]</span> <span class="o">=</span> <span class="n">house_data</span><span class="p">[</span><span class="s">'Pool_Area'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>Similar to the categorical features that are rated from poor until excellent, there are also features with different categories. Again, it might be worthwhile to combine categories in the dataset that only occur a very infrequently. In this case we combine categories that consistute less than 1 percent of the total samples.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">house_data_obj</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s">'object'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">house_data_obj</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">series</span> <span class="o">=</span> <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">series</span><span class="o">/</span><span class="n">series</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">lt</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">series</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">),</span><span class="s">'Other'</span><span class="p">,</span>
+              <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+    <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">house_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">'category'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Note that the 1 percent of the total sample is rather ad-hoc. Imagine that you have a dataset consisting of millions of samples, then there is no need to get rid of these categories, since we still have sufficient information (unless you need balanced categories).</p>
+
+<p>To see what effect our transformations and enhanced have had on our features, we can have a look at the basement quality feature again.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">house_data</span><span class="p">[</span><span class="s">'Bsmt_Qual'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'Basement Quality'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1a1db4d668&gt;
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_29_1.png" alt="png" /></p>
+
+<h2 id="data-pipeline">Data pipeline</h2>
+
+<p>Now that we have cleaned and transformed our dataset we can look at if it is possible to create a decent model that can predict sale prices of houses the model has not seen before. However, we first have to deal with a few steps before we can use our dataset in these models.</p>
+
+<p>We need to make sure that we do not evaluate on data that we used to train and estimate our model. So we split our dataset in a training and test part.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span> <span class="o">=</span> <span class="n">house_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">house_data</span><span class="p">[</span><span class="s">'SalePrice'</span><span class="p">]</span>
+
+<span class="c1"># We need to split the set into a training and test set.
+</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="imputer">Imputer</h3>
+
+<p>Even though we got rid of the features with many missing values, there are still features that have a few missing values. It is possible to use advanced techiques to “imputate” these missing values, however we will a simple imputing technique, which replaces the missing values with the most frequent value for that feature.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">imputer</span> <span class="o">=</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s">'most_frequent'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="standardisation--encoding">Standardisation &amp; Encoding</h3>
+
+<p>Most machine learning models require that the scale of the features in the dataset are similar. Therefore, we will standardise all numerical features in the dataset by removing the mean of that feature and dividing by the standard deviation, i.e., 
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>s</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mover accent="true"><mi>x</mi><mo>ˉ</mo></mover></mrow><mrow><mtext>std</mtext><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">x_{scaled} = \frac{x - \bar{x}}{\text{std}(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">s</span><span class="mord mathdefault mtight">c</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.3223310000000001em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.802331em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">std</span></span><span class="mopen mtight">(</span><span class="mord mathdefault mtight">x</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">x</span><span class="mbin mtight">−</span><span class="mord accent mtight"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord mtight"><span class="mord mathdefault mtight">x</span></span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span class="accent-body" style="left:-0.22222em;"><span class="mtight">ˉ</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
+
+<p>We also have categorical features which we cannot directly feed to the machine learning models. All features need to be represented by a numerical value. Both nominal and ordinal features can be transformed by a technique called One-hot encoding, where a categorical feature is replaced by a number of dummies that indicate one of these categories.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Next we need to scale the numerical columns and encode the categorical 
+# variables. This can be done by splitting the dataset into two parts.
+</span><span class="n">cat_cols</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s">'category'</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">num_cols</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s">'number'</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="n">cat_cols_mask</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">)</span>
+<span class="n">num_cols_mask</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">num_cols</span><span class="p">)</span>
+
+<span class="n">ct</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+        <span class="p">[(</span><span class="s">'scale'</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">num_cols_mask</span><span class="p">),</span>
+         <span class="p">(</span><span class="s">'encode'</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(),</span> <span class="n">cat_cols_mask</span><span class="p">)])</span>
+</code></pre></div></div>
+
+<p>Note that ordinal values can also be transformed into a single numerical value, where each category is represented by a number that is ordered according to the ordering of these categories. The advantage of this procedure is that we require less features to represent this feature numerically, however for most machine learning models it also results in a linear relationship between the that feature and the feature we want to predict.</p>
+
+<h3 id="machine-learning-model">Machine learning model</h3>
+
+<p>Now that we have a dataset that only consists of numerical values we can apply any machine learning we want. <code class="highlighter-rouge">scikit-learn</code> provides many machine learning models with a common interface (except for the hyperparameters), so it is easy to implement many different models. In our case I will only use a linear regression.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">linear_reg</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="combine-all-steps-of-pipeline">Combine all steps of pipeline</h3>
+
+<p>Pipelines can be used to automatically perform all steps of the model estimation (including preprocessing steps). It also makes sure that the preprocessing is done correctly, e.g., the scaling for the test dataset is the one used for the training dataset (Reader: why is this absolutely necessary?). An overview of what the pipeline does is given in the figure below (copyright by <a href="https://nbviewer.jupyter.org/github/rasbt/python-machine-learning-book/blob/master/code/ch06/ch06.ipynb#Combining-transformers-and-estimators-in-a-pipeline">Sebastian Raschka</a>).</p>
+
+<p><img src="/images/ames_prices_2018_files/pipeline-diagram.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">imputer</span><span class="p">,</span> <span class="n">ct</span><span class="p">,</span> <span class="n">linear_reg</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="training--evaluating-model">Training &amp; Evaluating model</h2>
+
+<p>Training the model is as simple as</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pipe</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Usually, the best model (within or between) class(es) of models can be determined by using cross-validation or splitting the training dataset into a training and validation part (if you have enough data). I will skip this step and go immediately to the evaluation of our model.</p>
+
+<p>In the step above we estimated and trained our model based on the training set. To see how well it performs we can look at what sale prices our model predict for data it has not seen before.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">errors</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_test</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">scikit-learn</code> can provide a score for the model, but we will look at the error of the prediction instead. First let’s plot the histogram of the errors</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/ames_prices_2018_files/output_45_0.png" alt="png" /></p>
+
+<p>The histogram suggest that the errors are normally distributed (assumption of the linear regression). Furthermore, it seems that most predictions have an error less than 20,000$. To me this seems like a reasonable model.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this tutorial we have seen how we can go from raw data to a predictive model that has a reasonable performance. However, there are many things we have not discussed yet. To name a few:</p>
+<ul>
+  <li>Consider multiple models and select the best one using cross-validation.</li>
+  <li>Use a more advanced missing value imputation technique, e.g., <a href="https://www.statsmodels.org/dev/generated/statsmodels.imputation.mice.MICEData.html">MICE</a>.</li>
+</ul>

@@ -1,0 +1,113 @@
+<h1 id="custom-data-splitter-function-in-python">Custom Data Splitter Function in Python</h1>
+
+<p>Ths month I started with the excellent Deep Learning course by <a href="https://www.fast.ai">fast.ai</a> and I just finished the first lesson. At the end of the lesson Jeremy, the teacher of the course, assigned a homework assignment to create an image classifier using our own data. After downloading my own dataset I was facing the problem that I wanted to split this dataset into a training and test set using seperate directories but I could not easily find such a program online. Therefore, in this blog post, I will explain how to write such a program and how to make this program easily installable and useable for anyone. I will discuss how to properly handle arguments for command line programs and how to make your software available to download from <code class="highlighter-rouge">pip</code>.</p>
+
+<h2 id="motivation">Motivation</h2>
+
+<p>Most of these image classifier tutorials use a dataset that correctly classifies most of the images using state-of-the-art image classifier models. However, I was curious how these so-called transfer learning techniques would work on a rather challenging dataset. Using a google image downloader, I obtained a dataset with approximately 1,000 Airbus A320 planes and 1,000 Boeing 737s. For a layman, these planes are identical but there are small differences.</p>
+
+<p>The problem I was facing is that created a directory <code class="highlighter-rouge">plane_data</code> and two subdirectories <code class="highlighter-rouge">airbus</code> and <code class="highlighter-rouge">boeing</code> containing the respective image files but I wanted to split this dataset into a training and test dataset. While it is relatively straight-forward to split a data file, e.g., CSV files containing one observation per row, splitting directories containing image files is less straightforward. Hence, I decided to write a little terminal program in python to do the manual work for me.</p>
+
+<h2 id="the-program">The Program</h2>
+
+<p>The goal of the program is split a directory of images and split it into a training and test directory.</p>
+
+<p>Let’s call our directory with images <code class="highlighter-rouge">data</code> with classes <strong>boeing</strong> and <strong>airbus</strong>. The two most used ways of saving images beloning to a certain class is to put them in a seperate subdirectory, e.g., <code class="highlighter-rouge">data/boeing</code> or to put the class name in the name of the image file, e.g., <code class="highlighter-rouge">boeing_img1.jpeg</code>. As of now, I only implemented the former case but the second case is typically implemented using class detection with <em>regex</em>.</p>
+
+<p>The source code of the program is given below. I think the code is pretty self-explanatory but the idea is to 1) identify the subdirectories containing all classes, 2) create a <code class="highlighter-rouge">data/train</code> and <code class="highlighter-rouge">data/test</code> subdirectory and 3) loop over all classes and split the image files in a train and test selection and move the images to the respective directories, e.g., <code class="highlighter-rouge">data/train/boeing</code> and <code class="highlighter-rouge">data/test/boeing</code>. Note that the <code class="highlighter-rouge">folder</code> variable is the location of the images and the <code class="highlighter-rouge">train</code> variable is the percentage of images that we want to keep for training, which is defined as a program option.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">data_splitter</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">train</span><span class="p">):</span>
+  <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">'.'</span><span class="p">)]</span>
+
+  <span class="c1"># Get all folders and files
+</span>  <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">entries</span> <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">d</span><span class="p">))]</span>
+  <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">entries</span> <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">f</span><span class="p">))]</span>
+
+  <span class="k">if</span> <span class="n">dirs</span> <span class="ow">and</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Folder should contain either files or folders but not both."</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+
+  <span class="n">mkdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">'train'</span><span class="p">))</span>
+  <span class="n">mkdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">'test'</span><span class="p">))</span>
+
+  <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s">""</span><span class="p">]</span>
+
+  <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+    <span class="c1"># Items belonging to the current class
+</span>    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">directory</span><span class="p">))</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isfile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">item</span><span class="p">))]</span>
+
+    <span class="k">if</span> <span class="n">directory</span> <span class="o">!=</span> <span class="s">""</span><span class="p">:</span>
+      <span class="n">mkdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">'train'</span><span class="p">,</span> <span class="n">directory</span><span class="p">))</span>
+      <span class="n">mkdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">'test'</span><span class="p">,</span> <span class="n">directory</span><span class="p">))</span>
+
+    <span class="c1"># Shuffle and split dataset according to fractions
+</span>    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+    <span class="n">train_sel</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">train</span> <span class="o">/</span> <span class="mi">100</span><span class="p">))</span>
+    <span class="n">train_entries</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">train_sel</span><span class="p">]</span>
+    <span class="n">test_entries</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">train_sel</span><span class="p">:]</span>
+
+    <span class="k">for</span> <span class="n">train_file</span> <span class="ow">in</span> <span class="n">train_entries</span><span class="p">:</span>
+      <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">train_file</span><span class="p">),</span> <span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">'train'</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">train_file</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">test_file</span> <span class="ow">in</span> <span class="n">test_entries</span><span class="p">:</span>
+      <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">test_file</span><span class="p">),</span> <span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">'test'</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">test_file</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">directory</span> <span class="o">!=</span> <span class="s">""</span><span class="p">:</span>
+      <span class="n">rmdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">directory</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="handling-arguments">Handling Arguments</h2>
+
+<p>The program needs a folder to split up and an optional percentage of image files to put in the training set. While python offers an in-built argument parser in the <code class="highlighter-rouge">argparser</code> module, the <code class="highlighter-rouge">click</code> module has my preference due to its easy of use.</p>
+
+<p>Adding arguments and options is as simple as adding</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s">'folder'</span><span class="p">)</span>
+<span class="o">@</span><span class="n">click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--train'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">"Percentage of files for train set"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In front of our <code class="highlighter-rouge">data_splitter(folder, train)</code> program. A <code class="highlighter-rouge">click.option</code> allows us to define a default value in case the user does not define the option and a little helper text when the user calls the <code class="highlighter-rouge">--help</code> option.</p>
+
+<h2 id="deploying-on-pip">Deploying on pip</h2>
+
+<p>Lastly, we want to make it dead-easy to install and use our little command-line program. The most popular method to distribute software in python is to use <code class="highlighter-rouge">pip</code>. To make our module suitable for <code class="highlighter-rouge">pip</code>, we need to add two files to our module in the main directory: a <code class="highlighter-rouge">setup.py</code> and <code class="highlighter-rouge">setup.cfg</code> file. An example can be found <a href="https://github.com/pypa/sampleproject">here</a>.</p>
+
+<p>We further add the following to the <code class="highlighter-rouge">data_splitter.py</code> code to make the program easily calleable from pip as we will see in the next section.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">data_splitter</span><span class="p">()</span>
+  <span class="k">except</span> <span class="nb">FileNotFoundError</span> <span class="k">as</span> <span class="n">fnf_error</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">fnf_error</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The try-except block prevents us from having an ugly and long error callback in case we want to split a non-existing directory.</p>
+
+<h2 id="using-data_splitter">Using data_splitter</h2>
+
+<p>Now that we defined the program, handled program arguments and made our program deployable on <code class="highlighter-rouge">pip</code> we can start using it.</p>
+
+<p>The program can be found in the directory https://github.com/markkvdb/data-splitter and can be installed as</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>git+https://github.com/markkvdb/data-splitter.git#egg<span class="o">=</span>data-splitter
+</code></pre></div></div>
+
+<p>The installer will place the program location in the <code class="highlighter-rouge">$PATH</code> variable of your system.</p>
+
+<p>After only adding three lines of code using the <code class="highlighter-rouge">click</code> module, we now have a very neat interface when using the program in the command-line. Calling <code class="highlighter-rouge">data_splitter --help</code> will show how to use it</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Usage: data_splitter <span class="o">[</span>OPTIONS] FOLDER
+
+Options:
+  <span class="nt">--train</span> INTEGER  Percentage of files <span class="k">for </span>train set.
+  <span class="nt">--help</span>           Show this message and exit.
+</code></pre></div></div>
+
+<h2 id="improvements">Improvements</h2>
+
+<p>The simple command-line can be improved in various ways:</p>
+
+<ul>
+  <li>Implement class recognition using image file names with regex;</li>
+  <li>Splitting is performed by randomly assigning images to the test or training set. This is not always appriorate if some images belong to the same individual and images are no longer independent.</li>
+</ul>
