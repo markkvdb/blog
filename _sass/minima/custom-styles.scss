@@ -2,3 +2,10 @@
 @import "minima/fastpages-styles";
 
 // Add your styles below
+.site-title-avatar .avatar-img {
+    width: 45px;
+    height: 45px;
+    margin: 4.5px 5px 4.5px 0;
+    border-radius: 50%;
+    float: left
+}
