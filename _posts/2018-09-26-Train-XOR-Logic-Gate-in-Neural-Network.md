@@ -1,4 +1,5 @@
 ---
+layout: post
 description: Learning to train a XOR logic gate with bare Python and Numpy.
 categories: [Deep Learning, Python]
 comments: true

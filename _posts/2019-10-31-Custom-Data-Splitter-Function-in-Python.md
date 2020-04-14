@@ -1,7 +1,9 @@
 ---
+layout: post
 description: Splitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program provides a solution.
 categories: [Python]
 comments: true
+hide: true
 ---
 
 # Custom Data Splitter Function in Python

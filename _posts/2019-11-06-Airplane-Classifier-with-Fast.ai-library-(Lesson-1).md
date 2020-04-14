@@ -1,4 +1,5 @@
 ---
+layout: post
 description: Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.
 categories: [fast.ai, Deep Learning]
 comments: true

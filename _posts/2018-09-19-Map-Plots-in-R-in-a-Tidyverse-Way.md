@@ -1,4 +1,5 @@
 ---
+layout: post
 description: I show how you can plot your own map in R using a few lines of code using a pipe-based workflow
 categories: [R, Visualisation]
 comments: true

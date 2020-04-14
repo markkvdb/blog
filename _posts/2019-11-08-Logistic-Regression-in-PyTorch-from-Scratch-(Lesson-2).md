@@ -1,4 +1,5 @@
 ---
+layout: post
 description: An explanation of the logistic regression from the ground-up.
 categories: [fast.ai, Deep Learning, Machine Learning]
 comments: true

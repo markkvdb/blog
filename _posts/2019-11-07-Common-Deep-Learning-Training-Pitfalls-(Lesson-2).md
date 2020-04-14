@@ -1,4 +1,5 @@
 ---
+layout: post
 description: Typical mistakes and pitfalls when facing machine or deep learning problems.
 categories: [fast.ai, Deep Learning]
 comments: true
