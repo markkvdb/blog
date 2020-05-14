@@ -1,6 +1,7 @@
 ---
 layout: post
 description: Predicting Sale Prices of Houses in Ames using scikit-learn.
+hide: true
 categories: [Machine Learning, Python]
 comments: true
 ---

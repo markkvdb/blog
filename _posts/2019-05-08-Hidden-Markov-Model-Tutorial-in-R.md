@@ -1,6 +1,7 @@
 ---
 layout: post
 description: This post dicusses one of the fundamental building blocks of machine learning.
+hide: true
 categories: [R, Machine Learning]
 comments: true
 ---
