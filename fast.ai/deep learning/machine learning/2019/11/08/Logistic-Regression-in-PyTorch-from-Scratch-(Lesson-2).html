@@ -15,7 +15,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-08T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"An explanation of the logistic regression from the ground-up.","@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html","headline":"Logistic Regression In Pytorch From Scratch (lesson 2)","dateModified":"2019-11-08T00:00:00-06:00","datePublished":"2019-11-08T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html"},"@context":"https://schema.org"}</script>
+{"description":"An explanation of the logistic regression from the ground-up.","headline":"Logistic Regression In Pytorch From Scratch (lesson 2)","dateModified":"2019-11-08T00:00:00-06:00","datePublished":"2019-11-08T00:00:00-06:00","@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Logistic Regression In Pytorch From Scratch (lesson 2) | Mark van der Broek</title>
@@ -30,61 +30,75 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-08T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"An explanation of the logistic regression from the ground-up.","@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html","headline":"Logistic Regression In Pytorch From Scratch (lesson 2)","dateModified":"2019-11-08T00:00:00-06:00","datePublished":"2019-11-08T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html"},"@context":"https://schema.org"}</script>
+{"description":"An explanation of the logistic regression from the ground-up.","headline":"Logistic Regression In Pytorch From Scratch (lesson 2)","dateModified":"2019-11-08T00:00:00-06:00","datePublished":"2019-11-08T00:00:00-06:00","@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
-    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+    integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+<<<<<<< HEAD <script type="text/javascript" async
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+        integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+        crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+        crossorigin="anonymous"></script>
+    =======
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+        integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+        crossorigin="anonymous"></script>
+    >>>>>>> template/master
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement( document.body, {
-        delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "[%", right: "%]", display: true},
-            {left: "$", right: "$", display: false}
-        ]}
-        );
-    });
+        document.addEventListener("DOMContentLoaded", function () {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "[%", right: "%]", display: true },
+                    { left: "$", right: "$", display: false }
+                ]
+            }
+            );
+        });
+    </script>
+    
+
+    <script>
+        function wrap_img(fn) {
+            if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+                var elements = document.querySelectorAll(".post img");
+                Array.prototype.forEach.call(elements, function (el, i) {
+                    if (el.getAttribute("title") && (el.className != "emoji")) {
+                        const caption = document.createElement('figcaption');
+                        var node = document.createTextNode(el.getAttribute("title"));
+                        caption.appendChild(node);
+                        const wrapper = document.createElement('figure');
+                        wrapper.className = 'image';
+                        el.parentNode.insertBefore(wrapper, el);
+                        el.parentNode.removeChild(el);
+                        wrapper.appendChild(el);
+                        wrapper.appendChild(caption);
+                    }
+                });
+            } else { document.addEventListener('DOMContentLoaded', fn); }
+        }
+        window.onload = wrap_img;
     </script>
 
-
-<script>
-function wrap_img(fn) {
-    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
-        var elements = document.querySelectorAll(".post img");
-        Array.prototype.forEach.call(elements, function(el, i) {
-            if (el.getAttribute("title")) {
-                const caption = document.createElement('figcaption');
-                var node = document.createTextNode(el.getAttribute("title"));
-                caption.appendChild(node);
-                const wrapper = document.createElement('figure');
-                wrapper.className = 'image';
-                el.parentNode.insertBefore(wrapper, el);
-                el.parentNode.removeChild(el);
-                wrapper.appendChild(el);
-                wrapper.appendChild(caption);
-            }
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // add link icon to anchor tags
+            var elem = document.querySelectorAll(".anchor-link")
+            elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
         });
-    } else { document.addEventListener('DOMContentLoaded', fn); }
-}
-window.onload = wrap_img;
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function(){
-    // add link icon to anchor tags
-    var elem = document.querySelectorAll(".anchor-link")
-    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
-    // remove paragraph tags in rendered toc (happens from notebooks)
-    var toctags = document.querySelectorAll(".toc-entry")
-    toctags.forEach(e => (e.firstElementChild.innerText = e.firstElementChild.innerText.replace('¶', '')))
-    });
-</script>
-</head><body><header class="site-header">
+    </script></head><body><header class="site-header">
 
     <div class="wrapper"><div class="site-title-avatar"><img class="avatar-img" src="/images/avatar.jpeg" /><a class="site-title" rel="author" href="/">
                 Mark van der Broek
@@ -106,36 +120,36 @@ window.onload = wrap_img;
       <div class="wrapper">
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Logistic Regression In Pytorch From Scratch (lesson 2)</h1><p class="page-description">An explanation of the logistic regression from the ground-up.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-11-08T00:00:00-06:00" itemprop="datePublished">
-        Nov 8, 2019
-      </time>
-       • <span class="read-time" title="Estimated read time">
+    <header class="post-header">
+        <h1 class="post-title p-name" itemprop="name headline">Logistic Regression In Pytorch From Scratch (lesson 2)</h1><p class="page-description">An explanation of the logistic regression from the ground-up.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2019-11-08T00:00:00-06:00" itemprop="datePublished">
+                Nov 8, 2019
+            </time>
+            • <span class="read-time" title="Estimated read time">
     
     
       6 min read
     
 </span></p>
 
-    
-      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
-      
-        <a class="category-tags-link" href="/categories/#fast.ai">fast.ai</a>
-        &nbsp;
-      
-        <a class="category-tags-link" href="/categories/#Deep Learning">Deep Learning</a>
-        &nbsp;
-      
-        <a class="category-tags-link" href="/categories/#Machine Learning">Machine Learning</a>
         
-      
-      </p>
-    
+        <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i>
+            
+            <a class="category-tags-link" href="/categories/#fast.ai">fast.ai</a>
+            &nbsp;
+            
+            <a class="category-tags-link" href="/categories/#Deep Learning">Deep Learning</a>
+            &nbsp;
+            
+            <a class="category-tags-link" href="/categories/#Machine Learning">Machine Learning</a>
+            
+            
+        </p>
+        
 
-    </header>
+        </header>
 
-  <div class="post-content e-content" itemprop="articleBody">
-    <h1 id="logistic-regression-in-pytorch-from-scratch-lesson-2">Logistic Regression in PyTorch from Scratch (Lesson 2)</h1>
+    <div class="post-content e-content" itemprop="articleBody">
+        <h1 id="logistic-regression-in-pytorch-from-scratch-lesson-2">Logistic Regression in PyTorch from Scratch (Lesson 2)</h1>
 
 <p>In this article we will explore the logistic regression and how we can implement it using PyTorch. Contrary to linear regressions where the output variable $y$ is continuous, logistic regressions concern binary variables, i.e.,</p>
 
@@ -360,7 +374,7 @@ tensor([ 1.3062, -0.2848], requires_grad=True)
 
 <p>See you for lesson 3 of the fast.ai course!</p>
 
-  </div><!-- from https://github.com/utterance/utterances -->
+    </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
         repo="markkvdb/"
         issue-term="title"

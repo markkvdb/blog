@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://mvanderbroek.com/" />
 <meta property="og:site_name" content="Mark van der Broek" />
 <script type="application/ld+json">
-{"description":"Tutorials on Data Science and Operations Research","@type":"WebSite","url":"https://mvanderbroek.com/","name":"Mark van der Broek","headline":"Mark van der Broek","@context":"https://schema.org"}</script>
+{"description":"Tutorials on Data Science and Operations Research","headline":"Mark van der Broek","@type":"WebSite","url":"https://mvanderbroek.com/","name":"Mark van der Broek","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Mark van der Broek | Tutorials on Data Science and Operations Research</title>
@@ -26,61 +26,75 @@
 <meta property="og:url" content="https://mvanderbroek.com/" />
 <meta property="og:site_name" content="Mark van der Broek" />
 <script type="application/ld+json">
-{"description":"Tutorials on Data Science and Operations Research","@type":"WebSite","url":"https://mvanderbroek.com/","name":"Mark van der Broek","headline":"Mark van der Broek","@context":"https://schema.org"}</script>
+{"description":"Tutorials on Data Science and Operations Research","headline":"Mark van der Broek","@type":"WebSite","url":"https://mvanderbroek.com/","name":"Mark van der Broek","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
-    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+    integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+<<<<<<< HEAD <script type="text/javascript" async
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+        integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+        crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+        crossorigin="anonymous"></script>
+    =======
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+        integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+        crossorigin="anonymous"></script>
+    >>>>>>> template/master
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement( document.body, {
-        delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "[%", right: "%]", display: true},
-            {left: "$", right: "$", display: false}
-        ]}
-        );
-    });
+        document.addEventListener("DOMContentLoaded", function () {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "[%", right: "%]", display: true },
+                    { left: "$", right: "$", display: false }
+                ]
+            }
+            );
+        });
+    </script>
+    
+
+    <script>
+        function wrap_img(fn) {
+            if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+                var elements = document.querySelectorAll(".post img");
+                Array.prototype.forEach.call(elements, function (el, i) {
+                    if (el.getAttribute("title") && (el.className != "emoji")) {
+                        const caption = document.createElement('figcaption');
+                        var node = document.createTextNode(el.getAttribute("title"));
+                        caption.appendChild(node);
+                        const wrapper = document.createElement('figure');
+                        wrapper.className = 'image';
+                        el.parentNode.insertBefore(wrapper, el);
+                        el.parentNode.removeChild(el);
+                        wrapper.appendChild(el);
+                        wrapper.appendChild(caption);
+                    }
+                });
+            } else { document.addEventListener('DOMContentLoaded', fn); }
+        }
+        window.onload = wrap_img;
     </script>
 
-
-<script>
-function wrap_img(fn) {
-    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
-        var elements = document.querySelectorAll(".post img");
-        Array.prototype.forEach.call(elements, function(el, i) {
-            if (el.getAttribute("title")) {
-                const caption = document.createElement('figcaption');
-                var node = document.createTextNode(el.getAttribute("title"));
-                caption.appendChild(node);
-                const wrapper = document.createElement('figure');
-                wrapper.className = 'image';
-                el.parentNode.insertBefore(wrapper, el);
-                el.parentNode.removeChild(el);
-                wrapper.appendChild(el);
-                wrapper.appendChild(caption);
-            }
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // add link icon to anchor tags
+            var elem = document.querySelectorAll(".anchor-link")
+            elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
         });
-    } else { document.addEventListener('DOMContentLoaded', fn); }
-}
-window.onload = wrap_img;
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function(){
-    // add link icon to anchor tags
-    var elem = document.querySelectorAll(".anchor-link")
-    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
-    // remove paragraph tags in rendered toc (happens from notebooks)
-    var toctags = document.querySelectorAll(".toc-entry")
-    toctags.forEach(e => (e.firstElementChild.innerText = e.firstElementChild.innerText.replace('¶', '')))
-    });
-</script>
-</head><body><header class="site-header">
+    </script></head><body><header class="site-header">
 
     <div class="wrapper"><div class="site-title-avatar"><img class="avatar-img" src="/images/avatar.jpeg" /><a class="site-title" rel="author" href="/">
                 Mark van der Broek
@@ -104,53 +118,22 @@ window.onload = wrap_img;
 
 
 
-  <ul class="post-list"><li><h3>
-    <a class="post-link" href="/operations%20research/python/2020/02/28/Visualise-Vehicle-Routing-Problem-Solutions.html">
-    Visualising Vehicle Routing Problem Solutions in Python
-    </a>
-</h3><p class="post-meta-description">Visualise paths of the multi-depot split-delivery vehicle routing problem with inventory constraints and heterogeneous fleet.</p><p class="post-meta">Feb 28, 2020</p>
-</li><li><h3>
-    <a class="post-link" href="/fast.ai/deep%20learning/machine%20learning/2019/11/08/Logistic-Regression-in-PyTorch-from-Scratch-(Lesson-2).html">
-    Logistic Regression In Pytorch From Scratch (lesson 2)
-    </a>
-</h3><p class="post-meta-description">An explanation of the logistic regression from the ground-up.</p><p class="post-meta">Nov 8, 2019</p>
-</li><li><h3>
-    <a class="post-link" href="/fast.ai/deep%20learning/2019/11/07/Common-Deep-Learning-Training-Pitfalls-(Lesson-2).html">
-    Common Deep Learning Training Pitfalls (lesson 2)
-    </a>
-</h3><p class="post-meta-description">Typical mistakes and pitfalls when facing machine or deep learning problems.</p><p class="post-meta">Nov 7, 2019</p>
-</li><li><h3>
-    <a class="post-link" href="/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html">
-    Airplane Classifier With Fast.ai Library (lesson 1)
-    </a>
-</h3><p class="post-meta-description">Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.</p><p class="post-meta">Nov 6, 2019</p>
-</li><li><h3>
-    <a class="post-link" href="/python/2019/10/31/Custom-Data-Splitter-Function-in-Python.html">
-    Custom Data Splitter Function In Python
-    </a>
-</h3><p class="post-meta-description">Splitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program provides a solution.</p><p class="post-meta">Oct 31, 2019</p>
-</li><li><h3>
-    <a class="post-link" href="/r/machine%20learning/2019/05/08/Hidden-Markov-Model-Tutorial-in-R.html">
-    Hidden Markov Model Tutorial In R
-    </a>
-</h3><p class="post-meta-description">This post dicusses one of the fundamental building blocks of machine learning.</p><p class="post-meta">May 8, 2019</p>
-</li><li><h3>
-    <a class="post-link" href="/machine%20learning/python/2018/10/07/Predicting-Sale-Prices-of-Houses-in-Ames.html">
-    Predicting Sale Prices Of Houses In Ames
-    </a>
-</h3><p class="post-meta-description">Predicting Sale Prices of Houses in Ames using scikit-learn.</p><p class="post-meta">Oct 7, 2018</p>
-</li><li><h3>
-    <a class="post-link" href="/deep%20learning/python/2018/09/26/Train-XOR-Logic-Gate-in-Neural-Network.html">
-    Train Xor Logic Gate In Neural Network
-    </a>
-</h3><p class="post-meta-description">Learning to train a XOR logic gate with bare Python and Numpy.</p><p class="post-meta">Sep 26, 2018</p>
-</li><li><h3>
-    <a class="post-link" href="/r/visualisation/2018/09/19/Map-Plots-in-R-in-a-Tidyverse-Way.html">
-    Map Plots In R In A Tidyverse Way
-    </a>
-</h3><p class="post-meta-description">I show how you can plot your own map in R using a few lines of code using a pipe-based workflow</p><p class="post-meta">Sep 19, 2018</p>
-</li></ul>
+    
 
+    <!-- Hide posts if front matter flag hide:true -->
+    
+    
+
+    <!-- Sort posts by rank, then date -->
+    
+    
+    
+
+
+    
+
+    <!-- Assemble final sorted posts array -->
+    
     </div>
       </div>
     </main><footer class="site-footer h-card">
