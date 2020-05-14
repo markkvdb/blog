@@ -1,5 +1,14 @@
-// Import styles for fastpages.
-@import "minima/fastpages-styles";
+/*-----------------------------------*/
+/*--- IMPORT STYLES FOR FASTPAGES ---*/
+@import "minima/fastpages-styles";   
+
+
+
+/*-----------------------------------*/
+/*----- ADD YOUR STYLES BELOW -------*/
+
+// If you want to turn off dark background for syntax highlighting, comment or delete the below line.
+@import "minima/fastpages-dracula-highlight"; 
 
 // Add your styles below
 .site-title-avatar .avatar-img {
