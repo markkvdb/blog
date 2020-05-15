@@ -6,8 +6,6 @@ categories: [Machine Learning, Python]
 comments: true
 ---
 
-# Predicting Sale Prices of Houses in Ames
-
 In this tutorial I will discuss how you can go from a raw dataset to a predictive model. For this tutorial we will make use of the [Ames Dataset](http://ww2.amstat.org/publications/jse/v19n3/decock.pdf) and see whether we can predict house prices based on characteristics provided in the dataset.
 
 The analysis in this tutorial is done in Python using the `pandas`, `scikit-learn` and `matplotlib` packages. We will start by exploring the raw data and see whether we can already see some patterns in the data or that some features should be discarded right away. Next, we will make a straight-forward pipeline that will transform our dataset and fit a linear regression model. Finally, we will evaluate the performance of this model.

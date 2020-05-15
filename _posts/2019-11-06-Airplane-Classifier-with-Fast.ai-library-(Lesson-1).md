@@ -5,8 +5,6 @@ categories: [fast.ai, Deep Learning]
 comments: true
 ---
 
-# Airplane Classifier with Fast.ai library (Lesson 1)
-
 The fast.ai deep learning course is a practical top-down deep learning course for practicioners. Immediately after the first two hour lecture, it is possible to train an image classifier on your own dataset using state-of-the-art deep learning techniques. The reason for this accesibility is the excellent fast.ai software which builds upon the popular PyTorch deep learning library. 
 
 In this post I will show you how I applied the techniques and lessons from the first fast.ai lecture to a plane classifier. I will show you how to download your own dataset, how to train an image classifier using the fast.ai software, and finally how to evaluate the performance of the trained model.

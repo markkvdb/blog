@@ -6,8 +6,6 @@ categories: [R, Machine Learning]
 comments: true
 ---
 
-# Hidden Markov Model Tutorial in R
-
 This document contains an introduction to Hidden Markov Models (HMMs).
 First, a brief description and the main problems of HMMs will discussed.
 After, I will provide common strategies to analyse these problems.

@@ -5,8 +5,6 @@ categories: [fast.ai, Deep Learning, Machine Learning]
 comments: true
 ---
 
-# Logistic Regression in PyTorch from Scratch (Lesson 2)
-
 In this article we will explore the logistic regression and how we can implement it using PyTorch. Contrary to linear regressions where the output variable $y$ is continuous, logistic regressions concern binary variables, i.e.,
 
 $$

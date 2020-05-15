@@ -5,8 +5,6 @@ categories: [fast.ai, Deep Learning]
 comments: true
 ---
 
-# Common Deep Learning Training Pitfalls (Lesson-2)
-
 In lesson 2 of the fast-ai course discusses a variety of items. First, we will learn how to apply a model in production. Second, common pitfalls are being discussed. I will provide my econometric background on these pitfalls and how they relate to the statistics literature. Lastly, we will explore the inner working of most ML/DL algorithms by discussing the most elementary one: the logistic regression (LATER POST).
 
 ## Airplane classifier in production

@@ -1,12 +1,9 @@
 ---
 layout: post
 description: Splitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program provides a solution.
-hide: true
 categories: [Python]
 comments: true
 ---
-
-# Custom Data Splitter Function in Python
 
 Ths month I started with the excellent Deep Learning course by [fast.ai](https://www.fast.ai) and I just finished the first lesson. At the end of the lesson Jeremy, the teacher of the course, assigned a homework assignment to create an image classifier using our own data. After downloading my own dataset I was facing the problem that I wanted to split this dataset into a training and test set using seperate directories but I could not easily find such a program online. Therefore, in this blog post, I will explain how to write such a program and how to make this program easily installable and useable for anyone. I will discuss how to properly handle arguments for command line programs and how to make your software available to download from `pip`.
 

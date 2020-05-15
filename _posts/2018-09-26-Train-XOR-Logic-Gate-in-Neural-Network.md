@@ -5,8 +5,6 @@ categories: [Deep Learning, Python]
 comments: true
 ---
 
-# Train XOR Logic Gate in Neural Network
-
 Deep learning (DL) is a thriving research field with an increasing number of practical applications. One of the models used in DL are so called artificial neural networks (ANN). In this tutorial I will not discuss exactly how these ANNs work, but instead I will show how flexible these models can be by training an ANN that will act as a XOR logic gate. 
 
 ## XOR gate

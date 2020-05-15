@@ -5,8 +5,6 @@ categories: [R, Visualisation]
 comments: true
 ---
 
-# Map Plots in R in a Tidyverse Way
-
 I show how you can plot your own map in R using a few lines of code using a pipe-based workflow. Several powerful functions of the `sf` packages are presented.
 
 ## Analysis
