@@ -24,19 +24,21 @@ open-source maps. I decided to select the world map with country borders
 on a 1:10m scale (can be found
 [here](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_countries.zip)).
 
-    library(sf)       # For handling geospatial data
-    library(ggplot2)  # Plotting library
-    library(dplyr)    # Data manipulation in tidyverse way
-    library(ggthemes) # Additional themese for the ggplot2 library
-    library(knitr)    # Nice tables for this document
+```R
+library(sf)       # For handling geospatial data
+library(ggplot2)  # Plotting library
+library(dplyr)    # Data manipulation in tidyverse way
+library(ggthemes) # Additional themese for the ggplot2 library
+library(knitr)    # Nice tables for this document
 
-    # This will create a natural-earth subfolder with the map data in the data folder.
-    if (!file.exists("data/natural-earth")) {
-      tmp_file <- tempfile(fileext=".zip")
-      download.file("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_countries.zip", 
-                    tmp_file)
-      unzip(tmp_file, exdir = "data/natural-earth")
-    }
+# This will create a natural-earth subfolder with the map data in the data folder.
+if (!file.exists("data/natural-earth")) {
+    tmp_file <- tempfile(fileext=".zip")
+    download.file("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_countries.zip", 
+                tmp_file)
+    unzip(tmp_file, exdir = "data/natural-earth")
+}
+```
 
 Importing these maps, however, was not straightforward to me. [These
 lecture
@@ -49,27 +51,32 @@ the modern `sf` package can be used to manipulate, plot and import
 spatial data in a tidyverse manner.
 
 Importing our world map is as easy as
+```R
+map_data <- st_read("data/natural-earth/", "ne_10m_admin_0_countries")
+```
 
-    map_data <- st_read("data/natural-earth/", "ne_10m_admin_0_countries")
-
-    ## Reading layer `ne_10m_admin_0_countries' from data source `Map-Plotting/data/natural-earth' using driver `ESRI Shapefile'
-    ## Simple feature collection with 255 features and 94 fields
-    ## geometry type:  MULTIPOLYGON
-    ## dimension:      XY
-    ## bbox:           xmin: -180 ymin: -90 xmax: 180 ymax: 83.6341
-    ## epsg (SRID):    4326
-    ## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+```
+## Reading layer `ne_10m_admin_0_countries' from data source `Map-Plotting/data/natural-earth' using driver `ESRI Shapefile'
+## Simple feature collection with 255 features and 94 fields
+## geometry type:  MULTIPOLYGON
+## dimension:      XY
+## bbox:           xmin: -180 ymin: -90 xmax: 180 ymax: 83.6341
+## epsg (SRID):    4326
+## proj4string:    +proj=longlat +datum=WGS84 +no_defs
+```
 
 The `map_data` uses `data.frame`s for its features and saves the
 geometric features as a list in the column `geometry`. We can now easily
 explore the data in `map_data`, e.g.,
 
-    features_map_data <- map_data %>%
-      as_tibble() %>%
-      select(-geometry) %>%
-      head(10)
+```R
+features_map_data <- map_data %>%
+    as_tibble() %>%
+    select(-geometry) %>%
+    head(10)
 
-    kable(features_map_data)
+kable(features_map_data)
+```
 
 <table>
 <thead>
@@ -1139,16 +1146,20 @@ need to filter the data to only contain the european countries' info.
 Fortunately, the `map_data` contains a feature `CONTINTENT`, so we can
 easily filter out the unwanted countries.
 
-    europe_map_data <- map_data %>%
-      select(NAME, CONTINENT, SUBREGION, POP_EST) %>%
-      filter(CONTINENT == "Europe") 
+```R
+europe_map_data <- map_data %>%
+    select(NAME, CONTINENT, SUBREGION, POP_EST) %>%
+    filter(CONTINENT == "Europe")
+```
 
 Lets try to plot a map of European countries. New versions of `ggplot2`
 contain a function `geom_sf` which supports plotting `sf` objects
 directly, so lets try it...
 
-    ggplot(europe_map_data) + geom_sf() +
-      theme_minimal()
+```R
+ggplot(europe_map_data) + geom_sf() +
+    theme_minimal()
+```
 
 ![]({{ site.baseurl }}/images/map_article_2018_files/figure-markdown_strict/first_attempt_plot-1.png)
 
@@ -1158,16 +1169,18 @@ of our data. The `bbox` object sets the longitude and latitude range for
 our plot, which is still for the whole europe. To change this we can use
 the `st_crop` function as
 
-    europe_map_data <- europe_map_data %>%
-      st_crop(xmin=-25, xmax=55, ymin=35, ymax=71)
+```R
+europe_map_data <- europe_map_data %>%
+    st_crop(xmin=-25, xmax=55, ymin=35, ymax=71)
 
-    ## although coordinates are longitude/latitude, st_intersection assumes that they are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they are planar
 
-    ## Warning: attribute variables are assumed to be spatially constant
-    ## throughout all geometries
+## Warning: attribute variables are assumed to be spatially constant
+## throughout all geometries
 
-    ggplot(europe_map_data) + geom_sf() +
-      theme_minimal()
+ggplot(europe_map_data) + geom_sf() +
+    theme_minimal()
+```
 
 ![]({{ site.baseurl }}/images/map_article_2018_files/figure-markdown_strict/crop_box-1.png)
 
@@ -1177,8 +1190,10 @@ contains a feature `SUBREGION` and Europe is divided into Northern,
 Eastern, Southern and Western Europe. We can easily visualise this in
 our European map as
 
-    ggplot(europe_map_data) + geom_sf(aes(fill=SUBREGION)) +
-      theme_minimal()
+```R
+ggplot(europe_map_data) + geom_sf(aes(fill=SUBREGION)) +
+    theme_minimal()
+```
 
 ![]({{ site.baseurl }}/images/map_article_2018_files/figure-markdown_strict/europe_map_divide-1.png)
 
@@ -1186,13 +1201,15 @@ The `sf` has many in-built functions; one of these functions is
 `st_area` which can be used to compute the area of polygons. The
 population density of each country can be easily plotted by
 
-    europe_map_data <- europe_map_data %>%
-      mutate(area = as.numeric(st_area(.))) %>%
-      mutate(pop_density = POP_EST / area)
+```R
+europe_map_data <- europe_map_data %>%
+    mutate(area = as.numeric(st_area(.))) %>%
+    mutate(pop_density = POP_EST / area)
 
-    ggplot(europe_map_data) + geom_sf(aes(fill=pop_density)) +
-      theme_minimal() + 
-      scale_fill_continuous_tableau(palette = "Green")
+ggplot(europe_map_data) + geom_sf(aes(fill=pop_density)) +
+    theme_minimal() + 
+    scale_fill_continuous_tableau(palette = "Green")
+```
 
 ![]({{ site.baseurl }}/images/map_article_2018_files/figure-markdown_strict/pop_density-1.png)
 
@@ -1200,51 +1217,57 @@ Using aggregating functions of the `tidyverse` package is also
 straight-forward. Lets create a similar population density plot but
 instead for each subregion of Europe.
 
-    subregion_data <- europe_map_data %>%
-      group_by(SUBREGION) %>%
-      summarise(area = sum(area), 
-                pop_est = sum(POP_EST)) %>%
-      ungroup() %>%
-      mutate(pop_density = pop_est / area)
+```R
+subregion_data <- europe_map_data %>%
+    group_by(SUBREGION) %>%
+    summarise(area = sum(area), 
+            pop_est = sum(POP_EST)) %>%
+    ungroup() %>%
+    mutate(pop_density = pop_est / area)
 
-    ggplot(subregion_data) + geom_sf(aes(fill=pop_density)) +
-      theme_minimal() + 
-      scale_fill_continuous_tableau(palette = "Green")
+ggplot(subregion_data) + geom_sf(aes(fill=pop_density)) +
+    theme_minimal() + 
+    scale_fill_continuous_tableau(palette = "Green")
+```
 
 ![]({{ site.baseurl }}/images/map_article_2018_files/figure-markdown_strict/pop_density_sub-1.png)
 
 As a last exercise lets find the centroid for each country.
 
-    # First get all centroids of each European country
-    get_coordinates = function(data) {
-      return_data <- data %>%
-        st_geometry() %>%
-        st_centroid() %>%
-        st_coordinates() %>%
-        as_data_frame()
-    }
+```R
+# First get all centroids of each European country
+get_coordinates = function(data) {
+    return_data <- data %>%
+    st_geometry() %>%
+    st_centroid() %>%
+    st_coordinates() %>%
+    as_data_frame()
+}
 
-    europe_centres <- europe_map_data %>%
-      group_by(NAME) %>%
-      do(get_coordinates(.))
+europe_centres <- europe_map_data %>%
+    group_by(NAME) %>%
+    do(get_coordinates(.))
 
-    europe_map_data <- europe_map_data %>%
-      left_join(europe_centres, by="NAME")
+europe_map_data <- europe_map_data %>%
+    left_join(europe_centres, by="NAME")
+```
 
 Actually, I only want to see the centroid of the Netherlands...
 
-    netherlands_map_data = europe_map_data %>%
-      filter(NAME == "Netherlands") %>%
-      st_crop(xmin=1, xmax=10, ymin=50, ymax=55)
+```R
+netherlands_map_data = europe_map_data %>%
+    filter(NAME == "Netherlands") %>%
+    st_crop(xmin=1, xmax=10, ymin=50, ymax=55)
 
-    ## although coordinates are longitude/latitude, st_intersection assumes that they are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they are planar
 
-    ## Warning: attribute variables are assumed to be spatially constant
-    ## throughout all geometries
+## Warning: attribute variables are assumed to be spatially constant
+## throughout all geometries
 
-    ggplot(netherlands_map_data) + geom_sf() +
-      geom_point(aes(x=X, y=Y, colour="red")) + 
-      theme_minimal()
+ggplot(netherlands_map_data) + geom_sf() +
+    geom_point(aes(x=X, y=Y, colour="red")) + 
+    theme_minimal()
+```
 
 ![]({{ site.baseurl }}/images/map_article_2018_files/figure-markdown_strict/centroid_netherlands-1.png)
 

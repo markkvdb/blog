@@ -233,6 +233,7 @@ model.fit(X, y, epochs=300, batch_size=4)
 SVG(model_to_dot(model, show_shapes=True).create(prog='dot', format='svg'))
 ```
 
+```
     Epoch 1/300
     4/4 [==============================] - 0s 37ms/step - loss: 0.6039 - acc: 0.7500
     Epoch 2/300
@@ -241,14 +242,9 @@ SVG(model_to_dot(model, show_shapes=True).create(prog='dot', format='svg'))
     ...
     Epoch 300/300
     4/4 [==============================] - 0s 338us/step - loss: 0.2679 - acc: 0.2500
-
-
-
-
+```
 
 ![svg]({{ site.baseurl }}/images/output_9_1.svg)
-
-
 
 ### Eye-balling solution
 
@@ -302,5 +298,3 @@ $$
 $$
 
 Observe that the activation values of the last (output) layer correspond exactly to the values of $\boldsymbol{y}$.
-
-
