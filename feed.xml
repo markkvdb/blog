@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://mvanderbroek.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mvanderbroek.com/" rel="alternate" type="text/html" /><updated>2020-05-26T18:22:11-05:00</updated><id>https://mvanderbroek.com/feed.xml</id><title type="html">Mark van der Broek</title><subtitle>Tutorials on Data Science and Operations Research</subtitle><entry><title type="html">Excess Mortality In 2020 (covid 19)</title><link href="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html" rel="alternate" type="text/html" title="Excess Mortality In 2020 (covid 19)" /><published>2020-05-26T00:00:00-05:00</published><updated>2020-05-26T00:00:00-05:00</updated><id>https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19)</id><content type="html" xml:base="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html">&lt;p&gt;Official reported deaths due to COVID-19 are often under-reported for a
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://mvanderbroek.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mvanderbroek.com/" rel="alternate" type="text/html" /><updated>2020-05-26T18:32:12-05:00</updated><id>https://mvanderbroek.com/feed.xml</id><title type="html">Mark van der Broek</title><subtitle>Tutorials on Data Science and Operations Research</subtitle><entry><title type="html">Excess Mortality In 2020 (covid 19)</title><link href="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html" rel="alternate" type="text/html" title="Excess Mortality In 2020 (covid 19)" /><published>2020-05-26T00:00:00-05:00</published><updated>2020-05-26T00:00:00-05:00</updated><id>https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19)</id><content type="html" xml:base="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html">&lt;p&gt;Official reported deaths due to COVID-19 are often under-reported for a
 multitude of reasons. The most important reason is that not all
 suspected cases get tested. Another way to measure COVID related deaths
 is to look at official reported &lt;strong&gt;total&lt;/strong&gt; deaths. Administrative delays,
@@ -130,7 +130,7 @@ the current week (21 as of writing this).&lt;/p&gt;
   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theme_ipsum_rc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/total-excess-fig-1.png&amp;quot;&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/total-excess-fig-1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;A few things stand out from this figure besides the COVID-19 mortality
 trends. First, larger countries show trends that are more smoooth than
@@ -191,7 +191,7 @@ demographics.&lt;/p&gt;
   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theme_ipsum_rc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/excess-deaths-countries-1.png&amp;quot;&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/excess-deaths-countries-1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This figure further supports the claim that the reported mortality data
 of the USA is incomplete (it does not show the even larger negative
@@ -220,7 +220,7 @@ for the USA, since this is clearly incomplete.&lt;/p&gt;
   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theme_ipsum_rc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/std-excess-deaths-1.png&amp;quot;&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/std-excess-deaths-1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This figure tells a very different story. While England is showing a
 high excess mortality in absolute numbers and relative numbers,
@@ -270,7 +270,7 @@ deaths.&lt;/p&gt;
   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theme_ipsum_rc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/comparison-sexes-all-1.png&amp;quot;&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/comparison-sexes-all-1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Interestingly, it seems that the excess mortality data for men and women
 look similar but are shifted by one week. The peak for men seems to
@@ -296,7 +296,7 @@ only reporting country in week 20.&lt;/p&gt;
   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theme_ipsum_rc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/age-groups-1.png&amp;quot;&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/age-groups-1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The data is quite telling: excess mortality increases with age. I
 omitted the data for the age group of 0-14, because of the large
@@ -320,7 +320,7 @@ size and therefore heavily fluctuating mortality data.&lt;/p&gt;
   &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;theme_ipsum_rc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/age-sex-groups-1.png&amp;quot;&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/hmd-covid-2020/age-sex-groups-1.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This figure is the most surprising to me. All others figures confirm
 from what I have read so far with increasing and then decreasing excess
