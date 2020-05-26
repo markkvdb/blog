@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Excess Mortality In 2020 (covid 19) | Mark van der Broek</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Excess Mortality In 2020 (covid 19)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Analysis of mortality dataset provided by HMD." />
+<meta property="og:description" content="Analysis of mortality dataset provided by HMD." />
+<link rel="canonical" href="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html" />
+<meta property="og:url" content="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html" />
+<meta property="og:site_name" content="Mark van der Broek" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-26T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Analysis of mortality dataset provided by HMD.","headline":"Excess Mortality In 2020 (covid 19)","dateModified":"2020-05-26T00:00:00-05:00","datePublished":"2020-05-26T00:00:00-05:00","@type":"BlogPosting","url":"https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Excess Mortality In 2020 (covid 19) | Mark van der Broek</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Excess Mortality In 2020 (covid 19)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Analysis of mortality dataset provided by HMD." />
+<meta property="og:description" content="Analysis of mortality dataset provided by HMD." />
+<link rel="canonical" href="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html" />
+<meta property="og:url" content="https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html" />
+<meta property="og:site_name" content="Mark van der Broek" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-26T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Analysis of mortality dataset provided by HMD.","headline":"Excess Mortality In 2020 (covid 19)","dateModified":"2020-05-26T00:00:00-05:00","datePublished":"2020-05-26T00:00:00-05:00","@type":"BlogPosting","url":"https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+    integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+    integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+    crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "[%", right: "%]", display: true },
+                { left: "$", right: "$", display: false }
+            ]
+        }
+        );
+    });
+</script>
+
+
+<script>
+    function wrap_img(fn) {
+        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+            var elements = document.querySelectorAll(".post img");
+            Array.prototype.forEach.call(elements, function (el, i) {
+                if (el.getAttribute("title") && (el.className != "emoji")) {
+                    const caption = document.createElement('figcaption');
+                    var node = document.createTextNode(el.getAttribute("title"));
+                    caption.appendChild(node);
+                    const wrapper = document.createElement('figure');
+                    wrapper.className = 'image';
+                    el.parentNode.insertBefore(wrapper, el);
+                    el.parentNode.removeChild(el);
+                    wrapper.appendChild(el);
+                    wrapper.appendChild(caption);
+                }
+            });
+        } else { document.addEventListener('DOMContentLoaded', fn); }
+    }
+    window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // add link icon to anchor tags
+        var elem = document.querySelectorAll(".anchor-link")
+        elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script></head><body><header class="site-header">
+
+    <div class="wrapper"><div class="site-title-avatar"><img class="avatar-img" src="/images/avatar.jpeg" /><a class="site-title" rel="author" href="/">
+                Mark van der Broek
+            </a>
+        </div><nav class="site-nav">
+            <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+            <label for="nav-trigger">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 18 15" width="18px" height="15px">
+                        <path
+                            d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z" />
+                    </svg>
+                </span>
+            </label>
+
+            <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/projects/">Projects</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/useful/">Useful Links</a></div>
+        </nav></div>
+</header><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <header class="post-header">
+        <h1 class="post-title p-name" itemprop="name headline">Excess Mortality In 2020 (covid 19)</h1><p class="page-description">Analysis of mortality dataset provided by HMD.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-05-26T00:00:00-05:00" itemprop="datePublished">
+                May 26, 2020
+            </time>
+            • <span class="read-time" title="Estimated read time">
+    
+    
+      11 min read
+    
+</span></p>
+
+        
+        <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i>
+            
+            <a class="category-tags-link" href="/categories/#R">R</a>
+            &nbsp;
+            
+            <a class="category-tags-link" href="/categories/#COVID-19">COVID-19</a>
+            
+            
+        </p>
+        
+
+        </header>
+
+    <div class="post-content e-content" itemprop="articleBody">
+        <p>Official reported deaths due to COVID-19 are often under-reported for a
+multitude of reasons. The most important reason is that not all
+suspected cases get tested. Another way to measure COVID related deaths
+is to look at official reported <strong>total</strong> deaths. Administrative delays,
+however, make it that reported numbers are only reliable from a few
+weeks in the past. More recent numbers are often missing many deaths.
+The Human Mortality Database (<a href="www.mortality.com">HMD</a>) provided
+detailed (yearly) mortality and population data for 41 selected
+countries. Recently, HMD published a dataset containing weekly mortality
+numbers in light of the COVID-19 pandemic. In this article we will
+explore this dataset to obtain insights in excess deaths for different
+countries.</p>
+
+<h2 id="load-and-process-data">Load and process data</h2>
+
+<p>First we load some packages that we will use throughout the analysis</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">readxl</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">hrbrthemes</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">lubridate</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">janitor</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">reshape2</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The data is publicly available and can be loaded into R as</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mf_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readr</span><span class="o">::</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"https://www.mortality.org/Public/STMF/Outputs/stmf.csv"</span><span class="p">,</span><span class="w"> </span><span class="n">skip</span><span class="o">=</span><span class="m">2</span><span class="p">)</span><span class="w">
+</span><span class="n">mf_data</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 40,461 x 19
+##    CountryCode  Year  Week Sex   D0_14 D15_64 D65_74 D75_84  D85p DTotal   R0_14
+##    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+##  1 AUT          2000     1 m      6.28   184.   211.   237.  176.    814 4.67e-4
+##  2 AUT          2000     1 f      5.35   101.   141.   335.  471.   1053 4.18e-4
+##  3 AUT          2000     1 b     11.5    285.   355.   573.  643.   1867 4.38e-4
+##  4 AUT          2000     2 m      6.58   192.   217.   244.  180.    840 4.89e-4
+##  5 AUT          2000     2 f      5.81   109.   141.   335.  471.   1062 4.54e-4
+##  6 AUT          2000     2 b     12.2    302.   359.   580.  650.   1902 4.64e-4
+##  7 AUT          2000     3 m      7.73   226.   220.   248.  183.    886 5.75e-4
+##  8 AUT          2000     3 f      6.11   115.   152.   361.  507.   1141 4.77e-4
+##  9 AUT          2000     3 b     13.8    341.   378.   610.  684.   2027 5.25e-4
+## 10 AUT          2000     4 m      7.30   214.   217.   245.  181.    864 5.43e-4
+## # … with 40,451 more rows, and 8 more variables: R15_64 &lt;dbl&gt;, R65_74 &lt;dbl&gt;,
+## #   R75_84 &lt;dbl&gt;, R85p &lt;dbl&gt;, RTotal &lt;dbl&gt;, Split &lt;dbl&gt;, SplitSex &lt;dbl&gt;,
+## #   Forecast &lt;dbl&gt;
+</code></pre></div></div>
+
+<p>The dataset contains multiple variables for the death counts for
+different age groups (starting with <code class="highlighter-rouge">D</code>) and the death rate (starting
+with <code class="highlighter-rouge">R</code>). Furthermore, most variables are not in a human-readable
+format yet. So let’s transform the dataset a bit.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mf_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mf_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">janitor</span><span class="o">::</span><span class="n">clean_names</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">gather</span><span class="p">(</span><span class="n">starts_with</span><span class="p">(</span><span class="s2">"d"</span><span class="p">),</span><span class="w"> </span><span class="n">key</span><span class="o">=</span><span class="s2">"age_group"</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="o">=</span><span class="s2">"death_count"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">gather</span><span class="p">(</span><span class="n">starts_with</span><span class="p">(</span><span class="s2">"r"</span><span class="p">),</span><span class="w"> </span><span class="n">key</span><span class="o">=</span><span class="s2">"age_group2"</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="o">=</span><span class="s2">"death_rate"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">mutate</span><span class="p">(</span><span class="w">
+    </span><span class="n">sex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">case_when</span><span class="p">(</span><span class="w">
+      </span><span class="n">sex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"m"</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s2">"male"</span><span class="p">,</span><span class="w">
+      </span><span class="n">sex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"f"</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s2">"female"</span><span class="p">,</span><span class="w">
+      </span><span class="n">sex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"b"</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s2">"both"</span><span class="w">
+    </span><span class="p">),</span><span class="w">
+    </span><span class="n">age_group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">str_replace</span><span class="p">(</span><span class="n">age_group</span><span class="p">,</span><span class="w"> </span><span class="s2">"_"</span><span class="p">,</span><span class="w"> </span><span class="s2">"-"</span><span class="p">),</span><span class="w">
+    </span><span class="n">age_group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">str_sub</span><span class="p">(</span><span class="n">age_group</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="o">=</span><span class="m">2</span><span class="p">),</span><span class="w">
+    </span><span class="n">age_group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">if_else</span><span class="p">(</span><span class="n">age_group</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"85p"</span><span class="p">,</span><span class="w"> </span><span class="s2">"85+"</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="p">),</span><span class="w">
+    </span><span class="n">country</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recode</span><span class="p">(</span><span class="n">country_code</span><span class="p">,</span><span class="w">
+      </span><span class="n">AUT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Austria"</span><span class="p">,</span><span class="w">
+      </span><span class="n">BEL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Belgium"</span><span class="p">,</span><span class="w">
+      </span><span class="n">BGR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Bulgaria"</span><span class="p">,</span><span class="w">
+      </span><span class="n">CZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Czech Republic"</span><span class="p">,</span><span class="w">
+      </span><span class="n">DEUTNP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Germany"</span><span class="p">,</span><span class="w">
+      </span><span class="n">DNK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Denmark"</span><span class="p">,</span><span class="w">
+      </span><span class="n">ESP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Spain"</span><span class="p">,</span><span class="w">
+      </span><span class="n">FIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Finland"</span><span class="p">,</span><span class="w">
+      </span><span class="n">GBRTENW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"England &amp; Wales"</span><span class="p">,</span><span class="w">
+      </span><span class="n">ISL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Iceland"</span><span class="p">,</span><span class="w">
+      </span><span class="n">NLD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Netherlands"</span><span class="p">,</span><span class="w">
+      </span><span class="n">NOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Norway"</span><span class="p">,</span><span class="w">
+      </span><span class="n">PRT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Portugal"</span><span class="p">,</span><span class="w">
+      </span><span class="n">SWE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Sweden"</span><span class="p">,</span><span class="w">
+      </span><span class="n">USA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"United States"</span><span class="p">)</span><span class="w">
+  </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">select</span><span class="p">(</span><span class="n">age_group</span><span class="p">,</span><span class="w"> </span><span class="n">country</span><span class="p">,</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">death_count</span><span class="p">,</span><span class="w"> </span><span class="n">death_rate</span><span class="p">)</span><span class="w">
+</span><span class="n">mf_data</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## # A tibble: 1,456,596 x 7
+##    age_group country  year sex     week death_count death_rate
+##    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+##  1 0-14      Austria  2000 male       1        6.28   0.000467
+##  2 0-14      Austria  2000 female     1        5.35   0.000418
+##  3 0-14      Austria  2000 both       1       11.5    0.000438
+##  4 0-14      Austria  2000 male       2        6.58   0.000489
+##  5 0-14      Austria  2000 female     2        5.81   0.000454
+##  6 0-14      Austria  2000 both       2       12.2    0.000464
+##  7 0-14      Austria  2000 male       3        7.73   0.000575
+##  8 0-14      Austria  2000 female     3        6.11   0.000477
+##  9 0-14      Austria  2000 both       3       13.8    0.000525
+## 10 0-14      Austria  2000 male       4        7.30   0.000543
+## # … with 1,456,586 more rows
+</code></pre></div></div>
+
+<h2 id="total-excess-deaths-by-country">Total excess deaths by country</h2>
+
+<p>The advantage of weekly mortality data is the opportunity to compare the
+mortality of March and April of this year with previous years. Below you
+find a plot of the weekly mortality data of the selected countries for
+all available years (differs by country). The 2020 mortality is shown as
+the red line and the pink/red area on the figures shows the period up to
+the current week (21 as of writing this).</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">mf_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">is_2020</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">year</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2020</span><span class="p">)</span><span class="w">
+
+</span><span class="n">curr_week</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">week</span><span class="p">(</span><span class="n">Sys.Date</span><span class="p">())</span><span class="w">
+</span><span class="n">colour_pal</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"#cccccc"</span><span class="p">,</span><span class="w"> </span><span class="s2">"#cc0000"</span><span class="p">)</span><span class="w">
+
+</span><span class="c1"># total not differentiated by sex</span><span class="w">
+</span><span class="n">plot_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">sex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"both"</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-total"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">death_count</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="n">is_2020</span><span class="p">,</span><span class="w"> </span><span class="n">group</span><span class="o">=</span><span class="n">year</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">annotate</span><span class="p">(</span><span class="s2">"rect"</span><span class="p">,</span><span class="w"> </span><span class="n">xmin</span><span class="o">=-</span><span class="kc">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">xmax</span><span class="o">=</span><span class="n">curr_week</span><span class="p">,</span><span class="w"> </span><span class="n">ymin</span><span class="o">=-</span><span class="kc">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">ymax</span><span class="o">=</span><span class="kc">Inf</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="kc">NA</span><span class="p">,</span><span class="w"> </span><span class="n">alpha</span><span class="o">=</span><span class="m">0.1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">(</span><span class="n">show.legend</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="o">~</span><span class="n">country</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">scales</span><span class="o">=</span><span class="s2">"free_y"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">colour_pal</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"Week"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="s2">"Death count"</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Excess mortality 2020"</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">caption</span><span class="o">=</span><span class="s2">"Source: mortality.com"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_ipsum_rc</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="article_files/figure-gfm/total-excess-fig-1.png" style="display: block; margin: auto;" /></p>
+
+<p>A few things stand out from this figure besides the COVID-19 mortality
+trends. First, larger countries show trends that are more smoooth than
+countries with smaller populations such as Iceland. Countries also seem
+to deal differently with the first and last week of the year: the UK
+reports high mortality in the first weeks of the year and low numbers at
+the end while the trend is reversed for Spain. Another thing to note is
+that not all countries always report the final data for 2020 and the lag
+of reporting differs significantly between countries. The US shows
+unprecedented low mortality data deaths at the end of the reported
+period in 2020, which is likely caused by incomplete data for these
+weeks.</p>
+
+<p>The 2020 mortality data shows clear differences between countries.
+<strong>Excess mortality</strong> is referred to the extra deaths above the regular
+death count expected in a country. While some countries reports no to
+very low excess mortality, others like Belgium, England, the Netherlands
+and Spain show significant excess mortality.</p>
+
+<p>Noticeably, Sweden seems to be the only Nordic country that shows
+significant excess mortality. Furthermore, the only two countries that
+at some point took the group immunity approach seriously seems to not
+only show high excess mortality at the peak but also still report
+significant excess mortality at the latest reported week. This, while
+other countries have mostly returned to the baseline mortality.</p>
+
+<h2 id="excess-mortality-comparison-between-countries">Excess mortality comparison between countries</h2>
+
+<p>To better compare the excess mortality between countries we will
+estimate the excess mortality for all countries. We do this by computing
+the 5-year average of the total mortality per week from the years 2015
+to 2019. We then subtract the mortality numbers for 2020 to arrive at an
+estimate for the excess mortality. Note that this approach does not take
+into account that the 5-year historic mortality <em>does not</em> necessarily
+equal the expected mortality in 2020 without COVID-19. This might differ
+for a variety of reasons like a bad flu season or changes in
+demographics.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">excess_deaths</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">plot_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">year</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">2015</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">country</span><span class="p">,</span><span class="w"> </span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="p">,</span><span class="w"> </span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">is_2020</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">summarise</span><span class="p">(</span><span class="w">
+    </span><span class="n">death_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">death_count</span><span class="p">)</span><span class="w">
+  </span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">dcast</span><span class="p">(</span><span class="n">country</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">age_group</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">week</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">is_2020</span><span class="p">,</span><span class="w"> </span><span class="n">value.var</span><span class="o">=</span><span class="s2">"death_count"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">mutate</span><span class="p">(</span><span class="n">excess_death</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">`TRUE`</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">`FALSE`</span><span class="p">,</span><span class="w">
+         </span><span class="n">excess_death_std</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">excess_death</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">`FALSE`</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">`TRUE`</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">`FALSE`</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">na.omit</span><span class="p">()</span><span class="w">
+
+</span><span class="n">excess_deaths</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">sex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"both"</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-total"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">excess_death</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="n">country</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">coord_cartesian</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-5000</span><span class="p">,</span><span class="w"> </span><span class="kc">NA</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"Week"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="s2">"Excess death count"</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Excess mortality 2020"</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">caption</span><span class="o">=</span><span class="s2">"Source: mortality.com"</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_ipsum_rc</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="article_files/figure-gfm/excess-deaths-countries-1.png" style="display: block; margin: auto;" /></p>
+
+<p>This figure further supports the claim that the reported mortality data
+of the USA is incomplete (it does not show the even larger negative
+excess in later weeks). Still, this figure makes it hard to compare the
+numbers between countries since we are looking absolute excess deaths.
+This is due to the fact that the total mortality of a country is higher
+for countries with larger populations such as Spain, England and the
+USA. However, these statistics do represent actual people and actual
+suffering.</p>
+
+<p>Instead of the total excess we also compute a standardised excess death
+measure by dividing the excess deaths by the historic mortality data
+from 2015 to 2019. Furthermore, we remove the data from week 18 onwards
+for the USA, since this is clearly incomplete.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">excess_deaths_filter_US</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">excess_deaths</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">country</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"United States"</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">week</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">18</span><span class="p">))</span><span class="w">
+
+</span><span class="n">excess_deaths_filter_US</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> 
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">sex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"both"</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-total"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">excess_death_std</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="n">country</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scales</span><span class="o">::</span><span class="n">percent_format</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"Week"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="s2">"Standardised excess death count"</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Standardised excess mortality 2020"</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">caption</span><span class="o">=</span><span class="s2">"Source: mortality.com"</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_ipsum_rc</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="article_files/figure-gfm/std-excess-deaths-1.png" style="display: block; margin: auto;" /></p>
+
+<p>This figure tells a very different story. While England is showing a
+high excess mortality in absolute numbers and relative numbers,
+preliminary data does paint a different picture for the USA. Smaller
+countries like Belgium, the Netherlands and Sweden do show up less
+favourable in this figure. As previous figures already suggested: Sweden
+and England are in the worst shape in recent weeks. Both countries had
+their peak at a later time and do not show the same large decline as
+other comparable European countries.</p>
+
+<h2 id="differences-between-sexes-and-ages">Differences between sexes and ages</h2>
+
+<p>Previous analyses have focused on differences between countries while
+considering the entire population including both sexes and all ages. By
+now, we learnt that men are not equally impacted by COVID-19 as women.
+Furthermore, COVID-19 seems to be especially gruesome for the elderly.</p>
+
+<p>To get insights into we start by looking at the standardised excess
+deaths for both sexes for all populations combined. Note that the
+standardised excess deaths for all countries combined is a bit tricky.
+Simply adding all deaths together would heavily bias towards countries
+with high populations, while taking an average of the standardised
+excess deaths over countries dismisses the population size entirely.
+Despite these flaws let’s look at the average of the standardised excess
+deaths.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">excess_deaths_sex</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">excess_deaths_filter_US</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">group_by</span><span class="p">(</span><span class="n">sex</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="p">,</span><span class="w"> </span><span class="n">week</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">summarise</span><span class="p">(</span><span class="n">excess_death_std</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">excess_death_std</span><span class="p">),</span><span class="w">
+            </span><span class="n">n_countries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">())</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ungroup</span><span class="p">()</span><span class="w">
+
+</span><span class="n">last_full_week</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">excess_deaths_sex</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">n_countries</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">n_countries</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">.</span><span class="o">$</span><span class="n">week</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">max</span><span class="w">
+
+</span><span class="n">excess_deaths_sex</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">sex</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"female"</span><span class="p">,</span><span class="w"> </span><span class="s2">"male"</span><span class="p">),</span><span class="w"> </span><span class="n">age_group</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"-total"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">excess_death_std</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="n">sex</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_vline</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">xintercept</span><span class="o">=</span><span class="n">last_full_week</span><span class="p">),</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s2">"dashed"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scales</span><span class="o">::</span><span class="n">percent_format</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_ipsum</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"Week"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="s2">"Standardised excess death count"</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Excess mortality by sex 2020"</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">caption</span><span class="o">=</span><span class="s2">"Source: mortality.com"</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="s2">"Sex"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_ipsum_rc</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="article_files/figure-gfm/comparison-sexes-all-1.png" style="display: block; margin: auto;" /></p>
+
+<p>Interestingly, it seems that the excess mortality data for men and women
+look similar but are shifted by one week. The peak for men seems to
+start one week before women start showing an increase. This might
+explain the initial discrepancy between men and women as reported in
+March and April and the lack of reporting of this phenomonum in May. The
+dashed line represents the last week for which we have data of all 15
+countries. Most noticeably, between week 19 and week 20 we observe an
+increase in the excess death count but this is because England is the
+only reporting country in week 20.</p>
+
+<p>Now, let’s look at the differences between age groups.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">excess_deaths_sex</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">sex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"both"</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"15-64"</span><span class="p">,</span><span class="w"> </span><span class="s2">"65-74"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75-84"</span><span class="p">,</span><span class="w"> </span><span class="s2">"85+"</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">excess_death_std</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="n">age_group</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_vline</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">xintercept</span><span class="o">=</span><span class="n">last_full_week</span><span class="p">),</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s2">"dashed"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scales</span><span class="o">::</span><span class="n">percent_format</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_colour_ipsum</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"Week"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="s2">"Standardised excess death count"</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Excess mortality by age group 2020"</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">caption</span><span class="o">=</span><span class="s2">"Source: mortality.com"</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="s2">"Age group"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_ipsum_rc</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="article_files/figure-gfm/age-groups-1.png" style="display: block; margin: auto;" /></p>
+
+<p>The data is quite telling: excess mortality increases with age. I
+omitted the data for the age group of 0-14, because of the large
+fluctuations in data due to low mortality numbers.</p>
+
+<p>Lastly, we dissect the data by sex and age group to compare individual
+countries trends. Iceland is removed because of its small population
+size and therefore heavily fluctuating mortality data.</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">excess_deaths_filter_US</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">filter</span><span class="p">(</span><span class="n">sex</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s2">"both"</span><span class="p">,</span><span class="w"> </span><span class="n">age_group</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"15-64"</span><span class="p">,</span><span class="w"> </span><span class="s2">"65-74"</span><span class="p">,</span><span class="w"> </span><span class="s2">"75-84"</span><span class="p">,</span><span class="w"> </span><span class="s2">"85+"</span><span class="p">),</span><span class="w"> </span><span class="n">week</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">10</span><span class="p">,</span><span class="w">
+         </span><span class="n">country</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s2">"Iceland"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">week</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">excess_death_std</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="n">country</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_vline</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">xintercept</span><span class="o">=</span><span class="n">last_full_week</span><span class="p">),</span><span class="w"> </span><span class="n">linetype</span><span class="o">=</span><span class="s2">"dashed"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">facet_grid</span><span class="p">(</span><span class="n">age_group</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">sex</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">scales</span><span class="o">::</span><span class="n">percent_format</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="o">=</span><span class="n">seq</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"Week"</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="s2">"Standardised excess death count"</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="o">=</span><span class="s2">"Excess mortality dissected by sex and age"</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">caption</span><span class="o">=</span><span class="s2">"Source: mortality.com"</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="s2">"Age group"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_ipsum_rc</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="article_files/figure-gfm/age-sex-groups-1.png" style="display: block; margin: auto;" /></p>
+
+<p>This figure is the most surprising to me. All others figures confirm
+from what I have read so far with increasing and then decreasing excess
+mortality and differences between countries. However, this figure shows
+a striking pattern for England. It seems that excess mortality is much
+larger for the age group 15-64 in England than any other observed
+country (top two figures). Another striking observation is that men
+excess death is much higher in England than other countries (right
+figures).</p>
+
+<p>The last figure shows the importance of dissecting the data across
+multiple variables to find patterns that otherwise would be hidden do to
+aggregation (see <a href="https://en.wikipedia.org/wiki/Simpson%27s_paradox">Simpson
+Paradox</a>).</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Thank you for reading this initial analysis of the new dataset as
+provided by the excellent HMD project. Stay safe out there!</p>
+
+    </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="markkvdb/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/r/covid-19/2020/05/26/Excess-Mortality-in-2020-(COVID-19).html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Tutorials on Data Science and Operations Research</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/markkvdb" title="markkvdb"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/mark-van-der-broek" title="mark-van-der-broek"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/1mvdb" title="1mvdb"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
