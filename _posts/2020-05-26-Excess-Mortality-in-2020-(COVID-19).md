@@ -135,7 +135,7 @@ plot_data %>%
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/total-excess-fig-1.png")
+![png]({{ site.baseurl }}/images/hmd-covid-2020/total-excess-fig-1.png)
 
 A few things stand out from this figure besides the COVID-19 mortality
 trends. First, larger countries show trends that are more smoooth than
@@ -197,7 +197,7 @@ excess_deaths %>%
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/excess-deaths-countries-1.png")
+![png]({{ site.baseurl }}/images/hmd-covid-2020/excess-deaths-countries-1.png)
 
 This figure further supports the claim that the reported mortality data
 of the USA is incomplete (it does not show the even larger negative
@@ -227,7 +227,7 @@ excess_deaths_filter_US %>%
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/std-excess-deaths-1.png")
+![png]({{ site.baseurl }}/images/hmd-covid-2020/std-excess-deaths-1.png)
 
 This figure tells a very different story. While England is showing a
 high excess mortality in absolute numbers and relative numbers,
@@ -278,7 +278,7 @@ excess_deaths_sex %>%
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/comparison-sexes-all-1.png")
+![png]({{ site.baseurl }}/images/hmd-covid-2020/comparison-sexes-all-1.png)
 
 Interestingly, it seems that the excess mortality data for men and women
 look similar but are shifted by one week. The peak for men seems to
@@ -305,7 +305,7 @@ excess_deaths_sex %>%
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/age-groups-1.png")
+![png]({{ site.baseurl }}/images/hmd-covid-2020/age-groups-1.png)
 
 The data is quite telling: excess mortality increases with age. I
 omitted the data for the age group of 0-14, because of the large
@@ -332,7 +332,7 @@ excess_deaths_filter_US %>%
   theme(legend.position = "none")
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/age-sex-groups-1.png")
+![png]({{ site.baseurl }}/images/hmd-covid-2020/age-sex-groups-1.png)
 
 This figure is the most surprising to me. All others figures confirm
 from what I have read so far with increasing and then decreasing excess
