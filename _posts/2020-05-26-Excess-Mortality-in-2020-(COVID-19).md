@@ -11,12 +11,15 @@ suspected cases get tested. Another way to measure COVID related deaths
 is to look at official reported **total** deaths. Administrative delays,
 however, make it that reported numbers are only reliable from a few
 weeks in the past. More recent numbers are often missing many deaths.
-The Human Mortality Database ([HMD](www.mortality.com)) provided
+The Human Mortality Database ([HMD](www.mortality.org)) provided
 detailed (yearly) mortality and population data for 41 selected
 countries. Recently, HMD published a dataset containing weekly mortality
 numbers in light of the COVID-19 pandemic. In this article we will
 explore this dataset to obtain insights in excess deaths for different
 countries.
+
+*Note: this article has been updated at the 26th of June. More recent
+data is used which includes more countries.*
 
 ## Load and process data
 
@@ -35,25 +38,17 @@ The data is publicly available and can be loaded into R as
 
 ``` r
 mf_data <- readr::read_csv("https://www.mortality.org/Public/STMF/Outputs/stmf.csv", skip=2)
-mf_data
+knitr::kable(head(mf_data))
 ```
 
-    ## # A tibble: 40,461 x 19
-    ##    CountryCode  Year  Week Sex   D0_14 D15_64 D65_74 D75_84  D85p DTotal   R0_14
-    ##    <chr>       <dbl> <dbl> <chr> <dbl>  <dbl>  <dbl>  <dbl> <dbl>  <dbl>   <dbl>
-    ##  1 AUT          2000     1 m      6.28   184.   211.   237.  176.    814 4.67e-4
-    ##  2 AUT          2000     1 f      5.35   101.   141.   335.  471.   1053 4.18e-4
-    ##  3 AUT          2000     1 b     11.5    285.   355.   573.  643.   1867 4.38e-4
-    ##  4 AUT          2000     2 m      6.58   192.   217.   244.  180.    840 4.89e-4
-    ##  5 AUT          2000     2 f      5.81   109.   141.   335.  471.   1062 4.54e-4
-    ##  6 AUT          2000     2 b     12.2    302.   359.   580.  650.   1902 4.64e-4
-    ##  7 AUT          2000     3 m      7.73   226.   220.   248.  183.    886 5.75e-4
-    ##  8 AUT          2000     3 f      6.11   115.   152.   361.  507.   1141 4.77e-4
-    ##  9 AUT          2000     3 b     13.8    341.   378.   610.  684.   2027 5.25e-4
-    ## 10 AUT          2000     4 m      7.30   214.   217.   245.  181.    864 5.43e-4
-    ## # … with 40,451 more rows, and 8 more variables: R15_64 <dbl>, R65_74 <dbl>,
-    ## #   R75_84 <dbl>, R85p <dbl>, RTotal <dbl>, Split <dbl>, SplitSex <dbl>,
-    ## #   Forecast <dbl>
+| CountryCode | Year | Week | Sex | D0\_14 | D15\_64 | D65\_74 | D75\_84 | D85p | DTotal |    R0\_14 |   R15\_64 |   R65\_74 |   R75\_84 |      R85p |    RTotal | Split | SplitSex | Forecast |
+| :---------- | ---: | ---: | :-- | -----: | ------: | ------: | ------: | ---: | -----: | --------: | --------: | --------: | --------: | --------: | --------: | ----: | -------: | -------: |
+| AUT         | 2000 |    1 | m   |      7 |     183 |     212 |     249 |  163 |    814 | 0.0005204 | 0.0035126 | 0.0376068 | 0.0951375 | 0.2318343 | 0.0109252 |     0 |        0 |        0 |
+| AUT         | 2000 |    1 | f   |      2 |     104 |     141 |     338 |  468 |   1053 | 0.0001562 | 0.0020023 | 0.0195527 | 0.0614423 | 0.2243570 | 0.0132385 |     0 |        0 |        0 |
+| AUT         | 2000 |    1 | b   |      9 |     287 |     353 |     587 |  631 |   1867 | 0.0003428 | 0.0027586 | 0.0274739 | 0.0723052 | 0.2262420 | 0.0121196 |     0 |        0 |        0 |
+| AUT         | 2000 |    2 | m   |      4 |     195 |     195 |     259 |  187 |    840 | 0.0002974 | 0.0037430 | 0.0345912 | 0.0989583 | 0.2659694 | 0.0112741 |     0 |        0 |        0 |
+| AUT         | 2000 |    2 | f   |      6 |     109 |     126 |     312 |  509 |   1062 | 0.0004687 | 0.0020986 | 0.0174727 | 0.0567159 | 0.2440122 | 0.0133516 |     0 |        0 |        0 |
+| AUT         | 2000 |    2 | b   |     10 |     304 |     321 |     571 |  696 |   1902 | 0.0003809 | 0.0029220 | 0.0249834 | 0.0703344 | 0.2495474 | 0.0123468 |     0 |        0 |        0 |
 
 The dataset contains multiple variables for the death counts for
 different age groups (starting with `D`) and the death rate (starting
@@ -82,33 +77,34 @@ mf_data <- mf_data %>%
       DEUTNP = "Germany",
       DNK = "Denmark",
       ESP = "Spain",
+      EST = "Estonia",
       FIN = "Finland",
+      FRATNP = "France",
       GBRTENW = "England & Wales",
+      GBR_SCO = "Great Britain",
+      HUN = "Hungary",
       ISL = "Iceland",
+      ITA = "Italy",
+      LUX = "Luxembourg",
       NLD = "Netherlands",
       NOR = "Norway",
       PRT = "Portugal",
+      SVK = "Slovakia",
       SWE = "Sweden",
       USA = "United States")
   ) %>%
   select(age_group, country, year, sex, week, death_count, death_rate)
-mf_data
+knitr::kable(head(mf_data))
 ```
 
-    ## # A tibble: 1,456,596 x 7
-    ##    age_group country  year sex     week death_count death_rate
-    ##    <chr>     <chr>   <dbl> <chr>  <dbl>       <dbl>      <dbl>
-    ##  1 0-14      Austria  2000 male       1        6.28   0.000467
-    ##  2 0-14      Austria  2000 female     1        5.35   0.000418
-    ##  3 0-14      Austria  2000 both       1       11.5    0.000438
-    ##  4 0-14      Austria  2000 male       2        6.58   0.000489
-    ##  5 0-14      Austria  2000 female     2        5.81   0.000454
-    ##  6 0-14      Austria  2000 both       2       12.2    0.000464
-    ##  7 0-14      Austria  2000 male       3        7.73   0.000575
-    ##  8 0-14      Austria  2000 female     3        6.11   0.000477
-    ##  9 0-14      Austria  2000 both       3       13.8    0.000525
-    ## 10 0-14      Austria  2000 male       4        7.30   0.000543
-    ## # … with 1,456,586 more rows
+| age\_group | country | year | sex    | week | death\_count | death\_rate |
+| :--------- | :------ | ---: | :----- | ---: | -----------: | ----------: |
+| 0-14       | Austria | 2000 | male   |    1 |            7 |   0.0005204 |
+| 0-14       | Austria | 2000 | female |    1 |            2 |   0.0001562 |
+| 0-14       | Austria | 2000 | both   |    1 |            9 |   0.0003428 |
+| 0-14       | Austria | 2000 | male   |    2 |            4 |   0.0002974 |
+| 0-14       | Austria | 2000 | female |    2 |            6 |   0.0004687 |
+| 0-14       | Austria | 2000 | both   |    2 |           10 |   0.0003809 |
 
 ## Total excess deaths by country
 
@@ -135,11 +131,11 @@ plot_data %>%
   facet_wrap(~country, ncol=3, scales="free_y") +
   scale_color_manual(values=colour_pal) + 
   labs(x="Week", y="Death count", title="Excess mortality 2020", 
-       caption="Source: mortality.com") +
+       caption="Source: mortality.org") +
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/total-excess-fig-1.png)
+![png]({{ site.baseurl }}/images/hmd-covid-2020/total-excess-fig-1.png")
 
 A few things stand out from this figure besides the COVID-19 mortality
 trends. First, larger countries show trends that are more smoooth than
@@ -197,11 +193,11 @@ excess_deaths %>%
   geom_line() +
   coord_cartesian(ylim=c(-5000, NA)) + 
   labs(x="Week", y="Excess death count", title="Excess mortality 2020", 
-       caption="Source: mortality.com", colour="") +
+       caption="Source: mortality.org", colour="") +
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/excess-deaths-countries-1.png)
+![png]({{ site.baseurl }}/images/hmd-covid-2020/excess-deaths-countries-1.png")
 
 This figure further supports the claim that the reported mortality data
 of the USA is incomplete (it does not show the even larger negative
@@ -214,12 +210,12 @@ suffering.
 
 Instead of the total excess we also compute a standardised excess death
 measure by dividing the excess deaths by the historic mortality data
-from 2015 to 2019. Furthermore, we remove the data from week 18 onwards
+from 2015 to 2019. Furthermore, we remove the data from week 23 onwards
 for the USA, since this is clearly incomplete.
 
 ``` r
 excess_deaths_filter_US <- excess_deaths %>%
-  filter(!(country == "United States" & week >= 18))
+  filter(!(country == "United States" & week >= 23))
 
 excess_deaths_filter_US %>% 
   filter(sex == "both", age_group == "-total") %>%
@@ -227,11 +223,11 @@ excess_deaths_filter_US %>%
   geom_line() +
   scale_y_continuous(labels = scales::percent_format()) +
   labs(x="Week", y="Standardised excess death count", title="Standardised excess mortality 2020", 
-       caption="Source: mortality.com", colour="") +
+       caption="Source: mortality.org", colour="") +
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/std-excess-deaths-1.png)
+![png]({{ site.baseurl }}/images/hmd-covid-2020/std-excess-deaths-1.png")
 
 This figure tells a very different story. While England is showing a
 high excess mortality in absolute numbers and relative numbers,
@@ -278,11 +274,11 @@ excess_deaths_sex %>%
   scale_y_continuous(labels = scales::percent_format()) +
   scale_colour_ipsum() +
   labs(x="Week", y="Standardised excess death count", title="Excess mortality by sex 2020", 
-       caption="Source: mortality.com", colour="Sex") +
+       caption="Source: mortality.org", colour="Sex") +
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/comparison-sexes-all-1.png)
+![png]({{ site.baseurl }}/images/hmd-covid-2020/comparison-sexes-all-1.png")
 
 Interestingly, it seems that the excess mortality data for men and women
 look similar but are shifted by one week. The peak for men seems to
@@ -305,11 +301,11 @@ excess_deaths_sex %>%
   scale_y_continuous(labels = scales::percent_format()) +
   scale_colour_ipsum() +
   labs(x="Week", y="Standardised excess death count", title="Excess mortality by age group 2020", 
-       caption="Source: mortality.com", colour="Age group") +
+       caption="Source: mortality.org", colour="Age group") +
   theme_ipsum_rc()
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/age-groups-1.png)
+![png]({{ site.baseurl }}/images/hmd-covid-2020/age-groups-1.png")
 
 The data is quite telling: excess mortality increases with age. I
 omitted the data for the age group of 0-14, because of the large
@@ -323,18 +319,20 @@ size and therefore heavily fluctuating mortality data.
 excess_deaths_filter_US %>%
   filter(sex != "both", age_group %in% c("15-64", "65-74", "75-84", "85+"), week >= 10,
          country != "Iceland") %>%
-  ggplot(aes(x=week, y=excess_death_std, colour=country)) +
+  mutate(is_UK = if_else(country == "England & Wales", TRUE, FALSE)) %>%
+  ggplot(aes(x=week, y=excess_death_std, colour=is_UK, group=country)) +
   geom_line() +
-  geom_vline(aes(xintercept=last_full_week), linetype="dashed") + 
   facet_grid(age_group ~ sex) +
   scale_y_continuous(labels=scales::percent_format()) +
   scale_x_continuous(breaks=seq(10, 20, 2)) +
+  scale_colour_manual(values=colour_pal) + 
   labs(x="Week", y="Standardised excess death count", title="Excess mortality dissected by sex and age", 
-       caption="Source: mortality.com", colour="Age group") +
-  theme_ipsum_rc()
+       caption="Source: mortality.org", colour="Age group") +
+  theme_ipsum_rc() +
+  theme(legend.position = "none")
 ```
 
-![png]({{ site.baseurl }}/images/hmd-covid-2020/age-sex-groups-1.png)
+![png]({{ site.baseurl }}/images/hmd-covid-2020/age-sex-groups-1.png")
 
 This figure is the most surprising to me. All others figures confirm
 from what I have read so far with increasing and then decreasing excess
