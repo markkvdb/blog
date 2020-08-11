@@ -126,13 +126,44 @@ jobs:
           # install dependencies
           pip3 install pyyaml
 
-      - name: sync baseurl
-        if: steps.check_version.outputs.vbump == 'true'
-        run: |
-          import re, os, yaml
-          from pathlib import Path
-          from configparser import ConfigParser
-          settings = ConfigParser()
+    - name: copy new files
+      if: steps.check_version.outputs.vbump == 'true'
+      run: |
+        # remove files you don't want to copy from current version of fastpages
+        cd new_files        
+        rm -rf _posts _notebooks _word images
+        rm *.md CNAME action.yml _config.yml index.html LICENSE
+        rm _pages/*.md
+        rm .github/workflows/chatops.yaml
+        rm .github/workflows/docker-nbdev.yaml
+        rm .github/workflows/docker.yaml
+        rm .github/ISSUE_TEMPLATE/bug.md .github/ISSUE_TEMPLATE/feature_request.md
+        
+        # copy new files from fastpages into your repo
+        for file in $(ls | egrep -v "(assets|_sass)"); do 
+          if [[ -f "$file" ]] || [[ -d "$file" ]] 
+          then
+            echo "copying $file"; 
+            cp -r $file ../current_files;
+          fi
+        done
+
+        # copy custom-variables.scss if doesn't exist
+        if [ ! -f "../current_files/_sass/minima/custom-variables.scss" ]; then
+          cp _sass/minima/custom-variables.scss ../current_files/_sass/minima/
+        fi
+
+        # copy select files in assets and _sass
+        cp -r assets/js ../current_files/assets
+        cp -r assets/badges ../current_files/assets
+        cp _sass/minima/fastpages-styles.scss ../current_files/_sass/minima/
+        cp _sass/minima/fastpages-dracula-highlight.scss ../current_files/_sass/minima/
+        
+        # copy action workflows
+        cp -r .github ../current_files
+        
+        # install dependencies
+        pip3 install pyyaml
 
           # specify location of config files
           nwo = os.getenv('GITHUB_REPOSITORY')

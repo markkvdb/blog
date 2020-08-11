@@ -11,13 +11,23 @@ jobs:
     if: ( github.event.commits[0].message != 'Initial commit' ) || github.run_number > 1
     runs-on: ubuntu-latest
     steps:
-      - name: Copy Repository Contents
-        uses: actions/checkout@master
-        with:
-          persist-credentials: false
+      
+    - name: Check if secret exists
+      if: github.event_name == 'push'
+      run: |
+        if [ -z "$deploy_key" ]
+        then
+          echo "You do not have a secret named SSH_DEPLOY_KEY.  This means you did not follow the setup instructions carefully.  Please try setting up your repo again with the right secrets."
+          exit 1;
+        fi
+      env:
+       deploy_key: ${{ secrets.SSH_DEPLOY_KEY }}
+          
 
-      - name: convert notebooks and word docs to posts
-        uses: ./_action_files
+    - name: Copy Repository Contents
+      uses: actions/checkout@main
+      with:
+        persist-credentials: false
 
       - name: setup directories for Jekyll build
         run: |
@@ -36,9 +46,9 @@ jobs:
           sudo chmod -R 777 _site/
           cp CNAME _site/ 2>/dev/null || :
 
-      - name: Deploy
-        if: github.event_name	== 'push'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.SSH_DEPLOY_KEY }}
-          publish_dir: ./_site
+    - name: Deploy
+      if: github.event_name == 'push'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.SSH_DEPLOY_KEY }}
+        publish_dir: ./_site
