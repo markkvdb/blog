@@ -2,7 +2,8 @@
 <html lang="en"><head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Airplane Classifier With Fast.ai Library (lesson 1) | Mark van der Broek</title>
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Airplane Classifier With Fast.ai Library (lesson 1)" />
@@ -15,7 +16,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-06T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.","headline":"Airplane Classifier With Fast.ai Library (lesson 1)","dateModified":"2019-11-06T00:00:00-06:00","datePublished":"2019-11-06T00:00:00-06:00","@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html"},"@context":"https://schema.org"}</script>
+{"headline":"Airplane Classifier With Fast.ai Library (lesson 1)","dateModified":"2019-11-06T00:00:00-06:00","datePublished":"2019-11-06T00:00:00-06:00","description":"Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html"},"@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Airplane Classifier With Fast.ai Library (lesson 1) | Mark van der Broek</title>
@@ -30,7 +31,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-06T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.","headline":"Airplane Classifier With Fast.ai Library (lesson 1)","dateModified":"2019-11-06T00:00:00-06:00","datePublished":"2019-11-06T00:00:00-06:00","@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html"},"@context":"https://schema.org"}</script>
+{"headline":"Airplane Classifier With Fast.ai Library (lesson 1)","dateModified":"2019-11-06T00:00:00-06:00","datePublished":"2019-11-06T00:00:00-06:00","description":"Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html"},"@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -87,7 +88,8 @@
         var elem = document.querySelectorAll(".anchor-link")
         elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
     });
-</script></head><body><header class="site-header">
+</script></head>
+<body><header class="site-header">
 
     <div class="wrapper"><div class="site-title-avatar"><img class="avatar-img" src="/images/avatar.jpeg" /><a class="site-title" rel="author" href="/">
                 Mark van der Broek
