@@ -70,7 +70,7 @@ annotations: false
 show_tags: true
 
 # Add your Google Analytics ID here if you have one and want to use it
-google_analytics:
+google_analytics: UA-126113218-1
 
 exclude:
   - docker-compose.yml
@@ -126,4 +126,4 @@ kramdown:
   input: GFM
   auto_ids: true
   hard_wrap: false
-  syntax_highlighter: rouge
+  syntax_highlighter: nil
