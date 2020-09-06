@@ -16,9 +16,15 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-06T00:00:00-06:00" />
 <script type="application/ld+json">
-{"headline":"Airplane Classifier With Fast.ai Library (lesson 1)","dateModified":"2019-11-06T00:00:00-06:00","datePublished":"2019-11-06T00:00:00-06:00","description":"Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html"},"@type":"BlogPosting","url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html","@context":"https://schema.org"}</script>
+{"description":"Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.","@type":"BlogPosting","headline":"Airplane Classifier With Fast.ai Library (lesson 1)","dateModified":"2019-11-06T00:00:00-06:00","datePublished":"2019-11-06T00:00:00-06:00","url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/06/Airplane-Classifier-with-Fast.ai-library-(Lesson-1).html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-126113218-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
     integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
@@ -129,47 +135,47 @@
 
 <p>The easiest way to create your own dataset for your image classifier is to follow the instructions of the fast.ai notebook which can be found <a href="https://github.com/fastai/course-v3/blob/master/nbs/dl1/lesson2-download.ipynb">here</a>. Using these instructions I downloaded images of the boeing 737 and airbus A320 airplanes. While, for most people these planes are indistinguisable from each other, there are small differences between the planes. These include the shape of the nose, the wing tips and the position of the engines under the wings.</p>
 
-<p>After downloading the images in their subfolders <code class="highlighter-rouge">data/boeing</code> and <code class="highlighter-rouge">data/airbus</code> I wanted to split this data into a training, validation and testing set. Since I could not find a simple tool to just give my folder of images and do this split for me, I created a little <a href="https://github.com/markkvdb/data-splitter">tool</a>. This creates three folders, <code class="highlighter-rouge">data/train</code>, <code class="highlighter-rouge">data/validation</code> and <code class="highlighter-rouge">data/test</code>. These folders then contain the subfolders corresponding to the classes found in the original data folder, namely, <code class="highlighter-rouge">boeing</code> and <code class="highlighter-rouge">airbus</code>.</p>
+<p>After downloading the images in their subfolders <code>data/boeing</code> and <code>data/airbus</code> I wanted to split this data into a training, validation and testing set. Since I could not find a simple tool to just give my folder of images and do this split for me, I created a little <a href="https://github.com/markkvdb/data-splitter">tool</a>. This creates three folders, <code>data/train</code>, <code>data/validation</code> and <code>data/test</code>. These folders then contain the subfolders corresponding to the classes found in the original data folder, namely, <code>boeing</code> and <code>airbus</code>.</p>
 
 <h2 id="load-data">Load Data</h2>
 
 <p>We first import some functions from the fast.ai library that we will use for our analysis.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">reload_ext</span> <span class="n">autoreload</span>
-<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
-<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-</code></pre></div></div>
+<pre><code class="language-python">%reload_ext autoreload
+%autoreload 2
+%matplotlib inline
+</code></pre>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fastai.vision</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastai.metrics</span> <span class="kn">import</span> <span class="n">error_rate</span>
-<span class="kn">from</span> <span class="nn">fastai.callbacks.tracker</span> <span class="kn">import</span> <span class="n">SaveModelCallback</span>
-</code></pre></div></div>
+<pre><code class="language-python">from fastai.vision import *
+from fastai.metrics import error_rate
+from fastai.callbacks.tracker import SaveModelCallback
+</code></pre>
 
 <p>Now, we will select our folder containing the images and load it into the fast.ai library.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">help</span><span class="p">(</span><span class="n">get_image_files</span><span class="p">)</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s">'/home/jupyter/data'</span>
-</code></pre></div></div>
+<pre><code class="language-python">help(get_image_files)
+path = '/home/jupyter/data'
+</code></pre>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Help on function get_image_files in module fastai.vision.data:
+<pre><code>Help on function get_image_files in module fastai.vision.data:
 
 get_image_files(c: Union[pathlib.Path, str], check_ext: bool = True, recurse=False) -&gt; Collection[pathlib.Path]
     Return list of files in `c` that are images. `check_ext` will filter to `image_extensions`.
-</code></pre></div></div>
+</code></pre>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">ImageDataBunch</span><span class="o">.</span><span class="n">from_folder</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">valid</span><span class="o">=</span><span class="s">'validation'</span><span class="p">,</span> <span class="n">ds_tfms</span><span class="o">=</span><span class="n">get_transforms</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="mi">224</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">imagenet_stats</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python">data = ImageDataBunch.from_folder(path, valid='validation', ds_tfms=get_transforms(), size=224).normalize(imagenet_stats)
+</code></pre>
 
 <p>Let’s check out the sizes of our training and validation set and load a small sample of our images.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="o">.</span><span class="n">classes</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">train_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">valid_ds</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python">data.classes, data.c, len(data.train_ds), len(data.valid_ds)
+</code></pre>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(['airbus', 'boeing'], 2, 245, 80)
-</code></pre></div></div>
+<pre><code>(['airbus', 'boeing'], 2, 245, 80)
+</code></pre>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
-</code></pre></div></div>
+<pre><code class="language-python">data.show_batch(rows=3, figsize=(7,8))
+</code></pre>
 
 <p><img src="/images/fastai-lesson1/output_8_0.png" alt="png" /></p>
 
@@ -177,11 +183,11 @@ get_image_files(c: Union[pathlib.Path, str], check_ext: bool = True, recurse=Fal
 
 <p>To train our plane classifier we use the state-of-the-art ResNet34 model as our basis. We first try to see what accuracy we can obtain by training the last layers. As we will see, this gives unsatisfactory results. We can simply load the ResNet34 model directly from the fast.ai library and start training it with only two lines of code!</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span> <span class="o">=</span> <span class="n">cnn_learner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet34</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">error_rate</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">])</span>
-</code></pre></div></div>
+<pre><code class="language-python">learn = cnn_learner(data, models.resnet34, metrics=[error_rate, accuracy])
+</code></pre>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">SaveModelCallback</span><span class="p">(</span><span class="n">learn</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="s">'improvement'</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s">'accuracy'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'model'</span><span class="p">)])</span>
-</code></pre></div></div>
+<pre><code class="language-python">learn.fit_one_cycle(10, callbacks=[SaveModelCallback(learn, every='improvement', monitor='accuracy', name='model')])
+</code></pre>
 
 <table border="1" class="dataframe">
   <thead>
@@ -280,20 +286,20 @@ get_image_files(c: Union[pathlib.Path, str], check_ext: bool = True, recurse=Fal
 
 <p>Clearly our model is still very bad. We might want to try to ‘unfreeze’ our model to train all layers instead of the last ones. Furthermore, to speed-up training, we can fix the learning rate of the learning algorithm by monitoring which rates give the best training results. Another trick to obtain a good model is to use early-stopping. Early-stopping helps us with overfitting by recognising when the training loss keeps decreasing but the validation loss no longer decreases. This happens when we overfit our model and optimise our model for the training set and therefore results in worse generalisation performance as can be seen in the rise of validation loss.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="o">.</span><span class="n">unfreeze</span><span class="p">()</span>
-<span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
-</code></pre></div></div>
+<pre><code class="language-python">learn.unfreeze()
+learn.lr_find()
+</code></pre>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LR Finder is complete, type {learner_name}.recorder.plot() to see the graph.
-</code></pre></div></div>
+<pre><code>LR Finder is complete, type {learner_name}.recorder.plot() to see the graph.
+</code></pre>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</code></pre></div></div>
+<pre><code class="language-python">learn.recorder.plot()
+</code></pre>
 
 <p><img src="/images/fastai-lesson1/output_14_0.png" alt="png" /></p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="n">max_lr</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span><span class="mf">1e-2</span><span class="p">),</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">SaveModelCallback</span><span class="p">(</span><span class="n">learn</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="s">'improvement'</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s">'accuracy'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'model'</span><span class="p">)])</span>
-</code></pre></div></div>
+<pre><code class="language-python">learn.fit_one_cycle(13, max_lr=slice(1e-4,1e-2), callbacks=[SaveModelCallback(learn, every='improvement', monitor='accuracy', name='model')])
+</code></pre>
 
 <table border="1" class="dataframe">
   <thead>
@@ -414,29 +420,29 @@ get_image_files(c: Union[pathlib.Path, str], check_ext: bool = True, recurse=Fal
   </tbody>
 </table>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Better model found at epoch 0 with accuracy value: 0.7250000238418579.
+<pre><code>Better model found at epoch 0 with accuracy value: 0.7250000238418579.
 Better model found at epoch 9 with accuracy value: 0.7749999761581421.
 Better model found at epoch 10 with accuracy value: 0.800000011920929.
 Better model found at epoch 11 with accuracy value: 0.824999988079071.
-</code></pre></div></div>
+</code></pre>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">'model-1'</span><span class="p">)</span>
-</code></pre></div></div>
+<pre><code class="language-python">learn.save('model-1')
+</code></pre>
 
 <h2 id="interpret-results">Interpret results</h2>
 
-<p>Now that we have trained our model we want to do some inferences. Luckily, fast.ai got us covered. The <code class="highlighter-rouge">ClassificationInterpration</code> class provides many handy tools to check the performance of our model. Let’s check out the confusion matrix to see where things go wrong.</p>
+<p>Now that we have trained our model we want to do some inferences. Luckily, fast.ai got us covered. The <code>ClassificationInterpration</code> class provides many handy tools to check the performance of our model. Let’s check out the confusion matrix to see where things go wrong.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">interp</span> <span class="o">=</span> <span class="n">ClassificationInterpretation</span><span class="o">.</span><span class="n">from_learner</span><span class="p">(</span><span class="n">learn</span><span class="p">)</span>
-<span class="n">interp</span><span class="o">.</span><span class="n">plot_confusion_matrix</span><span class="p">()</span>
-</code></pre></div></div>
+<pre><code class="language-python">interp = ClassificationInterpretation.from_learner(learn)
+interp.plot_confusion_matrix()
+</code></pre>
 
 <p><img src="/images/fastai-lesson1/output_18_0.png" alt="png" /></p>
 
 <p>While we do manage to classify many planes correctly, I am curious on what images our model has problems. We can check this out as follows.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span>
-</code></pre></div></div>
+<pre><code class="language-python">interp.plot_top_losses(9, figsize=(15,11))
+</code></pre>
 
 <p><img src="/images/fastai-lesson1/output_20_0.png" alt="png" /></p>
 

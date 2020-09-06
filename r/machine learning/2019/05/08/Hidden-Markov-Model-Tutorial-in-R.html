@@ -16,9 +16,15 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-05-08T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"Hidden Markov Model Tutorial In R","dateModified":"2019-05-08T00:00:00-05:00","datePublished":"2019-05-08T00:00:00-05:00","description":"This post dicusses one of the fundamental building blocks of machine learning.","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/r/machine%20learning/2019/05/08/Hidden-Markov-Model-Tutorial-in-R.html"},"@type":"BlogPosting","url":"https://mvanderbroek.com/r/machine%20learning/2019/05/08/Hidden-Markov-Model-Tutorial-in-R.html","@context":"https://schema.org"}</script>
+{"description":"This post dicusses one of the fundamental building blocks of machine learning.","@type":"BlogPosting","headline":"Hidden Markov Model Tutorial In R","dateModified":"2019-05-08T00:00:00-05:00","datePublished":"2019-05-08T00:00:00-05:00","url":"https://mvanderbroek.com/r/machine%20learning/2019/05/08/Hidden-Markov-Model-Tutorial-in-R.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/r/machine%20learning/2019/05/08/Hidden-Markov-Model-Tutorial-in-R.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-126113218-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
     integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
@@ -155,14 +161,14 @@ discuss the three main problems for clarity.</p>
 
 <p>This simple HMM example in R is given below:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Define model
+<pre><code># Define model
 V = c("HOT", "COLD")
 Q = matrix(c(0.7, 0.3, 0.4, 0.6), nrow=2, byrow=TRUE)
 D = c(1, 2, 3)
 Y = c(1, 3, 2, 3)
 B = matrix(c(0.2, 0.4, 0.4, 0.6, 0.3, 0.1), nrow=3)
 pi = c(0.5, 0.5)
-</code></pre></div></div>
+</code></pre>
 
 <h2 id="forward-probabilities">Forward probabilities</h2>
 
@@ -188,7 +194,7 @@ given the hidden state sequence as</p>
 
 <p>Below, I have the R code that computes the likelihood by brute-force:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Transform hidden state set to numerical set
+<pre><code># Transform hidden state set to numerical set
 V_num = seq(1, length(V))
 
 # All possible hidden state sequences 2^12
@@ -209,7 +215,7 @@ total_l = sum(apply(V_all, 1, get_likelihood, Y, B, pi, Q))
 print(total_l)
 
 ## [1] 0.0099748
-</code></pre></div></div>
+</code></pre>
 
 <p>This brute-force algorithm is extremely inefficient and is not
 applicable when the state space and/or sequence length is large. Just
@@ -224,7 +230,7 @@ depends on the current state. Let <span class="katex"><span class="katex-mathml"
 
 <p>The R-implementation can be found below</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>forward_alg = function(Y, V, pi, B, Q) {
+<pre><code>forward_alg = function(Y, V, pi, B, Q) {
   # Define empty forward matrix
   forward = matrix(data=0, nrow=length(V), ncol=length(Y))
 
@@ -243,7 +249,7 @@ alpha = forward_alg(Y, V_num, pi, B, Q)
 print(sum(alpha[, length(Y)]))
 
 ## [1] 0.0099748
-</code></pre></div></div>
+</code></pre>
 
 <p>We see that the brute-force method and the forward algorithm produce the
 same likelihood for our sequence.</p>
@@ -277,7 +283,7 @@ approach to compute the. Let <span class="katex"><span class="katex-mathml"><mat
 
 <p>The R implementation of the Viterbi algorithm is given below:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>viterbi_alg = function(Y, V, pi, B, Q) {
+<pre><code>viterbi_alg = function(Y, V, pi, B, Q) {
   # Define empty forward matrix
   T_ = length(Y)
   viterbi = matrix(data=0, nrow=length(V), ncol=length(Y))
@@ -316,7 +322,7 @@ print(viterbi_results[[1]])
 print(V[viterbi_results[[2]]])
 
 ## [1] "COLD" "HOT"  "HOT"  "HOT"
-</code></pre></div></div>
+</code></pre>
 
 <h2 id="determining-the-optimal-hmm-parameters">Determining the Optimal HMM Parameters</h2>
 
@@ -331,7 +337,7 @@ First, similar to the forward probabilities <span class="katex"><span class="kat
 probabilities using dynamic programming as:
 The R implementation is given below:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>back_prob_alg = function(Y, V, pi, B, Q) {
+<pre><code>back_prob_alg = function(Y, V, pi, B, Q) {
 # Define empty forward matrix
   back_prob = matrix(data=0, nrow=length(V), ncol=length(Y))
   T_max = length(Y)
@@ -352,7 +358,7 @@ probY = sum(pi * B[Y[1], ] * beta[, 1])
 print(probY)
 
 ## [1] 0.0099748
-</code></pre></div></div>
+</code></pre>
 
 <p>Recall: we are interesting in estimating <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">Q</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi></mrow><annotation encoding="application/x-tex">\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span> given our observation sequence <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span></span></span></span>. As we will see later on, estimating these quantities typically involve
 estimating the frequency of being in a certain state and/or counting the
@@ -382,13 +388,13 @@ precisely, we estimate the transition probability from state <span class="katex"
 <p>Recall that <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(Y\mid\lambda)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">λ</span><span class="mclose">)</span></span></span></span> can be easily obtained when computing the forward (or backward)
 probabilities.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ComputeGamma &lt;- function(alpha, beta, probY) {
+<pre><code>ComputeGamma &lt;- function(alpha, beta, probY) {
   # Obtain gamma for all t and v
   gamma &lt;- (alpha * beta) / probY
 }
 
 gamma = ComputeGamma(alpha, beta, probY)
-</code></pre></div></div>
+</code></pre>
 
 <p>We can now estimate the elements of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span> as</p>
 
@@ -396,7 +402,7 @@ gamma = ComputeGamma(alpha, beta, probY)
 
 <p>where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\delta_{i, j}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03785em;">δ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> evaluates to 1 if <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i = j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span></span></span></span> and 0 otherwise.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Delta &lt;- function(A, b) {
+<pre><code>Delta &lt;- function(A, b) {
   return(as.integer(A == b))
 }
 Delta = Vectorize(Delta, "b")
@@ -416,7 +422,7 @@ ComputeBHat &lt;- function(gamma, Y, D) {
 }
 
 BHat = ComputeBHat(gamma, Y, D)
-</code></pre></div></div>
+</code></pre>
 
 <p>To estimate the elements of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">Q</span></span></span></span> we define</p>
 
@@ -426,7 +432,7 @@ BHat = ComputeBHat(gamma, Y, D)
 
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ψ</mi><mi>t</mi></msub><mo stretchy="false">(</mo><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><msub><mi>α</mi><mi>t</mi></msub><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo><msub><mi>q</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub><msub><mi>b</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo><msub><mi>β</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>Y</mi><mo>∣</mo><mi>λ</mi><mo stretchy="false">)</mo></mrow></mfrac><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\psi_t(i,j) =\frac{\alpha_t(i)q_{i,j}b_{t+1}(j)\beta_{t+1}(j)}{P(Y\mid\lambda)}.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ψ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">λ</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mclose">)</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">.</span></span></span></span></span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ComputePsi &lt;- function(alpha, beta, B, Q, Y, probY) {
+<pre><code>ComputePsi &lt;- function(alpha, beta, B, Q, Y, probY) {
   # Create empty matrix
   T_max = ncol(beta)
   psi = array(-1, dim=c(T_max-1, nrow(Q), nrow(Q)))
@@ -439,7 +445,7 @@ psi[t,, ] = cbind(alpha[, t], alpha[, t]) * Q * rbind(B[Y[t+1], ], B[Y[t+1], ]) 
 }
 
 psi = ComputePsi(alpha, beta, B, Q, Y, probY)
-</code></pre></div></div>
+</code></pre>
 
 <p>The transition probabilities can now be estimated as</p>
 
@@ -447,7 +453,7 @@ psi = ComputePsi(alpha, beta, B, Q, Y, probY)
 
 <p>since the expected number of times in a state <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span></span></span></span> is equal to the expected number of transitions from state <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span></span></span></span> (for an ergodic Markov process).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ComputeQ = function(psi, gamma) {
+<pre><code>ComputeQ = function(psi, gamma) {
   QNom = apply(psi, c(2,3), sum)
   QDenom = t(rep(1, 2)) %x% apply(gamma[, 1:(ncol(gamma)-1)], 1, sum)
 
@@ -455,7 +461,7 @@ psi = ComputePsi(alpha, beta, B, Q, Y, probY)
 }
 
 Q_new = ComputeQ(psi, gamma)
-</code></pre></div></div>
+</code></pre>
 
 <p>The quantity</p>
 
@@ -468,7 +474,7 @@ Q_new = ComputeQ(psi, gamma)
 
 <p>The R implementation of the Balm-Welsch algorithm is given below:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>balm_welch_alg = function(Y, Q, B, pi, V, D) {
+<pre><code>balm_welch_alg = function(Y, Q, B, pi, V, D) {
   converged = FALSE
   max_iter = 1000
   iter = 1
@@ -492,7 +498,7 @@ pi = gamma[, 1]
 iter = iter + 1
   }
 }
-</code></pre></div></div>
+</code></pre>
 
 <p>We have now addressed all main problems concerning HMMs. Note, however
 that our implementation in R is rather simplistic and probably has
@@ -523,7 +529,7 @@ the values of <span class="katex"><span class="katex-mathml"><math xmlns="http:/
 
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>β</mi><mo>^</mo></mover><mi>t</mi></msub><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>β</mi><mi>t</mi></msub><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo><msub><mi>c</mi><mi>t</mi></msub><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\hat{\beta}_t(j) =\beta_t(j) c_t.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2078799999999998em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9578799999999998em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span></span></span><span style="top:-3.26344em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.16666em;">^</span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.19444em;"><span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">)</span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">.</span></span></span></span></span>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ForwardProbAlgScaled = function(Y, V, pi, B, Q) {
+<pre><code>ForwardProbAlgScaled = function(Y, V, pi, B, Q) {
   # Define empty forward matrix
   forward &lt;- matrix(data=0, nrow=length(V), ncol=length(Y))
   c_scale &lt;- 1 / rep(1, ncol=length(Y))
@@ -577,63 +583,63 @@ psi[t,, ] &lt;- psi[t,, ] / sum(psi[t,, ])
 
   return(psi)
 }
-</code></pre></div></div>
+</code></pre>
 
 <p>The adapted Balm-Welch algorithm is then given by</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BalmWelchAlg</span> <span class="p">=</span> <span class="k">function</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">converged</span> <span class="p">=</span> <span class="nb">FALSE</span>
-  <span class="n">max_iter</span> <span class="p">=</span> <span class="m">1000</span>
-  <span class="n">iter</span> <span class="p">=</span> <span class="m">1</span>
-  <span class="n">prob_old</span> <span class="p">=</span> <span class="nb">log</span><span class="p">(</span><span class="m">1e-12</span><span class="p">)</span>
+<pre><code>BalmWelchAlg = function(Y, Q, B, pi, V, D) {
+  converged = FALSE
+  max_iter = 1000
+  iter = 1
+  prob_old = log(1e-12)
 
-  <span class="k">while</span><span class="p">(</span><span class="c1">!converged &amp; iter!= max_iter) {
-</span><span class="p">#</span> <span class="n">First</span> <span class="n">compute</span> <span class="n">alpa</span> <span class="k">and</span> <span class="n">beta</span>
-<span class="n">forward_list</span> <span class="p">&lt;-</span> <span class="n">ForwardProbAlgScaled</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
-<span class="n">c_scale</span> <span class="p">&lt;-</span> <span class="n">forward_list</span><span class="p">[[</span><span class="m">2</span><span class="p">]]</span>
-<span class="n">alpha</span> <span class="p">&lt;-</span> <span class="n">forward_list</span><span class="p">[[</span><span class="m">1</span><span class="p">]]</span>
-<span class="n">beta</span> <span class="p">&lt;-</span> <span class="n">BackProbAlgScaled</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">c_scale</span><span class="p">)</span>
-<span class="n">prob_new</span> <span class="p">&lt;-</span> <span class="nb">log</span><span class="p">(</span><span class="m">1</span> <span class="p">/</span> <span class="k">prod</span><span class="p">(</span><span class="n">c_scale</span><span class="p">))</span>
+  while(!converged &amp; iter!= max_iter) {
+# First compute alpa and beta
+forward_list &lt;- ForwardProbAlgScaled(Y, V, pi, B, Q)
+c_scale &lt;- forward_list[[2]]
+alpha &lt;- forward_list[[1]]
+beta &lt;- BackProbAlgScaled(Y, V, pi, B, Q, c_scale)
+prob_new &lt;- log(1 / prod(c_scale))
 
-<span class="p">#</span> <span class="n">E</span><span class="p">-</span><span class="n">Step</span>
-<span class="n">gamma</span> <span class="p">&lt;-</span> <span class="n">ComputeGammaScaled</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-<span class="n">psi</span> <span class="p">&lt;-</span> <span class="n">ComputePsiScaled</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+# E-Step
+gamma &lt;- ComputeGammaScaled(alpha, beta)
+psi &lt;- ComputePsiScaled(alpha, beta, B, Q, Y)
 
-<span class="p">#</span> <span class="n">M</span><span class="p">-</span><span class="n">Step</span>
-<span class="n">Q</span> <span class="p">&lt;-</span> <span class="n">ComputeQ</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
-<span class="n">B</span> <span class="p">&lt;-</span> <span class="n">ComputeBHat</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
-<span class="n">pi</span> <span class="p">&lt;-</span> <span class="n">gamma</span><span class="p">[,</span> <span class="m">1</span><span class="p">]</span>
+# M-Step
+Q &lt;- ComputeQ(psi, gamma)
+B &lt;- ComputeBHat(gamma, Y, D)
+pi &lt;- gamma[, 1]
 
-<span class="p">#</span> <span class="n">Update</span> <span class="n">stopping</span> <span class="n">rules</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">prob_new</span> <span class="p">-</span> <span class="n">prob_old</span> <span class="p">&lt;</span> <span class="m">1e-4</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">converged</span> <span class="p">&lt;-</span> <span class="nb">TRUE</span>
-<span class="p">}</span>
-<span class="n">prob_old</span> <span class="p">=</span> <span class="n">prob_new</span>
-<span class="n">iter</span> <span class="p">&lt;-</span> <span class="n">iter</span> <span class="p">+</span> <span class="m">1</span>
-  <span class="p">}</span>
+# Update stopping rules
+if (prob_new - prob_old &lt; 1e-4) {
+  converged &lt;- TRUE
+}
+prob_old = prob_new
+iter &lt;- iter + 1
+  }
 
-  <span class="n">return</span><span class="p">(</span><span class="k">list</span><span class="p">(</span><span class="n">Q</span> <span class="p">=</span> <span class="n">Q</span><span class="p">,</span> <span class="n">B</span> <span class="p">=</span> <span class="n">B</span><span class="p">,</span> <span class="n">pi</span> <span class="p">=</span> <span class="n">pi</span><span class="p">))</span>
-<span class="p">}</span>
+  return(list(Q = Q, B = B, pi = pi))
+}
 
-<span class="k">model</span> <span class="p">&lt;-</span> <span class="n">BalmWelchAlg</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+model &lt;- BalmWelchAlg(Y, Q, B, pi, V, D)
 
-<span class="k">model</span><span class="p">[[</span><span class="s2">"Q"</span><span class="p">]]</span>
+model[["Q"]]
 
-<span class="p">##</span>  <span class="p">[,</span><span class="m">1</span><span class="p">]</span> <span class="p">[,</span><span class="m">2</span><span class="p">]</span>
-<span class="p">##</span> <span class="p">[</span><span class="m">1</span><span class="p">,]</span><span class="m">1</span> <span class="m">4.738597e-19</span>
-<span class="p">##</span> <span class="p">[</span><span class="m">2</span><span class="p">,]</span><span class="m">1</span> <span class="m">4.788997e-18</span>
+##  [,1] [,2]
+## [1,]1 4.738597e-19
+## [2,]1 4.788997e-18
 
-<span class="k">model</span><span class="p">[[</span><span class="s2">"B"</span><span class="p">]]</span>
+model[["B"]]
 
-<span class="p">##</span>  <span class="p">[,</span><span class="m">1</span><span class="p">]</span> <span class="p">[,</span><span class="m">2</span><span class="p">]</span>
-<span class="p">##</span> <span class="p">[</span><span class="m">1</span><span class="p">,]</span> <span class="m">1.974110e-43</span> <span class="m">1.000000e+00</span>
-<span class="p">##</span> <span class="p">[</span><span class="m">2</span><span class="p">,]</span> <span class="m">3.333333e-01</span> <span class="m">9.278520e-20</span>
-<span class="p">##</span> <span class="p">[</span><span class="m">3</span><span class="p">,]</span> <span class="m">6.666667e-01</span> <span class="m">5.643931e-18</span>
+##  [,1] [,2]
+## [1,] 1.974110e-43 1.000000e+00
+## [2,] 3.333333e-01 9.278520e-20
+## [3,] 6.666667e-01 5.643931e-18
 
-<span class="k">model</span><span class="p">[[</span><span class="s2">"pi"</span><span class="p">]]</span>
+model[["pi"]]
 
-<span class="p">##</span> <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">5.922329e-43</span> <span class="m">1.000000e+00</span>
-</code></pre></div></div>
+## [1] 5.922329e-43 1.000000e+00
+</code></pre>
 
     </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"

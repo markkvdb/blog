@@ -16,9 +16,15 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-09-19T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"Map Plots In R In A Tidyverse Way","dateModified":"2018-09-19T00:00:00-05:00","datePublished":"2018-09-19T00:00:00-05:00","description":"I show how you can plot your own map in R using a few lines of code using a pipe-based workflow","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/r/visualisation/2018/09/19/Map-Plots-in-R-in-a-Tidyverse-Way.html"},"@type":"BlogPosting","url":"https://mvanderbroek.com/r/visualisation/2018/09/19/Map-Plots-in-R-in-a-Tidyverse-Way.html","@context":"https://schema.org"}</script>
+{"description":"I show how you can plot your own map in R using a few lines of code using a pipe-based workflow","@type":"BlogPosting","headline":"Map Plots In R In A Tidyverse Way","dateModified":"2018-09-19T00:00:00-05:00","datePublished":"2018-09-19T00:00:00-05:00","url":"https://mvanderbroek.com/r/visualisation/2018/09/19/Map-Plots-in-R-in-a-Tidyverse-Way.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/r/visualisation/2018/09/19/Map-Plots-in-R-in-a-Tidyverse-Way.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-126113218-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
+
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
     integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
@@ -121,7 +127,7 @@
         </header>
 
     <div class="post-content e-content" itemprop="articleBody">
-        <p>I show how you can plot your own map in R using a few lines of code using a pipe-based workflow. Several powerful functions of the <code class="highlighter-rouge">sf</code> packages are presented.</p>
+        <p>I show how you can plot your own map in R using a few lines of code using a pipe-based workflow. Several powerful functions of the <code>sf</code> packages are presented.</p>
 
 <h2 id="analysis">Analysis</h2>
 
@@ -140,55 +146,55 @@ open-source maps. I decided to select the world map with country borders
 on a 1:10m scale (can be found
 <a href="https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_countries.zip">here</a>).</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span><span class="w">       </span><span class="c1"># For handling geospatial data</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">  </span><span class="c1"># Plotting library</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span><span class="w">    </span><span class="c1"># Data manipulation in tidyverse way</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">ggthemes</span><span class="p">)</span><span class="w"> </span><span class="c1"># Additional themese for the ggplot2 library</span><span class="w">
-</span><span class="n">library</span><span class="p">(</span><span class="n">knitr</span><span class="p">)</span><span class="w">    </span><span class="c1"># Nice tables for this document</span><span class="w">
+<pre><code class="language-R">library(sf)       # For handling geospatial data
+library(ggplot2)  # Plotting library
+library(dplyr)    # Data manipulation in tidyverse way
+library(ggthemes) # Additional themese for the ggplot2 library
+library(knitr)    # Nice tables for this document
 
-</span><span class="c1"># This will create a natural-earth subfolder with the map data in the data folder.</span><span class="w">
-</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">file.exists</span><span class="p">(</span><span class="s2">"data/natural-earth"</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="n">tmp_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">tempfile</span><span class="p">(</span><span class="n">fileext</span><span class="o">=</span><span class="s2">".zip"</span><span class="p">)</span><span class="w">
-    </span><span class="n">download.file</span><span class="p">(</span><span class="s2">"https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_countries.zip"</span><span class="p">,</span><span class="w"> 
-                </span><span class="n">tmp_file</span><span class="p">)</span><span class="w">
-    </span><span class="n">unzip</span><span class="p">(</span><span class="n">tmp_file</span><span class="p">,</span><span class="w"> </span><span class="n">exdir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"data/natural-earth"</span><span class="p">)</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+# This will create a natural-earth subfolder with the map data in the data folder.
+if (!file.exists("data/natural-earth")) {
+    tmp_file &lt;- tempfile(fileext=".zip")
+    download.file("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_countries.zip", 
+                tmp_file)
+    unzip(tmp_file, exdir = "data/natural-earth")
+}
+</code></pre>
 
 <p>Importing these maps, however, was not straightforward to me. <a href="https://cran.r-project.org/doc/contrib/intro-spatial-rl.pdf">These
 lecture
 slides</a>
-provides a way to import custom maps, but the syntax of the <code class="highlighter-rouge">sp</code> package
-seems very untuitive with <code class="highlighter-rouge">S4</code> objects for the polygons. Furthermore,
-the <code class="highlighter-rouge">SpatialDataFrame</code> objects do not support a pipe-based workflow.
+provides a way to import custom maps, but the syntax of the <code>sp</code> package
+seems very untuitive with <code>S4</code> objects for the polygons. Furthermore,
+the <code>SpatialDataFrame</code> objects do not support a pipe-based workflow.
 However, <a href="https://edzer.github.io/UseR2017/">this tutorial</a> presents how
-the modern <code class="highlighter-rouge">sf</code> package can be used to manipulate, plot and import
+the modern <code>sf</code> package can be used to manipulate, plot and import
 spatial data in a tidyverse manner.</p>
 
 <p>Importing our world map is as easy as</p>
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">map_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">st_read</span><span class="p">(</span><span class="s2">"data/natural-earth/"</span><span class="p">,</span><span class="w"> </span><span class="s2">"ne_10m_admin_0_countries"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
+<pre><code class="language-R">map_data &lt;- st_read("data/natural-earth/", "ne_10m_admin_0_countries")
+</code></pre>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## Reading layer `ne_10m_admin_0_countries' from data source `Map-Plotting/data/natural-earth' using driver `ESRI Shapefile'
+<pre><code>## Reading layer `ne_10m_admin_0_countries' from data source `Map-Plotting/data/natural-earth' using driver `ESRI Shapefile'
 ## Simple feature collection with 255 features and 94 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
 ## bbox:           xmin: -180 ymin: -90 xmax: 180 ymax: 83.6341
 ## epsg (SRID):    4326
 ## proj4string:    +proj=longlat +datum=WGS84 +no_defs
-</code></pre></div></div>
+</code></pre>
 
-<p>The <code class="highlighter-rouge">map_data</code> uses <code class="highlighter-rouge">data.frame</code>s for its features and saves the
-geometric features as a list in the column <code class="highlighter-rouge">geometry</code>. We can now easily
-explore the data in <code class="highlighter-rouge">map_data</code>, e.g.,</p>
+<p>The <code>map_data</code> uses <code>data.frame</code>s for its features and saves the
+geometric features as a list in the column <code>geometry</code>. We can now easily
+explore the data in <code>map_data</code>, e.g.,</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">features_map_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">as_tibble</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">geometry</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">head</span><span class="p">(</span><span class="m">10</span><span class="p">)</span><span class="w">
+<pre><code class="language-R">features_map_data &lt;- map_data %&gt;%
+    as_tibble() %&gt;%
+    select(-geometry) %&gt;%
+    head(10)
 
-</span><span class="n">kable</span><span class="p">(</span><span class="n">features_map_data</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
+kable(features_map_data)
+</code></pre>
 
 <table>
 <thead>
@@ -1255,131 +1261,131 @@ explore the data in <code class="highlighter-rouge">map_data</code>, e.g.,</p>
 
 <p>For this tutorial we want to focus on a European countries, hence we
 need to filter the data to only contain the european countries’ info.
-Fortunately, the <code class="highlighter-rouge">map_data</code> contains a feature <code class="highlighter-rouge">CONTINTENT</code>, so we can
+Fortunately, the <code>map_data</code> contains a feature <code>CONTINTENT</code>, so we can
 easily filter out the unwanted countries.</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">europe_map_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">select</span><span class="p">(</span><span class="n">NAME</span><span class="p">,</span><span class="w"> </span><span class="n">CONTINENT</span><span class="p">,</span><span class="w"> </span><span class="n">SUBREGION</span><span class="p">,</span><span class="w"> </span><span class="n">POP_EST</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">filter</span><span class="p">(</span><span class="n">CONTINENT</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Europe"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
+<pre><code class="language-R">europe_map_data &lt;- map_data %&gt;%
+    select(NAME, CONTINENT, SUBREGION, POP_EST) %&gt;%
+    filter(CONTINENT == "Europe")
+</code></pre>
 
-<p>Lets try to plot a map of European countries. New versions of <code class="highlighter-rouge">ggplot2</code>
-contain a function <code class="highlighter-rouge">geom_sf</code> which supports plotting <code class="highlighter-rouge">sf</code> objects
+<p>Lets try to plot a map of European countries. New versions of <code>ggplot2</code>
+contain a function <code>geom_sf</code> which supports plotting <code>sf</code> objects
 directly, so lets try it…</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">europe_map_data</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_sf</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-    </span><span class="n">theme_minimal</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
+<pre><code class="language-R">ggplot(europe_map_data) + geom_sf() +
+    theme_minimal()
+</code></pre>
 
 <p><img src="/images/map_article_2018_files/figure-markdown_strict/first_attempt_plot-1.png" alt="" /></p>
 
 <p>That does not seem to work… the reason is that, even though we removed
-the data of non European countries, we never changed the <code class="highlighter-rouge">bbox</code> setting
-of our data. The <code class="highlighter-rouge">bbox</code> object sets the longitude and latitude range for
+the data of non European countries, we never changed the <code>bbox</code> setting
+of our data. The <code>bbox</code> object sets the longitude and latitude range for
 our plot, which is still for the whole europe. To change this we can use
-the <code class="highlighter-rouge">st_crop</code> function as</p>
+the <code>st_crop</code> function as</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">europe_map_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">europe_map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">st_crop</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="m">-25</span><span class="p">,</span><span class="w"> </span><span class="n">xmax</span><span class="o">=</span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="n">ymin</span><span class="o">=</span><span class="m">35</span><span class="p">,</span><span class="w"> </span><span class="n">ymax</span><span class="o">=</span><span class="m">71</span><span class="p">)</span><span class="w">
+<pre><code class="language-R">europe_map_data &lt;- europe_map_data %&gt;%
+    st_crop(xmin=-25, xmax=55, ymin=35, ymax=71)
 
-</span><span class="c1">## although coordinates are longitude/latitude, st_intersection assumes that they are planar</span><span class="w">
+## although coordinates are longitude/latitude, st_intersection assumes that they are planar
 
-</span><span class="c1">## Warning: attribute variables are assumed to be spatially constant</span><span class="w">
-</span><span class="c1">## throughout all geometries</span><span class="w">
+## Warning: attribute variables are assumed to be spatially constant
+## throughout all geometries
 
-</span><span class="n">ggplot</span><span class="p">(</span><span class="n">europe_map_data</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_sf</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-    </span><span class="n">theme_minimal</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
+ggplot(europe_map_data) + geom_sf() +
+    theme_minimal()
+</code></pre>
 
 <p><img src="/images/map_article_2018_files/figure-markdown_strict/crop_box-1.png" alt="" /></p>
 
-<p>If you’re familiar with the <code class="highlighter-rouge">ggplot2</code> workflow, it is now easy to
-construct the aesthetic mappings like you’re used to. Our <code class="highlighter-rouge">map_data</code>
-contains a feature <code class="highlighter-rouge">SUBREGION</code> and Europe is divided into Northern,
+<p>If you’re familiar with the <code>ggplot2</code> workflow, it is now easy to
+construct the aesthetic mappings like you’re used to. Our <code>map_data</code>
+contains a feature <code>SUBREGION</code> and Europe is divided into Northern,
 Eastern, Southern and Western Europe. We can easily visualise this in
 our European map as</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">europe_map_data</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">SUBREGION</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-    </span><span class="n">theme_minimal</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
+<pre><code class="language-R">ggplot(europe_map_data) + geom_sf(aes(fill=SUBREGION)) +
+    theme_minimal()
+</code></pre>
 
 <p><img src="/images/map_article_2018_files/figure-markdown_strict/europe_map_divide-1.png" alt="" /></p>
 
-<p>The <code class="highlighter-rouge">sf</code> has many in-built functions; one of these functions is
-<code class="highlighter-rouge">st_area</code> which can be used to compute the area of polygons. The
+<p>The <code>sf</code> has many in-built functions; one of these functions is
+<code>st_area</code> which can be used to compute the area of polygons. The
 population density of each country can be easily plotted by</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">europe_map_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">europe_map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">mutate</span><span class="p">(</span><span class="n">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">st_area</span><span class="p">(</span><span class="n">.</span><span class="p">)))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">mutate</span><span class="p">(</span><span class="n">pop_density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">POP_EST</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">area</span><span class="p">)</span><span class="w">
+<pre><code class="language-R">europe_map_data &lt;- europe_map_data %&gt;%
+    mutate(area = as.numeric(st_area(.))) %&gt;%
+    mutate(pop_density = POP_EST / area)
 
-</span><span class="n">ggplot</span><span class="p">(</span><span class="n">europe_map_data</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">pop_density</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-    </span><span class="n">theme_minimal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-    </span><span class="n">scale_fill_continuous_tableau</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Green"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
+ggplot(europe_map_data) + geom_sf(aes(fill=pop_density)) +
+    theme_minimal() + 
+    scale_fill_continuous_tableau(palette = "Green")
+</code></pre>
 
 <p><img src="/images/map_article_2018_files/figure-markdown_strict/pop_density-1.png" alt="" /></p>
 
-<p>Using aggregating functions of the <code class="highlighter-rouge">tidyverse</code> package is also
+<p>Using aggregating functions of the <code>tidyverse</code> package is also
 straight-forward. Lets create a similar population density plot but
 instead for each subregion of Europe.</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">subregion_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">europe_map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">group_by</span><span class="p">(</span><span class="n">SUBREGION</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">summarise</span><span class="p">(</span><span class="n">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">area</span><span class="p">),</span><span class="w"> 
-            </span><span class="n">pop_est</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">POP_EST</span><span class="p">))</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">ungroup</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">mutate</span><span class="p">(</span><span class="n">pop_density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pop_est</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">area</span><span class="p">)</span><span class="w">
+<pre><code class="language-R">subregion_data &lt;- europe_map_data %&gt;%
+    group_by(SUBREGION) %&gt;%
+    summarise(area = sum(area), 
+            pop_est = sum(POP_EST)) %&gt;%
+    ungroup() %&gt;%
+    mutate(pop_density = pop_est / area)
 
-</span><span class="n">ggplot</span><span class="p">(</span><span class="n">subregion_data</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_sf</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">pop_density</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
-    </span><span class="n">theme_minimal</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-    </span><span class="n">scale_fill_continuous_tableau</span><span class="p">(</span><span class="n">palette</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Green"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
+ggplot(subregion_data) + geom_sf(aes(fill=pop_density)) +
+    theme_minimal() + 
+    scale_fill_continuous_tableau(palette = "Green")
+</code></pre>
 
 <p><img src="/images/map_article_2018_files/figure-markdown_strict/pop_density_sub-1.png" alt="" /></p>
 
 <p>As a last exercise lets find the centroid for each country.</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># First get all centroids of each European country</span><span class="w">
-</span><span class="n">get_coordinates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="n">return_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">st_geometry</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">st_centroid</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">st_coordinates</span><span class="p">()</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">as_data_frame</span><span class="p">()</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<pre><code class="language-R"># First get all centroids of each European country
+get_coordinates = function(data) {
+    return_data &lt;- data %&gt;%
+    st_geometry() %&gt;%
+    st_centroid() %&gt;%
+    st_coordinates() %&gt;%
+    as_data_frame()
+}
 
-</span><span class="n">europe_centres</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">europe_map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">group_by</span><span class="p">(</span><span class="n">NAME</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">do</span><span class="p">(</span><span class="n">get_coordinates</span><span class="p">(</span><span class="n">.</span><span class="p">))</span><span class="w">
+europe_centres &lt;- europe_map_data %&gt;%
+    group_by(NAME) %&gt;%
+    do(get_coordinates(.))
 
-</span><span class="n">europe_map_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">europe_map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">left_join</span><span class="p">(</span><span class="n">europe_centres</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="o">=</span><span class="s2">"NAME"</span><span class="p">)</span><span class="w">
-</span></code></pre></div></div>
+europe_map_data &lt;- europe_map_data %&gt;%
+    left_join(europe_centres, by="NAME")
+</code></pre>
 
 <p>Actually, I only want to see the centroid of the Netherlands…</p>
 
-<div class="language-R highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">netherlands_map_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">europe_map_data</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">filter</span><span class="p">(</span><span class="n">NAME</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Netherlands"</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
-    </span><span class="n">st_crop</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">xmax</span><span class="o">=</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="n">ymin</span><span class="o">=</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="n">ymax</span><span class="o">=</span><span class="m">55</span><span class="p">)</span><span class="w">
+<pre><code class="language-R">netherlands_map_data = europe_map_data %&gt;%
+    filter(NAME == "Netherlands") %&gt;%
+    st_crop(xmin=1, xmax=10, ymin=50, ymax=55)
 
-</span><span class="c1">## although coordinates are longitude/latitude, st_intersection assumes that they are planar</span><span class="w">
+## although coordinates are longitude/latitude, st_intersection assumes that they are planar
 
-</span><span class="c1">## Warning: attribute variables are assumed to be spatially constant</span><span class="w">
-</span><span class="c1">## throughout all geometries</span><span class="w">
+## Warning: attribute variables are assumed to be spatially constant
+## throughout all geometries
 
-</span><span class="n">ggplot</span><span class="p">(</span><span class="n">netherlands_map_data</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_sf</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
-    </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">colour</span><span class="o">=</span><span class="s2">"red"</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
-    </span><span class="n">theme_minimal</span><span class="p">()</span><span class="w">
-</span></code></pre></div></div>
+ggplot(netherlands_map_data) + geom_sf() +
+    geom_point(aes(x=X, y=Y, colour="red")) + 
+    theme_minimal()
+</code></pre>
 
 <p><img src="/images/map_article_2018_files/figure-markdown_strict/centroid_netherlands-1.png" alt="" /></p>
 
 <h2 id="setup">Setup</h2>
 
 <p>The analysis of this tutorial is performed using R version 3.5.1. To use
-the <code class="highlighter-rouge">st_crop</code> function from the <code class="highlighter-rouge">sf</code> package version 0.6.3 is needed.
-<code class="highlighter-rouge">geom_sf</code> also requires a recent version of <code class="highlighter-rouge">ggplot2</code>.</p>
+the <code>st_crop</code> function from the <code>sf</code> package version 0.6.3 is needed.
+<code>geom_sf</code> also requires a recent version of <code>ggplot2</code>.</p>
 
     </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
