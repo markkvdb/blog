@@ -44,6 +44,7 @@ Note: you may want to remove example blog posts from the `_posts`,  `_notebooks`
   - [Site Wide Configuration Options](#site-wide-configuration-options)
   - [Adjusting Page Width](#adjusting-page-width)
   - [Annotations and Highlighting With hypothes.is](#annotations-and-highlighting-with-hypothes.is)
+  - [Subscribing with RSS](#subscribing-with-rss)
   - [Syntax Highlighting](#syntax-highlighting)
   - [Adding Citations via BibTeX](#adding-citations-via-bibtex)
   - [Writing Blog Posts With Jupyter](#writing-blog-posts-with-jupyter)
@@ -338,6 +339,13 @@ annotations: false
 ```
 
 > You can customize hypothes.is by reading [these configuration options](http://h.readthedocs.io/projects/client/en/latest/publishers/config/).  It is also a good idea to read [these docs](https://web.hypothes.is/for-publishers/#embedding) if you want to do more with hypothes.is.  However, before trying to customize this feature you should read the [customizing fastpages](#customizing-fastpages) section for important caveats.
+
+## Subscribing with RSS
+
+You can direct your readers to subscribe with [RSS feeds](https://en.wikipedia.org/wiki/RSS).  There are many RSS subscription services available on the internet.  Some examples include:
+
+1. [Feedrabbit](https://feedrabbit.com/)
+2. [Blogtrottr](https://blogtrottr.com/)
 
 ## Syntax Highlighting
 

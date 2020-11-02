@@ -5,6 +5,7 @@ on:
       - master # need to filter here so we only deploy when there is a push to master
   # no filters on pull requests, so intentionally left blank
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build-site:
@@ -36,6 +37,13 @@ jobs:
         uses: docker://hamelsmu/fastpages-jekyll
         with:
           args: bash -c "gem install bundler && jekyll build -V --strict_front_matter --trace"
+        env:
+          JEKYLL_ENV: "production"
+
+      - name: Jekyll build
+        uses: docker://fastai/fastpages-jekyll
+        with:
+          args: bash -c "jekyll build -V --strict_front_matter --trace"
         env:
           JEKYLL_ENV: "production"
 
