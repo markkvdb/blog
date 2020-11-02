@@ -18,14 +18,13 @@ For those of you unfamiliar with logical gates, a logical gate takes two binary 
 |   0   |   1   |   1  |
 |   1   |   1   |   0  |
 
-
 ### XOR gate as ANN
 
 [GoodFellow et al.](https://www.deeplearningbook.org) show that this XOR gate can be learned by an ANN with one hidden layer consisting of two neurons. We have two input neurons, one hidden layer and an output layer with a single neuron. This network can be graphically represented as:
 
 ![png]({{ site.baseurl }}/images/ann_model.png)
 
-When I started learning about Deep Learning and these ANN in particular I started wondering whether I could train the small ANN to learn to act like an XOR gate. Since I am still relatively new to these networks I thought it would be a good exercise to program the backpropagation algorithm that trains these models myself. 
+When I started learning about Deep Learning and these ANN in particular I started wondering whether I could train the small ANN to learn to act like an XOR gate. Since I am still relatively new to these networks I thought it would be a good exercise to program the backpropagation algorithm that trains these models myself.
 
 ## The network in Python
 
@@ -60,7 +59,6 @@ y = np.array([0, 1, 1, 0])
 ### Own implementation backpropagation algorithm
 
 From this moment onwards I assume that you have a basic understanding of how an ANN works, and understand the basic math behind it. First, I will define some functions that are needed to implement the backpropagation algorithm to solve this problem.
-
 
 ```python
 def relu(z):
@@ -195,18 +193,19 @@ for iter in range(n_iter+1):
         print('Iteration {0}: {1}'.format(iter, MSE))
 ```
 
-    Iteration 0: 0.38656561971217596
-    Iteration 10: 0.37967674088143133
-    Iteration 20: 0.37237614217772685
-    Iteration 30: 0.3647250789164269
-    Iteration 40: 0.3567771690665022
-    Iteration 50: 0.34860542693257024
-    Iteration 60: 0.3403016700706688
-    Iteration 70: 0.33197373064753966
-    Iteration 80: 0.32374029713366215
-    Iteration 90: 0.3157236870674678
-    Iteration 100: 0.30804138226491107
-
+```console
+Iteration 0: 0.38656561971217596
+Iteration 10: 0.37967674088143133
+Iteration 20: 0.37237614217772685
+Iteration 30: 0.3647250789164269
+Iteration 40: 0.3567771690665022
+Iteration 50: 0.34860542693257024
+Iteration 60: 0.3403016700706688
+Iteration 70: 0.33197373064753966
+Iteration 80: 0.32374029713366215
+Iteration 90: 0.3157236870674678
+Iteration 100: 0.30804138226491107
+```
 
 ### Keras implementation
 
@@ -233,15 +232,15 @@ model.fit(X, y, epochs=300, batch_size=4)
 SVG(model_to_dot(model, show_shapes=True).create(prog='dot', format='svg'))
 ```
 
-```
-    Epoch 1/300
-    4/4 [==============================] - 0s 37ms/step - loss: 0.6039 - acc: 0.7500
-    Epoch 2/300
-    4/4 [==============================] - 0s 252us/step - loss: 0.5813 - acc: 0.7500
-    ...
-    ...
-    Epoch 300/300
-    4/4 [==============================] - 0s 338us/step - loss: 0.2679 - acc: 0.2500
+```console
+Epoch 1/300
+4/4 [==============================] - 0s 37ms/step - loss: 0.6039 - acc: 0.7500
+Epoch 2/300
+4/4 [==============================] - 0s 252us/step - loss: 0.5813 - acc: 0.7500
+...
+...
+Epoch 300/300
+4/4 [==============================] - 0s 338us/step - loss: 0.2679 - acc: 0.2500
 ```
 
 ![svg]({{ site.baseurl }}/images/output_9_1.svg)

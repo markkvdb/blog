@@ -20,7 +20,6 @@ from fastai.vision import *
 #learn.export('classifier.pkl')
 ```
 
-
 ```python
 path = './'
 img = open_image(path + 'A320_easyJet_new_livery_2015.jpeg')
@@ -37,7 +36,7 @@ pred_class, _, _ = learn.predict(img)
 print(pred_class)
 ```
 
-```python
+```console
 airbus
 ```
 
