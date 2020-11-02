@@ -163,11 +163,11 @@
 <span class="n">path</span> <span class="o">=</span> <span class="s">'/home/jupyter/data'</span>
 </code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Help on function get_image_files in module fastai.vision.data:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Help on function get_image_files in module fastai.vision.data:
 
-</span><span class="gp">get_image_files(c: Union[pathlib.Path, str], check_ext: bool = True, recurse=False) -&gt;</span><span class="w"> </span>Collection[pathlib.Path]
-<span class="go">    Return list of files in `c` that are images. `check_ext` will filter to `image_extensions`.
-</span></code></pre></div></div>
+get_image_files(c: Union[pathlib.Path, str], check_ext: bool = True, recurse=False) -&gt; Collection[pathlib.Path]
+    Return list of files in `c` that are images. `check_ext` will filter to `image_extensions`.
+</code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">ImageDataBunch</span><span class="p">.</span><span class="n">from_folder</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">valid</span><span class="o">=</span><span class="s">'validation'</span><span class="p">,</span> <span class="n">ds_tfms</span><span class="o">=</span><span class="n">get_transforms</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="mi">224</span><span class="p">).</span><span class="n">normalize</span><span class="p">(</span><span class="n">imagenet_stats</span><span class="p">)</span>
 </code></pre></div></div>
@@ -177,8 +177,8 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="p">.</span><span class="n">classes</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">c</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">train_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">valid_ds</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">(['airbus', 'boeing'], 2, 245, 80)
-</span></code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(['airbus', 'boeing'], 2, 245, 80)
+</code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="p">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 </code></pre></div></div>
@@ -426,11 +426,11 @@
   </tbody>
 </table>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">Better model found at epoch 0 with accuracy value: 0.7250000238418579.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Better model found at epoch 0 with accuracy value: 0.7250000238418579.
 Better model found at epoch 9 with accuracy value: 0.7749999761581421.
 Better model found at epoch 10 with accuracy value: 0.800000011920929.
 Better model found at epoch 11 with accuracy value: 0.824999988079071.
-</span></code></pre></div></div>
+</code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">'model-1'</span><span class="p">)</span>
 </code></pre></div></div>

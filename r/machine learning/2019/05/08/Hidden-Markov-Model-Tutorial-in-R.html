@@ -225,7 +225,7 @@ given the hidden state sequence as</p>
 </span><span class="n">print</span><span class="p">(</span><span class="n">total_l</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c"># [1] 0.0099748</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 0.0099748
 </code></pre></div></div>
 
 <p>This brute-force algorithm is extremely inefficient and is not
@@ -262,7 +262,7 @@ depends on the current state. Let $Y_t$ denote the subset of $Y$ of the first $t
 </span><span class="n">print</span><span class="p">(</span><span class="nf">sum</span><span class="p">(</span><span class="n">alpha</span><span class="p">[,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">Y</span><span class="p">)]))</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c"># [1] 0.0099748</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 0.0099748
 </code></pre></div></div>
 
 <p>We see that the brute-force method and the forward algorithm produce the
@@ -332,13 +332,13 @@ approach to compute the. Let $v_t(j)$ be the probability of observing sequence $
 </span><span class="n">print</span><span class="p">(</span><span class="n">viterbi_results</span><span class="p">[[</span><span class="m">1</span><span class="p">]])</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c"># [1] 0.0037632</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 0.0037632
 </code></pre></div></div>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">print</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="n">viterbi_results</span><span class="p">[[</span><span class="m">2</span><span class="p">]]])</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c"># [1] "COLD" "HOT"  "HOT"  "HOT"</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] "COLD" "HOT"  "HOT"  "HOT"
 </code></pre></div></div>
 
 <h2 id="determining-the-optimal-hmm-parameters">Determining the Optimal HMM Parameters</h2>
@@ -375,7 +375,7 @@ The R implementation is given below:</p>
 </span><span class="n">print</span><span class="p">(</span><span class="n">probY</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c"># [1] 0.0099748</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 0.0099748
 </code></pre></div></div>
 
 <p>Recall: we are interesting in estimating $Q$, $B$ and $\pi$ given our observation sequence $Y$. As we will see later on, estimating these quantities typically involve
@@ -644,24 +644,24 @@ the values of $Q$ and $B$ such that we do not have this numerical issue.</p>
 </span><span class="n">model</span><span class="p">[[</span><span class="s2">"Q"</span><span class="p">]]</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c">#  [,1] [,2]</span>
-<span class="gp">#</span><span class="c"># [1,]1 4.738597e-19</span>
-<span class="gp">#</span><span class="c"># [2,]1 4.788997e-18</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##  [,1] [,2]
+## [1,]1 4.738597e-19
+## [2,]1 4.788997e-18
 </code></pre></div></div>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">[[</span><span class="s2">"B"</span><span class="p">]]</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c">#  [,1] [,2]</span>
-<span class="gp">#</span><span class="c"># [1,] 1.974110e-43 1.000000e+00</span>
-<span class="gp">#</span><span class="c"># [2,] 3.333333e-01 9.278520e-20</span>
-<span class="gp">#</span><span class="c"># [3,] 6.666667e-01 5.643931e-18</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>##  [,1] [,2]
+## [1,] 1.974110e-43 1.000000e+00
+## [2,] 3.333333e-01 9.278520e-20
+## [3,] 6.666667e-01 5.643931e-18
 </code></pre></div></div>
 
 <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">[[</span><span class="s2">"pi"</span><span class="p">]]</span><span class="w">
 </span></code></pre></div></div>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="c"># [1] 5.922329e-43 1.000000e+00</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>## [1] 5.922329e-43 1.000000e+00
 </code></pre></div></div>
 
     </div><!-- from https://github.com/utterance/utterances -->
