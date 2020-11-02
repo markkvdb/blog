@@ -36,7 +36,7 @@ pred_class, _, _ = learn.predict(img)
 print(pred_class)
 ```
 
-```console
+```
 airbus
 ```
 

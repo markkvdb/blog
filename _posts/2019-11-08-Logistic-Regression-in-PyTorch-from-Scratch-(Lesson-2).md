@@ -92,15 +92,13 @@ $$
 This relates to the probability $p$ as follows
 
 $$
-\begin{equation}
-\begin{split}
+\begin{aligned}
 P(y = 1) &= P(y^* > 0) & \\
 &= P(\boldsymbol{x}^T\boldsymbol{b} + \varepsilon > 0) & \\
 &= P(\varepsilon > -\boldsymbol{x}^T\boldsymbol{b}) &\\
 &= P(\varepsilon \leq \boldsymbol{x}^T\boldsymbol{b}) & \text{ (logistic regression is symmetric)} \\
 &= F(\boldsymbol{X}^T\boldsymbol{b}) = p.
-\end{split}
-\end{equation}
+\end{aligned}
 $$
 
 ```python
@@ -126,12 +124,10 @@ $$
 This equation follows immediately from the first order condition of the mean-squared error of the model, i.e.,
 
 $$
-\begin{equation}
-\begin{split}
+\begin{aligned}
 0 = \frac{\partial (\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})^T(\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})}{\partial \boldsymbol{b}} &= \frac{\partial \boldsymbol{y}^T\boldsymbol{y}}{\partial \boldsymbol{b}} - \frac{\partial 2\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{y}}{\partial \boldsymbol{b}} + \frac{\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{b}}{\partial \boldsymbol{b}} \\
 &= -2 \boldsymbol{X}^T \boldsymbol{y} + 2  \boldsymbol{X}^T  \boldsymbol{X} \boldsymbol{b}.
-\end{split}
-\end{equation}
+\end{aligned}
 $$
 
 ```python
@@ -156,12 +152,10 @@ Indeed, we observe that almost all observations lay between the $[0, 1]$ interva
 Unlike the linear regression, the logistic regression has no closed-form solution. The most popular way of estimating the parameters $\boldsymbol{b}$ is to estimate the maximum likelihood estimator:
 
 $$
-\begin{equation}
-\begin{split}
+\begin{aligned}
 LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) &= \prod_{i=1}^N P(Y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})^{y_i} (1 - P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b}))^{1-y_i} \\
 &= \prod_{i=1}^N h(\boldsymbol{x}_i^T\boldsymbol{b})^{y_i} (1 - h(\boldsymbol{x}_i^T\boldsymbol{b}))^{1-y_i}.
-\end{split}
-\end{equation}
+\end{aligned}
 $$
 
 Remember that we wanted $P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})$ to be close to one when $y_i = 1$. If that's our goal, it means that we want $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ to be as large as possible. In other words, we want to find a $\boldsymbol{b}$ such that $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ is maximised.

@@ -193,7 +193,7 @@ for iter in range(n_iter+1):
         print('Iteration {0}: {1}'.format(iter, MSE))
 ```
 
-```console
+```
 Iteration 0: 0.38656561971217596
 Iteration 10: 0.37967674088143133
 Iteration 20: 0.37237614217772685
@@ -232,7 +232,7 @@ model.fit(X, y, epochs=300, batch_size=4)
 SVG(model_to_dot(model, show_shapes=True).create(prog='dot', format='svg'))
 ```
 
-```console
+```
 Epoch 1/300
 4/4 [==============================] - 0s 37ms/step - loss: 0.6039 - acc: 0.7500
 Epoch 2/300

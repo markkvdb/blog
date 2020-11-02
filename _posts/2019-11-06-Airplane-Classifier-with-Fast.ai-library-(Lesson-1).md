@@ -38,7 +38,7 @@ help(get_image_files)
 path = '/home/jupyter/data'
 ```
 
-```console
+```
 Help on function get_image_files in module fastai.vision.data:
 
 get_image_files(c: Union[pathlib.Path, str], check_ext: bool = True, recurse=False) -> Collection[pathlib.Path]
@@ -55,7 +55,7 @@ Let's check out the sizes of our training and validation set and load a small sa
 data.classes, data.c, len(data.train_ds), len(data.valid_ds)
 ```
 
-```console
+```
 (['airbus', 'boeing'], 2, 245, 80)
 ```
 
@@ -313,7 +313,7 @@ learn.fit_one_cycle(13, max_lr=slice(1e-4,1e-2), callbacks=[SaveModelCallback(le
   </tbody>
 </table>
 
-```console
+```
 Better model found at epoch 0 with accuracy value: 0.7250000238418579.
 Better model found at epoch 9 with accuracy value: 0.7749999761581421.
 Better model found at epoch 10 with accuracy value: 0.800000011920929.

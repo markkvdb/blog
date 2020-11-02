@@ -100,7 +100,7 @@ total_l = sum(apply(V_all, 1, get_likelihood, Y, B, pi, Q))
 print(total_l)
 ```
 
-```console
+```
 ## [1] 0.0099748
 ```
 
@@ -141,7 +141,7 @@ alpha = forward_alg(Y, V_num, pi, B, Q)
 print(sum(alpha[, length(Y)]))
 ```
 
-```console
+```
 ## [1] 0.0099748
 ```
 
@@ -215,7 +215,7 @@ viterbi_results = viterbi_alg(Y, V_num, pi, B, Q)
 print(viterbi_results[[1]])
 ```
 
-```console
+```
 ## [1] 0.0037632
 ```
 
@@ -223,7 +223,7 @@ print(viterbi_results[[1]])
 print(V[viterbi_results[[2]]])
 ```
 
-```console
+```
 ## [1] "COLD" "HOT"  "HOT"  "HOT"
 ```
 
@@ -262,7 +262,7 @@ probY = sum(pi * B[Y[1], ] * beta[, 1])
 print(probY)
 ```
 
-```console
+```
 ## [1] 0.0099748
 ```
 
@@ -567,7 +567,7 @@ model <- BalmWelchAlg(Y, Q, B, pi, V, D)
 model[["Q"]]
 ```
 
-```console
+```
 ##  [,1] [,2]
 ## [1,]1 4.738597e-19
 ## [2,]1 4.788997e-18
@@ -577,7 +577,7 @@ model[["Q"]]
 model[["B"]]
 ```
 
-```console
+```
 ##  [,1] [,2]
 ## [1,] 1.974110e-43 1.000000e+00
 ## [2,] 3.333333e-01 9.278520e-20
@@ -588,6 +588,6 @@ model[["B"]]
 model[["pi"]]
 ```
 
-```console
+```
 ## [1] 5.922329e-43 1.000000e+00
 ```
