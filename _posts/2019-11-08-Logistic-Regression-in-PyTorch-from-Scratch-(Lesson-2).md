@@ -22,11 +22,7 @@ $$
 
 As an example, we might want to find the probability of a patient having cancer ($y=1$) given the patient's medical information ($x$).
 
----
-
-*Now take a moment to think about the following: what properties do we want $F$ to have?*
-
----
+> Note: Now take a moment to think about the following: what properties do we want $F$ to have?
 
 Since we want to model conditional probabilities, we want $F$ to map to the domain $[0, 1]$. It now happens that the sigmoid function, let's call it $h$, has some very nice properties. It is defined as
 
@@ -36,37 +32,31 @@ $$
 
 Ideally, we want $P(y = 1 \mid \boldsymbol{X}; \boldsymbol{b})$ to be close to 1 when $Y$ is 1 and close to 0 when $Y$ is 0. Before explaining how we can find parameters $b$ such that we come closest to the this ideal situation, let's generate some random data.
 
-
 ```python
 %matplotlib inline
 from fastai.basics import *
 ```
 
-
 ```python
 n = 100
 ```
 
-Let's first create a sample of our $\boldsymbol{X}: n \times 2$ feature matrix. 
-
+Let's first create a sample of our $\boldsymbol{X}: n \times 2$ feature matrix.
 
 ```python
-x = torch.ones(n, 2) 
+x = torch.ones(n, 2)
 x[:,0].normal_(1, 0.2)
 x[:,1].normal_(5, 1.)
 x[:5,:]
 ```
 
-
-
-
-    tensor([[1.1678, 6.1665],
-            [0.9792, 5.8922],
-            [1.3373, 4.1348],
-            [0.8830, 6.4242],
-            [1.0932, 5.6926]])
-
-
+```python
+tensor([[1.1678, 6.1665],
+        [0.9792, 5.8922],
+        [1.3373, 4.1348],
+        [0.8830, 6.4242],
+        [1.0932, 5.6926]])
+```
 
 Next, we want to sample our latent variable $\boldsymbol{y}^*$ as
 
@@ -75,7 +65,6 @@ $$
 $$
 
 where $\boldsymbol{b} = [5, -1]$ and $\boldsymbol{\varepsilon} \sim \text{Logistic}(0, 1)$
-
 
 ```python
 b = tensor(5,-1.)
@@ -90,7 +79,7 @@ error = logistic.rsample([n])
 y_star = x@b + error
 ```
 
-The dependent variable can be computed as 
+The dependent variable can be computed as
 
 $$
 y =
@@ -101,16 +90,18 @@ y =
 $$
 
 This relates to the probability $p$ as follows
+
 $$
-\begin{align}
+\begin{equation}
+\begin{split}
 P(y = 1) &= P(y^* > 0) & \\
 &= P(\boldsymbol{x}^T\boldsymbol{b} + \varepsilon > 0) & \\
 &= P(\varepsilon > -\boldsymbol{x}^T\boldsymbol{b}) &\\
 &= P(\varepsilon \leq \boldsymbol{x}^T\boldsymbol{b}) & \text{ (logistic regression is symmetric)} \\
 &= F(\boldsymbol{X}^T\boldsymbol{b}) = p.
-\end{align}
+\end{split}
+\end{equation}
 $$
-
 
 ```python
 y = y_star > 0
@@ -121,9 +112,8 @@ y = y_star > 0
 Let's check what happens if we now try to model the relationship between the conditional probability and $\boldsymbol{X}$ as linear, i.e.,
 
 $$
-p = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon},
-$$
-where $\boldsymbol{\varepsilon} \sim (0, \sigma^2)$.
+p = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon}, \quad \boldsymbol{\varepsilon} \sim (0, \sigma^2).
+$#
 
 Note that although we have no guarantee that $p$ lies in the interval $[0,1]$, this rarely happens. A bigger problem is the heteroskedasticity of the error term. The linear model assumes the errors are homoskedastic, but it is possible to incoorporate heteroskedastic errors by estimating white standard errors.
 
@@ -136,13 +126,13 @@ $$
 This equation follows immediately from the first order condition of the mean-squared error of the model, i.e.,
 
 $$
-\begin{align}
+\begin{equation}
+\begin{split}
 0 = \frac{\partial (\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})^T(\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})}{\partial \boldsymbol{b}} &= \frac{\partial \boldsymbol{y}^T\boldsymbol{y}}{\partial \boldsymbol{b}} - \frac{\partial 2\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{y}}{\partial \boldsymbol{b}} + \frac{\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{b}}{\partial \boldsymbol{b}} \\
 &= -2 \boldsymbol{X}^T \boldsymbol{y} + 2  \boldsymbol{X}^T  \boldsymbol{X} \boldsymbol{b}.
-\end{align}
+\end{split}
+\end{equation}
 $$
-
-
 
 ```python
 # Let's compute the MLE linear regressor
@@ -157,9 +147,7 @@ ax.scatter(x[:,1], y_linear, label='y_ols')
 leg = ax.legend();
 ```
 
-
 ![png]({{ site.baseurl }}/images/fastai-lesson2/output_10_0.png)
-
 
 Indeed, we observe that almost all observations lay between the $[0, 1]$ interval.
 
@@ -168,10 +156,12 @@ Indeed, we observe that almost all observations lay between the $[0, 1]$ interva
 Unlike the linear regression, the logistic regression has no closed-form solution. The most popular way of estimating the parameters $\boldsymbol{b}$ is to estimate the maximum likelihood estimator:
 
 $$
-\begin{align}
+\begin{equation}
+\begin{split}
 LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) &= \prod_{i=1}^N P(Y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})^{y_i} (1 - P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b}))^{1-y_i} \\
 &= \prod_{i=1}^N h(\boldsymbol{x}_i^T\boldsymbol{b})^{y_i} (1 - h(\boldsymbol{x}_i^T\boldsymbol{b}))^{1-y_i}.
-\end{align}
+\end{split}
+\end{equation}
 $$
 
 Remember that we wanted $P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})$ to be close to one when $y_i = 1$. If that's our goal, it means that we want $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ to be as large as possible. In other words, we want to find a $\boldsymbol{b}$ such that $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ is maximised.
@@ -184,14 +174,12 @@ $$
 
 In PyTorch we can simply formulate this as
 
-
 ```python
 def ll(x, y, b):
     return((1/len(y)) * (torch.log(torch.sigmoid(x@b)[y]).sum() + torch.log(1 - torch.sigmoid(x@b)[~y]).sum()))
 ```
 
 Like I mentioned before, this (log-)likelihood function does not have a closed-form solution (*check it if you want :)*). Therefore, we will apply the (stochastic) gradient descent algorithm to train our model.
-
 
 ```python
 b = tensor(b_linear)
@@ -207,28 +195,27 @@ def update():
         b.grad.zero_()
 ```
 
-
 ```python
 lr = 1e-1
 for t in range(10): update()
 print(b)
 ```
 
-    tensor(-0.6698, grad_fn=<MulBackward0>)
-    tensor([-0.1090, -0.7824])
-    tensor([-0.0060, -0.2512])
-    tensor([ 0.0269, -0.0826])
-    tensor([ 0.0369, -0.0312])
-    tensor([ 0.0400, -0.0153])
-    tensor([ 0.0409, -0.0104])
-    tensor([ 0.0412, -0.0088])
-    tensor([ 0.0412, -0.0083])
-    tensor([ 0.0412, -0.0082])
-    tensor([ 0.0411, -0.0081])
-    Parameter containing:
-    tensor([ 1.3062, -0.2848], requires_grad=True)
-
-
+```python
+tensor(-0.6698, grad_fn=<MulBackward0>)
+tensor([-0.1090, -0.7824])
+tensor([-0.0060, -0.2512])
+tensor([ 0.0269, -0.0826])
+tensor([ 0.0369, -0.0312])
+tensor([ 0.0400, -0.0153])
+tensor([ 0.0409, -0.0104])
+tensor([ 0.0412, -0.0088])
+tensor([ 0.0412, -0.0083])
+tensor([ 0.0412, -0.0082])
+tensor([ 0.0411, -0.0081])
+Parameter containing:
+tensor([ 1.3062, -0.2848], requires_grad=True)
+```
 
 ```python
 y_log = torch.sigmoid(x@b)
@@ -240,39 +227,29 @@ ax.scatter(x[:,1], y_log, label='y_logistic')
 leg = ax.legend();
 ```
 
-
 ![png]({{ site.baseurl }}/images/fastai-lesson2/output_17_0.png)
-
 
 ## Evaluating the linear and logistic classification models
 
 The most basic tool to evaluate the performance of our classification models is to compute the accuracy. The accuracy is the percentage of correctly predicted labels $\boldsymbol{y}$. For our linear model we have
 
-
 ```python
 (y_linear_hat == y.float()).sum().float() * 100 / len(y)
 ```
 
-
-
-
-    tensor(75.)
-
-
+```python
+tensor(75.)
+```
 
 and our logistic model has an accuracy of
-
 
 ```python
 (y_log_hat == y.float()).sum().float() * 100 / len(y)
 ```
 
-
-
-
-    tensor(72.)
-
-
+```python
+tensor(72.)
+```
 
 ## Conclusion
 
