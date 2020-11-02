@@ -25,7 +25,7 @@ data is used which includes more countries.*
 
 First we load some packages that we will use throughout the analysis
 
-``` r
+```r
 library(readxl)
 library(tidyverse)
 library(hrbrthemes)
@@ -36,7 +36,7 @@ library(reshape2)
 
 The data is publicly available and can be loaded into R as
 
-``` r
+```r
 mf_data <- readr::read_csv("https://www.mortality.org/Public/STMF/Outputs/stmf.csv", skip=2)
 knitr::kable(head(mf_data))
 ```
@@ -55,7 +55,7 @@ different age groups (starting with `D`) and the death rate (starting
 with `R`). Furthermore, most variables are not in a human-readable
 format yet. So let’s transform the dataset a bit.
 
-``` r
+```r
 mf_data <- mf_data %>%
   janitor::clean_names() %>%
   gather(starts_with("d"), key="age_group", value="death_count") %>%
@@ -115,7 +115,7 @@ all available years (differs by country). The 2020 mortality is shown as
 the red line and the pink/red area on the figures shows the period up to
 the current week (21 as of writing this).
 
-``` r
+```r
 plot_data <- mf_data %>%
   mutate(is_2020 = year == 2020)
 
@@ -174,7 +174,7 @@ equal the expected mortality in 2020 without COVID-19. This might differ
 for a variety of reasons like a bad flu season or changes in
 demographics.
 
-``` r
+```r
 excess_deaths <- plot_data %>%
   filter(year >= 2015) %>%
   group_by(country, sex, age_group, week, is_2020) %>%
@@ -213,7 +213,7 @@ measure by dividing the excess deaths by the historic mortality data
 from 2015 to 2019. Furthermore, we remove the data from week 23 onwards
 for the USA, since this is clearly incomplete.
 
-``` r
+```r
 excess_deaths_filter_US <- excess_deaths %>%
   filter(!(country == "United States" & week >= 23))
 
@@ -254,7 +254,7 @@ excess deaths over countries dismisses the population size entirely.
 Despite these flaws let’s look at the average of the standardised excess
 deaths.
 
-``` r
+```r
 excess_deaths_sex <- excess_deaths_filter_US %>%
   group_by(sex, age_group, week) %>%
   summarise(excess_death_std = mean(excess_death_std),
@@ -292,7 +292,7 @@ only reporting country in week 20.
 
 Now, let’s look at the differences between age groups.
 
-``` r
+```r
 excess_deaths_sex %>%
   filter(sex == "both", age_group %in% c("15-64", "65-74", "75-84", "85+")) %>%
   ggplot(aes(x=week, y=excess_death_std, colour=age_group)) +
@@ -315,7 +315,7 @@ Lastly, we dissect the data by sex and age group to compare individual
 countries trends. Iceland is removed because of its small population
 size and therefore heavily fluctuating mortality data.
 
-``` r
+```r
 excess_deaths_filter_US %>%
   filter(sex != "both", age_group %in% c("15-64", "65-74", "75-84", "85+"), week >= 10,
          country != "Iceland") %>%
