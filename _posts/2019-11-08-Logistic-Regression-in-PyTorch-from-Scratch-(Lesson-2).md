@@ -111,7 +111,7 @@ Let's check what happens if we now try to model the relationship between the con
 
 $$
 p = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon}, \quad \boldsymbol{\varepsilon} \sim (0, \sigma^2).
-$#
+$$
 
 Note that although we have no guarantee that $p$ lies in the interval $[0,1]$, this rarely happens. A bigger problem is the heteroskedasticity of the error term. The linear model assumes the errors are homoskedastic, but it is possible to incoorporate heteroskedastic errors by estimating white standard errors.
 
