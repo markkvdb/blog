@@ -37,7 +37,9 @@ pred_class, _, _ = learn.predict(img)
 print(pred_class)
 ```
 
-    airbus
+```python
+airbus
+```
 
 Although our model does not have the highest accuracy, we do manage to obtain the right class for this photo but note that a model that we randomly give back a class would also be right 50% of the time for any given photo...
 
@@ -68,7 +70,7 @@ Remember that $$\boldsymbol{y}$$ and $$\boldsymbol{X}$$ consistute the data we h
 Lesson 2 of the fast-ai course mainly concerns problems with question 2: it is about the learning process. Almost all research and applications are based on so-called gradient-based optimisation. The comes from the idea that any function $$f$$ at point $$\boldsymbol{x}$$ can be written as the taylor series expansion, i.e.,
 
 $$
-\begin{equation}\label{taylor}\tag{1}
+\begin{equation}
 f(\boldsymbol{x}) = f(\boldsymbol{x}_0) + (\boldsymbol{x} - \boldsymbol{x}_0)^T\frac{\partial f(\boldsymbol{x}_0)}{\partial \boldsymbol{x}} + \frac{1}{2}(\boldsymbol{x} - \boldsymbol{x}_0)^T\frac{\partial^2 f(\boldsymbol{x}_0)}{\partial \boldsymbol{x}^2}(\boldsymbol{x} - \boldsymbol{x}_0) + \dots
 \end{equation}
 $$
@@ -83,10 +85,10 @@ $$f(\boldsymbol{x}) \iff c(\boldsymbol{\theta}) = c(f(\boldsymbol{\theta}; \bold
 
 The idea of gradient-based optimisation is to "improve" our function $$f$$ by changing the values of $$\boldsymbol{x}$$ slightly at every step. If $$\boldsymbol{x}_0$$ is the current value then we compute the gradient $$\boldsymbol{g}$$ of $$f$$ at point $$\boldsymbol{x}_0$$ and take a small step in this direction, i.e., 
 
-$$\boldsymbol{x}_1 = \boldsymbol{x}_0 - \epsilon \boldsymbol{g}.$$ If we fill this into the equation \eqref{taylor} we get
+$$\boldsymbol{x}_1 = \boldsymbol{x}_0 - \epsilon \boldsymbol{g}.$$ If we fill this into the equation (1) we get
 
 $$
-\begin{equation}\label{true_learn}\tag{2}
+\begin{equation}
 f(\boldsymbol{x}_1) = f(\boldsymbol{x}_0) -\epsilon \boldsymbol{g}^T \boldsymbol{g} + \frac{1}{2}\epsilon^2\boldsymbol{g}^T\boldsymbol{H}\boldsymbol{g} + \dots,
 \end{equation}
 $$
@@ -94,7 +96,7 @@ $$
 where $$\boldsymbol{H} = \frac{\partial^2 f(\boldsymbol{x}_0)}{\partial \boldsymbol{x}^2}$$. The idea of gradient-based optimisation comes from the fact that for small values of $$\epsilon$$ the last term diminishes so that we can write
 
 $$
-\begin{equation}\label{approx_learn}\tag{3}
+\begin{equation}
 f(\boldsymbol{x}_1) \approx f(\boldsymbol{x}_0) -\epsilon \boldsymbol{g}^T \boldsymbol{g}.
 \end{equation}
 $$
@@ -105,15 +107,15 @@ Jeremy Howard from the fast-ai course discusses some common pitfalls in learning
 
 ### Learning rate too high
 
-Although state-of-the-art models do not directly use the gradient to improve the objective function it is closely related. In our gradient-descent update step in \eqref{approx_learn} the learning rate refers to $$\epsilon$$. Before discussing why a high $$\epsilon$$ is bad, let's consider this figure.
+Although state-of-the-art models do not directly use the gradient to improve the objective function it is closely related. In our gradient-descent update step in (3) the learning rate refers to $$\epsilon$$. Before discussing why a high $$\epsilon$$ is bad, let's consider this figure.
 
 ![IMAGE ALT TEXT HERE]({{ site.baseurl }}/images/fastai-lesson2/learning_rate.png)
 
-In the plot on the right we see what happens when the learning rate is too high. The reason for this divergence is that our approximation only works when epsilon is small. If epsilon gets larger, the last term of equation \eqref{true_learn} and higher order terms generally are no longer close to zero. Hence, the true value $$f(\boldsymbol{x}_1)$$ might be larger than $$f(\boldsymbol{x}_0)$$ resulting in the behaviour seen in the right graph.
+In the plot on the right we see what happens when the learning rate is too high. The reason for this divergence is that our approximation only works when epsilon is small. If epsilon gets larger, the last term of equation (2) and higher order terms generally are no longer close to zero. Hence, the true value $$f(\boldsymbol{x}_1)$$ might be larger than $$f(\boldsymbol{x}_0)$$ resulting in the behaviour seen in the right graph.
 
 ### Learning rate too low
 
-If the learning rate is very low, then the gradient-based optimisation and its first-order linear approximation as in \eqref{approx_learn} accurately model the cost function $$c$$ close to the last parameter values $$\boldsymbol{\theta}$$. However, if the learning rate is too low, it will take many epochs to reach some kind of local minimum. Furthermore, if our function is not globally convex, we might never reach a good local minimum since we cannot escape the current path to the nearest local minimum.
+If the learning rate is very low, then the gradient-based optimisation and its first-order linear approximation as in (3) accurately model the cost function $$c$$ close to the last parameter values $$\boldsymbol{\theta}$$. However, if the learning rate is too low, it will take many epochs to reach some kind of local minimum. Furthermore, if our function is not globally convex, we might never reach a good local minimum since we cannot escape the current path to the nearest local minimum.
 
 ### Too few epochs
 
@@ -123,7 +125,7 @@ Another problem with too few epochs arises when the objective function is no lon
 
 ![IMAGE ALT TEXT HERE]({{ site.baseurl }}/images/fastai-lesson2/objective_surface.jpeg)
 
-If we start with randomly selected paramater values it is unlikely that we will ever reach the global minimum of the above objective function. There are ways to deal with this, such as more advanced learning algorithms instead of our basic gradient-descent algorithm in \eqref{approx_learn} (which still consistutes the basis of all these algorithms). However, if we only allow for a small number of epochs, the learning process does not have the opportunity to explore many regions of the objective surface.
+If we start with randomly selected paramater values it is unlikely that we will ever reach the global minimum of the above objective function. There are ways to deal with this, such as more advanced learning algorithms instead of our basic gradient-descent algorithm in (3) (which still consistutes the basis of all these algorithms). However, if we only allow for a small number of epochs, the learning process does not have the opportunity to explore many regions of the objective surface.
 
 ### Too many epochs
 
