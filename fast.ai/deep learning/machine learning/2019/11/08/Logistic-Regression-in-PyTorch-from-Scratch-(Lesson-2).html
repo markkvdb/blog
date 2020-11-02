@@ -149,11 +149,9 @@
 
 <p>As an example, we might want to find the probability of a patient having cancer ($y=1$) given the patient’s medical information ($x$).</p>
 
-<hr />
-
-<p><em>Now take a moment to think about the following: what properties do we want $F$ to have?</em></p>
-
-<hr />
+<blockquote>
+  <p>Note: Now take a moment to think about the following: what properties do we want $F$ to have?</p>
+</blockquote>
 
 <p>Since we want to model conditional probabilities, we want $F$ to map to the domain $[0, 1]$. It now happens that the sigmoid function, let’s call it $h$, has some very nice properties. It is defined as</p>
 
@@ -170,17 +168,17 @@
 
 <p>Let’s first create a sample of our $\boldsymbol{X}: n \times 2$ feature matrix.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> 
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">x</span><span class="p">[:,</span><span class="mi">0</span><span class="p">].</span><span class="n">normal_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
 <span class="n">x</span><span class="p">[:,</span><span class="mi">1</span><span class="p">].</span><span class="n">normal_</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="n">x</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:]</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tensor([[1.1678, 6.1665],
-        [0.9792, 5.8922],
-        [1.3373, 4.1348],
-        [0.8830, 6.4242],
-        [1.0932, 5.6926]])
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.1678</span><span class="p">,</span> <span class="mf">6.1665</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.9792</span><span class="p">,</span> <span class="mf">5.8922</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1.3373</span><span class="p">,</span> <span class="mf">4.1348</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.8830</span><span class="p">,</span> <span class="mf">6.4242</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">1.0932</span><span class="p">,</span> <span class="mf">5.6926</span><span class="p">]])</span>
 </code></pre></div></div>
 
 <p>Next, we want to sample our latent variable $\boldsymbol{y}^*$ as</p>
@@ -209,15 +207,19 @@
 0, &amp; \text{else.}
 \end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0000299999999998em;vertical-align:-1.25003em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">1</span><span class="mpunct">,</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span><span class="mpunct">,</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">if </span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.688696em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">0</span><span class="mpunct">,</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">else.</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
 
-<p>This relates to the probability $p$ as follows
-<span class="katex-error" title="ParseError: KaTeX parse error: No such environment: align at position 7: \begin{̲a̲l̲i̲g̲n̲}̲
-P(y = 1) &amp;= P(…" style="color:#cc0000">\begin{align}
+<p>This relates to the probability $p$ as follows</p>
+
+<span class="katex-error" title="ParseError: KaTeX parse error: No such environment: equation at position 7: \begin{̲e̲q̲u̲a̲t̲i̲o̲n̲}̲
+\begin{split}
+…" style="color:#cc0000">\begin{equation}
+\begin{split}
 P(y = 1) &amp;= P(y^* &gt; 0) &amp; \\
 &amp;= P(\boldsymbol{x}^T\boldsymbol{b} + \varepsilon &gt; 0) &amp; \\
 &amp;= P(\varepsilon &gt; -\boldsymbol{x}^T\boldsymbol{b}) &amp;\\
 &amp;= P(\varepsilon \leq \boldsymbol{x}^T\boldsymbol{b}) &amp; \text{ (logistic regression is symmetric)} \\
 &amp;= F(\boldsymbol{X}^T\boldsymbol{b}) = p.
-\end{align}</span></p>
+\end{split}
+\end{equation}</span>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y</span> <span class="o">=</span> <span class="n">y_star</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </code></pre></div></div>
@@ -226,8 +228,9 @@ P(y = 1) &amp;= P(y^* &gt; 0) &amp; \\
 
 <p>Let’s check what happens if we now try to model the relationship between the conditional probability and $\boldsymbol{X}$ as linear, i.e.,</p>
 
-<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><msup><mi mathvariant="bold-italic">X</mi><mi>T</mi></msup><mi mathvariant="bold-italic">b</mi><mo>+</mo><mi mathvariant="bold-italic">ε</mi><mo separator="true">,</mo></mrow><annotation encoding="application/x-tex">p = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon},</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">p</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0006709999999999em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.07778em;">X</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.917341em;"><span style="top:-3.1390100000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord"><span class="mord boldsymbol">b</span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.63888em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">ε</span></span></span><span class="mpunct">,</span></span></span></span>
-where $\boldsymbol{\varepsilon} \sim (0, \sigma^2)$.</p>
+<p>$$
+p = \boldsymbol{X}^T\boldsymbol{b} + \boldsymbol{\varepsilon}, \quad \boldsymbol{\varepsilon} \sim (0, \sigma^2).
+$#</p>
 
 <p>Note that although we have no guarantee that $p$ lies in the interval $[0,1]$, this rarely happens. A bigger problem is the heteroskedasticity of the error term. The linear model assumes the errors are homoskedastic, but it is possible to incoorporate heteroskedastic errors by estimating white standard errors.</p>
 
@@ -237,11 +240,14 @@ where $\boldsymbol{\varepsilon} \sim (0, \sigma^2)$.</p>
 
 <p>This equation follows immediately from the first order condition of the mean-squared error of the model, i.e.,</p>
 
-<span class="katex-error" title="ParseError: KaTeX parse error: No such environment: align at position 7: \begin{̲a̲l̲i̲g̲n̲}̲
-0 = \frac{\par…" style="color:#cc0000">\begin{align}
+<span class="katex-error" title="ParseError: KaTeX parse error: No such environment: equation at position 7: \begin{̲e̲q̲u̲a̲t̲i̲o̲n̲}̲
+\begin{split}
+…" style="color:#cc0000">\begin{equation}
+\begin{split}
 0 = \frac{\partial (\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})^T(\boldsymbol{y} - \boldsymbol{X}^T \boldsymbol{b})}{\partial \boldsymbol{b}} &amp;= \frac{\partial \boldsymbol{y}^T\boldsymbol{y}}{\partial \boldsymbol{b}} - \frac{\partial 2\boldsymbol{b}^T\boldsymbol{X}^T\boldsymbol{y}}{\partial \boldsymbol{b}} + \frac{\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{b}}{\partial \boldsymbol{b}} \\
 &amp;= -2 \boldsymbol{X}^T \boldsymbol{y} + 2  \boldsymbol{X}^T  \boldsymbol{X} \boldsymbol{b}.
-\end{align}</span>
+\end{split}
+\end{equation}</span>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Let's compute the MLE linear regressor
 </span><span class="n">b_linear</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">T</span><span class="o">@</span><span class="n">x</span><span class="p">)</span><span class="o">@</span><span class="n">x</span><span class="p">.</span><span class="n">T</span><span class="o">@</span><span class="n">y</span><span class="p">.</span><span class="nb">float</span><span class="p">()</span>
@@ -263,11 +269,14 @@ where $\boldsymbol{\varepsilon} \sim (0, \sigma^2)$.</p>
 
 <p>Unlike the linear regression, the logistic regression has no closed-form solution. The most popular way of estimating the parameters $\boldsymbol{b}$ is to estimate the maximum likelihood estimator:</p>
 
-<span class="katex-error" title="ParseError: KaTeX parse error: No such environment: align at position 7: \begin{̲a̲l̲i̲g̲n̲}̲
-LL(\boldsymbol…" style="color:#cc0000">\begin{align}
+<span class="katex-error" title="ParseError: KaTeX parse error: No such environment: equation at position 7: \begin{̲e̲q̲u̲a̲t̲i̲o̲n̲}̲
+\begin{split}
+…" style="color:#cc0000">\begin{equation}
+\begin{split}
 LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) &amp;= \prod_{i=1}^N P(Y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})^{y_i} (1 - P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b}))^{1-y_i} \\
 &amp;= \prod_{i=1}^N h(\boldsymbol{x}_i^T\boldsymbol{b})^{y_i} (1 - h(\boldsymbol{x}_i^T\boldsymbol{b}))^{1-y_i}.
-\end{align}</span>
+\end{split}
+\end{equation}</span>
 
 <p>Remember that we wanted $P(y = 1 \mid \boldsymbol{x}_i; \boldsymbol{b})$ to be close to one when $y_i = 1$. If that’s our goal, it means that we want $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ to be as large as possible. In other words, we want to find a $\boldsymbol{b}$ such that $LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y})$ is maximised.</p>
 
@@ -301,19 +310,19 @@ LL(\boldsymbol{b}; \boldsymbol{X}, \boldsymbol{y}) &amp;= \prod_{i=1}^N P(Y = 1 
 <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tensor(-0.6698, grad_fn=&lt;MulBackward0&gt;)
-tensor([-0.1090, -0.7824])
-tensor([-0.0060, -0.2512])
-tensor([ 0.0269, -0.0826])
-tensor([ 0.0369, -0.0312])
-tensor([ 0.0400, -0.0153])
-tensor([ 0.0409, -0.0104])
-tensor([ 0.0412, -0.0088])
-tensor([ 0.0412, -0.0083])
-tensor([ 0.0412, -0.0082])
-tensor([ 0.0411, -0.0081])
-Parameter containing:
-tensor([ 1.3062, -0.2848], requires_grad=True)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">0.6698</span><span class="p">,</span> <span class="n">grad_fn</span><span class="o">=&lt;</span><span class="n">MulBackward0</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1090</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7824</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">0.0060</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2512</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0269</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0826</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0369</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0312</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0400</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0153</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0409</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0104</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0412</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0088</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0412</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0083</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0412</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0082</span><span class="p">])</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">0.0411</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0081</span><span class="p">])</span>
+<span class="n">Parameter</span> <span class="n">containing</span><span class="p">:</span>
+<span class="n">tensor</span><span class="p">([</span> <span class="mf">1.3062</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2848</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y_log</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="o">@</span><span class="n">b</span><span class="p">)</span>
@@ -334,7 +343,7 @@ tensor([ 1.3062, -0.2848], requires_grad=True)
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="n">y_linear_hat</span> <span class="o">==</span> <span class="n">y</span><span class="p">.</span><span class="nb">float</span><span class="p">()).</span><span class="nb">sum</span><span class="p">().</span><span class="nb">float</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tensor(75.)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tensor</span><span class="p">(</span><span class="mf">75.</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>and our logistic model has an accuracy of</p>
@@ -342,7 +351,7 @@ tensor([ 1.3062, -0.2848], requires_grad=True)
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="n">y_log_hat</span> <span class="o">==</span> <span class="n">y</span><span class="p">.</span><span class="nb">float</span><span class="p">()).</span><span class="nb">sum</span><span class="p">().</span><span class="nb">float</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tensor(72.)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tensor</span><span class="p">(</span><span class="mf">72.</span><span class="p">)</span>
 </code></pre></div></div>
 
 <h2 id="conclusion">Conclusion</h2>
