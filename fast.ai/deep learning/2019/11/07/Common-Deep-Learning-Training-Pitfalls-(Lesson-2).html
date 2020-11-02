@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Common Deep Learning Training Pitfalls (lesson 2) | Mark van der Broek</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Common Deep Learning Training Pitfalls (lesson 2)" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Typical mistakes and pitfalls when facing machine or deep learning problems." />
@@ -16,7 +16,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-07T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Typical mistakes and pitfalls when facing machine or deep learning problems.","@type":"BlogPosting","headline":"Common Deep Learning Training Pitfalls (lesson 2)","dateModified":"2019-11-07T00:00:00-06:00","datePublished":"2019-11-07T00:00:00-06:00","url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/07/Common-Deep-Learning-Training-Pitfalls-(Lesson-2).html","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/07/Common-Deep-Learning-Training-Pitfalls-(Lesson-2).html"},"@context":"https://schema.org"}</script>
+{"url":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/07/Common-Deep-Learning-Training-Pitfalls-(Lesson-2).html","headline":"Common Deep Learning Training Pitfalls (lesson 2)","datePublished":"2019-11-07T00:00:00-06:00","dateModified":"2019-11-07T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://mvanderbroek.com/fast.ai/deep%20learning/2019/11/07/Common-Deep-Learning-Training-Pitfalls-(Lesson-2).html"},"description":"Typical mistakes and pitfalls when facing machine or deep learning problems.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mvanderbroek.com/feed.xml" title="Mark van der Broek" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -24,17 +24,23 @@
 
 <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-126113218-1','auto');ga('require','displayfeatures');ga('send','pageview');</script>
 
-<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
-<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
-    integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
-<script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
-    integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css"
+    integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg=="
+    crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+    crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css"
+    integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw=="
+    crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js"
+    integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg=="
     crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
-    integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"
+    integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg=="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"
+    integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A=="
     crossorigin="anonymous"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -135,28 +141,28 @@
 
 <p>First, we export our model so that we can load it into our website.</p>
 
-<pre><code class="language-python">from fastai.vision import *
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fastai.vision</span> <span class="kn">import</span> <span class="o">*</span>
 
-#learn corresponds to the best model of lesson 1
+<span class="c1">#learn corresponds to the best model of lesson 1
 #learn.export('classifier.pkl')
-</code></pre>
+</span></code></pre></div></div>
 
-<pre><code class="language-python">path = './'
-img = open_image(path + 'A320_easyJet_new_livery_2015.jpeg')
-img
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">path</span> <span class="o">=</span> <span class="s">'./'</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">open_image</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">'A320_easyJet_new_livery_2015.jpeg'</span><span class="p">)</span>
+<span class="n">img</span>
+</code></pre></div></div>
 
 <p><img src="/images/fastai-lesson2/output_2_0.png" alt="png" /></p>
 
-<pre><code class="language-python">learn = load_learner(path, 'plane-classifier.pkl')
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">learn</span> <span class="o">=</span> <span class="n">load_learner</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">'plane-classifier.pkl'</span><span class="p">)</span>
 
-pred_class, _, _ = learn.predict(img)
+<span class="n">pred_class</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">learn</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
-print(pred_class)
-</code></pre>
+<span class="k">print</span><span class="p">(</span><span class="n">pred_class</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>airbus
-</code></pre>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>airbus
+</code></pre></div></div>
 
 <p>Although our model does not have the highest accuracy, we do manage to obtain the right class for this photo but note that a model that we randomly give back a class would also be right 50% of the time for any given photo…</p>
 
