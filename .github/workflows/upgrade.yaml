@@ -151,26 +151,9 @@ jobs:
           assert setup_pr_path.exists(), 'Did not find_fastpages_docs/_setup_pr_template.md in the current directory!'
           assert upgrade_pr_path.exists(), 'Did not find _fastpages_docs/_upgrade_pr.md in your repository!'
 
-          # read data from config files
-          settings.read(settings_path)
-          with open(config_path, 'r') as cfg:
-            config = yaml.load(cfg)
-
-          # sync value for baseurl b/w config.yml and settings.ini
-          settings['DEFAULT']['baseurl'] = config['baseurl']
-          with open(settings_path, 'w') as stg:
-            settings.write(stg)
-            
-          # update PR templates
-          setup_pr = setup_pr_path.read_text().replace('{_username_}', username).replace('{_repo_name_}', repo_name)
-          setup_pr_path.write_text(setup_pr)
-          upgrade_pr = upgrade_pr_path.read_text().replace('{_username_}', username).replace('{_repo_name_}', repo_name)
-          upgrade_pr_path.write_text(upgrade_pr)
-        shell: python
-
-      - uses: webfactory/ssh-agent@v0.2.0
-        if: steps.check_version.outputs.vbump == 'true'
-        with:
+    - uses: webfactory/ssh-agent@v0.4.1
+      if: steps.check_version.outputs.vbump == 'true'
+      with:
           ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
 
       - name: push changes to branch
