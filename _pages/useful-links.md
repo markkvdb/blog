@@ -30,6 +30,7 @@ permalink: /useful/
 - [Teach Yourself to Program in 10 Years](http://norvig.com/21-days.html): Not everything happens overnight.
 - [String Formatting in Python 3](https://pyformat.info): Take advantage of the advanced string formatting techniques in Python 3.
 - [The Missing Semester of Your CS Education](https://missing.csail.mit.edu): Short course to master essential productivity tools for programmers.
+- [The Internals of PostgreSQL](https://www.interdb.jp/pg/): Deep-dive into the internal of the database that everyone uses.
 
 ### Miscellaneous
 
