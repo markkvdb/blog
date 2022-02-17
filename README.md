@@ -16,7 +16,20 @@ Great!  You have setup your repo.  Now its time to start writing content.  Some 
 
 - [Writing Blogs With Jupyter](https://github.com/fastai/fastpages#writing-blog-posts-with-jupyter)
 
-- [Writing Blogs With Markdown](https://github.com/fastai/fastpages#writing-blog-posts-with-markdown)
+- Create posts containing code, outputs of code (which can be interactive), formatted text, etc directly from [Jupyter Notebooks](https://jupyter.org/); Notebook posts support features such as:
+    - Interactive visualizations made with [Altair](https://altair-viz.github.io/) remain interactive.
+    - Hide or show cell input and output.
+    - Collapsable code cells that are either open or closed by default.
+    - Define the Title, Summary and other metadata via a special markdown cells
+    - Ability to add links to [Colab](https://colab.research.google.com/), [Deepnote](https://deepnote.com/) and GitHub automatically.
+- Support for comments, supported natively through GitHub Issues.
+- Built-in search.
+- Support for customizing the styling of your site.
+- Embed Twitter cards and YouTube videos.
+- Categorization of blog posts by user-supplied tags for discoverability.
+- Create and edit [Markdown](https://guides.github.com/features/mastering-markdown/) posts.
+- Create posts, including formatting and images, directly from Microsoft Word documents.
+- Write posts on your local machine and [preview them with live reload](#running-the-blog-on-your-local-machine).
 
 - [Writing Blog Posts With Word](https://github.com/fastai/fastpages#writing-blog-posts-with-microsoft-word)
 
@@ -28,13 +41,13 @@ Note: you may want to remove example blog posts from the `_posts`,  `_notebooks`
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Welcome To `fastpages`](#welcome-to-fastpages)
-    - [`fastpages` provides the following features:](#fastpages-provides-the-following-features)
+- [My Blog](#my-blog)
+  - [What To Do Next](#what-to-do-next)
   - [Setup Instructions](#setup-instructions)
   - [Customizing Blog Posts With Front Matter](#customizing-blog-posts-with-front-matter)
     - [Configure Title & Summary](#configure-title--summary)
     - [Table of Contents](#table-of-contents)
-    - [Colab, Binder and GitHub Badges](#colab-binder-and-github-badges)
+    - [Colab, Binder, Deepnote and GitHub Badges](#colab-binder-deepnote-and-github-badges)
     - [Categories](#categories)
     - [Enabling Comments](#enabling-comments)
     - [Setting an Image For Social Media](#setting-an-image-for-social-media)
@@ -43,7 +56,7 @@ Note: you may want to remove example blog posts from the `_posts`,  `_notebooks`
     - [Toggle Search Visibility](#toggle-search-visibility)
   - [Site Wide Configuration Options](#site-wide-configuration-options)
   - [Adjusting Page Width](#adjusting-page-width)
-  - [Annotations and Highlighting With hypothes.is](#annotations-and-highlighting-with-hypothes.is)
+  - [Annotations and Highlighting With hypothes.is](#annotations-and-highlighting-with-hypothesis)
   - [Subscribing with RSS](#subscribing-with-rss)
   - [Syntax Highlighting](#syntax-highlighting)
   - [Dark Mode](#dark-mode)
@@ -71,7 +84,7 @@ Note: you may want to remove example blog posts from the `_posts`,  `_notebooks`
 
 ## Setup Instructions
 
-1.  Generate a copy of this repo by clicking [on this link](https://github.com/fastai/fastpages/generate). Make sure to sign in to your account, or you will see a 404 error. Name your repo anything you like **except** {your-username}.github.io.
+1.  Generate a copy of this repo by clicking [on this link](https://github.com/fastai/fastpages/generate). Make sure to sign in to your account, or you will see a 404 error. Furthermore, **do not check the `include all branches` checkbox**. Name your repo anything you like **except** {your-username}.github.io.  
 
 2. **GitHub Actions will automatically open a PR** on your new repository ~ 30 seconds after the copy is created.  Follow the instructions in that PR to continue.
 
@@ -135,14 +148,14 @@ See this [tutorial on YAML](https://rollout.io/blog/yaml-tutorial-everything-you
 ### Table of Contents
   - `fast_template` will automatically generate a table of contents for you based on [markdown headers](https://guides.github.com/features/mastering-markdown/)!  You can toggle this feature on or off by setting `toc:` to either `true` or `false`.
 
-### Colab, Binder and GitHub Badges
+### Colab, Binder, Deepnote and GitHub Badges
 
 This option works for **notebooks only**
 
-  -  The `branch` field is used to optionally render a link your notebook to Colab and GitHub in your blog post post. It'll default to `master` if you don't specify it in the notebook.
+  -  The `branch` field is used to optionally render a link your notebook to Colab and GitHub in your blog post. It'll default to `master` if you don't specify it in the notebook.
   - If you do not want to show Colab / GitHub badges on your blog post (perhaps because your repo is private and the links would be broken) set `badges` to `false`.  This defaults to `true`
-  - By default, when you omit this parameter from your front matter, or you set `badges: true`, **all three badges (GitHub, Binder, Colab)** will appear by default. You can adjust these defaults in with the `default_badges` parameter in [Site Wide Configuration Options](#site-wide-configuration-options).
-    - If only want to hide a badge on an individual post, you can set the front matter `hide_{github,colab,binder}_badge: true`.  For example, if you wanted to hide the Binder badge for an individual notebook but you want the other badges to show up, you can set this in your front matter:
+  - By default, when you omit this parameter from your front matter, or you set `badges: true`, **all four badges (GitHub, Binder, Deepnote, Colab)** will appear by default. You can adjust these defaults in with the `default_badges` parameter in [Site Wide Configuration Options](#site-wide-configuration-options).
+    - If only want to hide a badge on an individual post, you can set the front matter `hide_{github,colab,binder,deepnote}_badge: true`.  For example, if you wanted to hide the Binder badge for an individual notebook but you want the other badges to show up, you can set this in your front matter:
 
       ```yaml
       - badges: true
@@ -201,7 +214,7 @@ Note: for this setting **you can only reference image files and folders in the `
 
 You may want to prevent a blog post from being listed on the home page, but still have a public url that you can preview or share discreetly.  You can hide a blog post from the home page by setting the front matter `hide` to `true`.  This is set to `false` by default.
 
-It is recommended that you use [permalinks](https://jekyllrb.com/docs/permalinks/) in order to generate a predictable url for hidden blog posts.  You can also set the front matter `search_exclude` to `false` if you don't want users to find your hidden post in a search.
+It is recommended that you use [permalinks](https://jekyllrb.com/docs/permalinks/) in order to generate a predictable url for hidden blog posts.  You can also set the front matter `search_exclude` to `true` if you don't want users to find your hidden post in a search.
 
 ### Pinning A Blog Post
 
@@ -261,7 +274,7 @@ fastpages comes with built in keyword search powered by [lunr.js](https://lunrjs
 - `title`: this is the title that appears on the upper left hand corner on the header of all your pages.  
 - `description`: this description will show up in various places when a preview for your site is generated (for example, on social media).
 - `github_username`: this allows your site to display a link to your GitHub page in the footer.
-- `github_repo`: this allows your site to render links back to your repository for various features such as links to GitHub and Colab for notebooks.
+- `github_repo`: this allows your site to render links back to your repository for various features such as links to GitHub, Colab and Deepnote for notebooks.
 - `url`: This does not need to be changed unless you have a custom domain.  **Note: leave out the trailing / from this value.**
 - `baseurl`: See the comments in `/_config.yml` for instructions ( "Special Instructions for baseurl" on setting this value properly.  If you do not have a custom domain, then you can likely ignore this option.
 - `email`: this is currently unused.  Ignore.
@@ -298,12 +311,13 @@ fastpages comes with built in keyword search powered by [lunr.js](https://lunrjs
 
     _Alternatively, you can copy all of your posts over to a newly created  repository created from the fastpages template._
 
-- `default_badges`: By default GitHub, Binder, and Colab badges will show up on notebook blog posts. You can adjust these defaults by setting the appropriate value in `default_badges` to false.  For example, if you wanted to turn Binder badges off by default, you would change `default_badges` to this:
+- `default_badges`: By default GitHub, Binder, Deepnote, and Colab badges will show up on notebook blog posts. You can adjust these defaults by setting the appropriate value in `default_badges` to false.  For example, if you wanted to turn Binder badges off by default, you would change `default_badges` to this:
 
   ```yaml
   default_badges:
     github: true
     binder: false
+    deepnote: false
     colab: true
   ```
 
