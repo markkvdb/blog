@@ -1,0 +1,68 @@
+---
+title: "Tutorials on Data Science and Operations Research"
+pagetitle: "Mark van der Broek"
+page-layout: full
+listing:
+  contents: posts
+  type: default
+  sort: "date desc"
+  max-items: 4
+  categories: true
+  fields: [title, date, categories, description]
+---
+
+:::{.home-shell}
+:::{.hero-banner}
+::: {.hero-copy}
+# Mark van der Broek
+
+Tutorials and essays on data science, operations research, machine learning, and the craft of building useful things with code.
+
+I use this blog to write up practical experiments, explain technical ideas clearly, and keep a public record of projects that were worth understanding properly.
+
+[Browse the blog](posts.qmd){.btn-primary}
+[Read about me](about.qmd){.btn-secondary}
+
+:::{.topic-row}
+`Operations Research`
+`Data Science`
+`Machine Learning`
+`Python`
+`R`
+:::
+:::
+
+![Portrait of Mark van der Broek](images/avatar.jpeg){.hero-avatar}
+:::
+
+:::{.feature-grid}
+::: {.feature-card}
+## Featured
+
+### [Excess Mortality in 2020](posts/excess-mortality-in-2020-covid-19/index.qmd)
+
+A data-driven look at pandemic-era mortality patterns using public international data.
+:::
+
+::: {.feature-card}
+## Featured
+
+### [Logistic Regression in PyTorch from Scratch](posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.qmd)
+
+A from-first-principles walkthrough of a foundational model, implemented step by step.
+:::
+
+::: {.feature-card}
+## Featured
+
+### [Map Plots in R in a Tidyverse Way](posts/map-plots-in-r-in-a-tidyverse-way/index.qmd)
+
+A practical article on geospatial plotting in R with a workflow that stays readable.
+:::
+:::
+
+## Recent Writing
+
+The latest posts from the archive.
+
+:::

@@ -1,0 +1,26 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/excess-mortality-in-2020-covid-19/index.html",
+      "/posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html",
+      "/posts/common-deep-learning-training-pitfalls-lesson-2/index.html",
+      "/posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html",
+      "/posts/custom-data-splitter-function-in-python/index.html",
+      "/posts/train-xor-logic-gate-in-neural-network/index.html",
+      "/posts/map-plots-in-r-in-a-tidyverse-way/index.html"
+    ]
+  },
+  {
+    "listing": "/posts.html",
+    "items": [
+      "/posts/excess-mortality-in-2020-covid-19/index.html",
+      "/posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html",
+      "/posts/common-deep-learning-training-pitfalls-lesson-2/index.html",
+      "/posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html",
+      "/posts/custom-data-splitter-function-in-python/index.html",
+      "/posts/train-xor-logic-gate-in-neural-network/index.html",
+      "/posts/map-plots-in-r-in-a-tidyverse-way/index.html"
+    ]
+  }
+]

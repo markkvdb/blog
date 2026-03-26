@@ -1,0 +1,50 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - CNAME
+    - images/
+  render:
+    - "*.qmd"
+    - "posts/**/*.qmd"
+    - "!_archive/**"
+  post-render:
+    - "rm -rf docs/_archive"
+
+website:
+  title: "Mark van der Broek"
+  site-url: "https://mvanderbroek.com"
+  description: "Tutorials on data science and operations research"
+  favicon: images/favicon.ico
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About
+      - href: projects.qmd
+        text: Projects
+      - href: useful-links.qmd
+        text: Useful Links
+      - href: posts.qmd
+        text: Blog
+    right:
+      - icon: github
+        href: "https://github.com/markkvdb"
+      - icon: linkedin
+        href: "https://www.linkedin.com/in/mark-van-der-broek"
+  page-footer:
+    left: "Copyright 2026 Mark van der Broek"
+    right: "Built with Quarto"
+  search: true
+
+format:
+  html:
+    theme: litera
+    css: styles.css
+    toc: true
+    code-copy: true
+    anchor-sections: true
+
+execute:
+  freeze: auto

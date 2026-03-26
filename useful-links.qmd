@@ -1,0 +1,40 @@
+---
+title: "Useful Links"
+---
+
+## Reinforcement Learning
+
+- [Key RL Papers](https://spinningup.openai.com/en/latest/spinningup/keypapers.html): Influential papers in RL research.
+- [Introduction to Reinforcement Learning](http://incompleteideas.net/book/bookdraft2017nov5.pdf): Excellent introduction to reinforcement learning.
+- [UCL Course in RL](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html): Popular course by David Silver.
+
+## Machine Learning and Statistics
+
+- [Towards Model Explainability using SHAP](https://github.com/slundberg/shap): A new avenue in model explainability for ML models.
+- [Maximum Likelihood and Maximum A Posterior Explained](http://blog.christianperone.com/2019/01/mle/): Understanding these basic concepts in statistics.
+- [The Data Science Lifecycle](https://www.textbook.ds100.org/ch/01/lifecycle_intro.html): A great overview of DS projects.
+- [Recipe for Training Neural Networks](http://karpathy.github.io/2019/04/25/recipe/): Hands-on tips and tricks.
+- [Colah's Blog](http://colah.github.io): Excellent visual explanations and intuitions.
+- [Guide to Feature Extraction](https://mlwhiz.com/blog/2019/05/19/feature_extraction/): A practical guide to feature extraction.
+- [Predictive Maintenance Solutions](https://learn.microsoft.com/en-us/azure/architecture/data-science-process/predictive-maintenance-playbook): Predictive maintenance from a machine learning perspective.
+- [It's not just p=0.048 vs. p=0.052](https://statmodeling.stat.columbia.edu/2019/09/06/__trashed-2/): Another discussion about statistical significance.
+- [Data Project Checklist](https://www.fast.ai/2020/01/07/data-questionnaire/): Data projects are much more than model accuracy.
+- [Neat Visualisations](https://rpsychologist.com/viz/): Visual explanations of statistical concepts.
+
+## Programming
+
+- [C++ Quiz](http://cppquiz.org): Fun C++ puzzles.
+- [C++ Annotations](http://www.icce.rug.nl/documents/cplusplus/): Excellent C++ reference manual.
+- [Teach Yourself to Program in 10 Years](http://norvig.com/21-days.html): A good reminder that mastery takes time.
+- [String Formatting in Python 3](https://pyformat.info): Advanced formatting techniques in Python 3.
+- [The Missing Semester of Your CS Education](https://missing.csail.mit.edu): Essential productivity tools for programmers.
+- [The Internals of PostgreSQL](https://www.interdb.jp/pg/): A deep dive into PostgreSQL internals.
+
+## Miscellaneous
+
+- [DeepL Translator](https://www.deepl.com/translator): Best language translator.
+- [Hacker News](https://www.ycombinator.com): Tech news.
+- [Why Books Don't Work](https://andymatuschak.org/books/): An argument for more active learning.
+- [100 Best Books of the 21st Century](https://www.theguardian.com/books/2019/sep/21/best-books-of-the-21st-century): Includes some of my favorite books.
+- [Sapiens as a blog post](https://neilkakkar.com/sapiens.html): A memorable way to revisit the book.
+

@@ -1,0 +1,12 @@
+---
+title: "Blog"
+page-layout: article
+listing:
+  contents: posts
+  type: default
+  sort: "date desc"
+  categories: true
+  fields: [title, date, categories, description]
+---
+
+The full archive of essays, tutorials, and project notes.
