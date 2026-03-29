@@ -168,51 +168,30 @@
     "text": "Conclusion\nWhile our model has okay performance. I am not sure what the model has learnt exactly.\nThere are several things I am interested in learning on my fast-ai and deep learning journey in general:\n\nIs there a way to tell what our model has learnt? For our plane example, the difference between the boeing and airbus planes is mostly in the wing design and shape of the nose of the plane. Is there a way to check whether our model has been able to learn these features?\nSo far it has not been clear to me how image classifiers deal with non-square images. Does it crop the images in to use in the model or does the ResNet model allow for variable sized images?\nHow do you decide to use a certain transformation of the image data. Is it always okay to augment our dataset by adding transformation of our image data like turning or mirroring images.\n\nI hope to see you in the next post about fast.ai!"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Tutorials on Data Science and Operations Research",
-    "section": "",
-    "text": "Tutorials and essays on data science, operations research, machine learning, and the craft of building useful things with code.\nI use this blog to write up practical experiments, explain technical ideas clearly, and keep a public record of projects that were worth understanding properly.\nBrowse the blog Read about me\n\nOperations Research Data Science Machine Learning Python R\n\n\n\n\n\nPortrait of Mark van der Broek\n\n\n\n\n\n\n\n\nA data-driven look at pandemic-era mortality patterns using public international data.\n\n\n\n\n\n\nA from-first-principles walkthrough of a foundational model, implemented step by step.\n\n\n\n\n\n\nA practical article on geospatial plotting in R with a workflow that stays readable.\n\n\n\n\n\nThe latest posts from the archive."
+    "objectID": "index.html#excess-mortality-in-2020",
+    "href": "index.html#excess-mortality-in-2020",
+    "title": "Mark van der Broek",
+    "section": "Excess Mortality in 2020",
+    "text": "Excess Mortality in 2020\nA data-driven look at pandemic-era mortality patterns using public international data.\nRead the article"
   },
   {
-    "objectID": "index.html#featured",
-    "href": "index.html#featured",
-    "title": "Tutorials on Data Science and Operations Research",
-    "section": "",
-    "text": "A data-driven look at pandemic-era mortality patterns using public international data."
-  },
-  {
-    "objectID": "index.html#featured-1",
-    "href": "index.html#featured-1",
-    "title": "Tutorials on Data Science and Operations Research",
-    "section": "",
-    "text": "A from-first-principles walkthrough of a foundational model, implemented step by step."
-  },
-  {
-    "objectID": "index.html#featured-2",
-    "href": "index.html#featured-2",
-    "title": "Tutorials on Data Science and Operations Research",
-    "section": "",
-    "text": "A practical article on geospatial plotting in R with a workflow that stays readable."
-  },
-  {
-    "objectID": "index.html#recent-writing",
-    "href": "index.html#recent-writing",
-    "title": "Tutorials on Data Science and Operations Research",
-    "section": "",
-    "text": "The latest posts from the archive."
+    "objectID": "index.html#latest-posts",
+    "href": "index.html#latest-posts",
+    "title": "Mark van der Broek",
+    "section": "Latest Posts",
+    "text": "Latest Posts\nA selection from the archive, newest first.\n\n\n\n\n\n\n\n\n\n\nExcess Mortality in 2020\n\n\n\n\n\nAnalysis of mortality dataset provided by HMD.\n\n\n\n\n\nMay 26, 2020\n\n\n14 min\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic Regression in PyTorch from Scratch\n\n\n\n\n\nAn explanation of the logistic regression from the ground-up.\n\n\n\n\n\nNov 8, 2019\n\n\n6 min\n\n\n\n\n\n\n\n\n\n\n\n\nCommon Deep Learning Training Pitfalls\n\n\n\n\n\nTypical mistakes and pitfalls when facing machine or deep learning problems.\n\n\n\n\n\nNov 7, 2019\n\n\n8 min\n\n\n\n\n\n\n\n\n\n\n\n\nAirplane Classifier with Fast.ai Library\n\n\n\n\n\nLearn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.\n\n\n\n\n\nNov 6, 2019\n\n\n11 min\n\n\n\n\n\n\n\n\n\n\n\n\nCustom Data Splitter Function in Python\n\n\n\n\n\nSplitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program…\n\n\n\n\n\nOct 31, 2019\n\n\n6 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "Mark van der Broek",
     "section": "",
     "text": "Hello! My name is Mark van der Broek and I’m passionate about combining operations research, data science, and computer science."
   },
   {
     "objectID": "about.html#history",
     "href": "about.html#history",
-    "title": "About",
+    "title": "Mark van der Broek",
     "section": "History",
     "text": "History\nAt the age of 12 I discovered the fun of programming by making small hobby websites using HTML, CSS, and PHP. During my undergraduate degree in Econometrics and Operations Research I found my love for modeling real-world problems in applications like finance, actuarial science, logistics, and data analytics.\nI quickly realized that becoming fluent in languages like Python, R, and C++ was fundamental for applying these mathematical models in practice. That led me to an extra-curricular C++ programming course by Frank Brokken and Jurjen Bokma. More recently, with the increasing popularity of machine learning and deep learning, I started following the hands-on fast.ai course.\nIf you need my full resume, please send me an email."
   },
@@ -221,7 +200,7 @@
     "href": "posts.html",
     "title": "Blog",
     "section": "",
-    "text": "The full archive of essays, tutorials, and project notes.\n\n\n\n\n\n\n\n\n\nExcess Mortality in 2020\n\n\n\n\n\n\nR\n\n\nCOVID-19\n\n\n\nAnalysis of mortality dataset provided by HMD.\n\n\n\n\n\nMay 26, 2020\n\n\n\n\n\n\n\nLogistic Regression in PyTorch from Scratch\n\n\n\n\n\n\nfast.ai\n\n\nDeep Learning\n\n\nMachine Learning\n\n\n\nAn explanation of the logistic regression from the ground-up.\n\n\n\n\n\nNov 8, 2019\n\n\n\n\n\n\n\nCommon Deep Learning Training Pitfalls\n\n\n\n\n\n\nfast.ai\n\n\nDeep Learning\n\n\n\nTypical mistakes and pitfalls when facing machine or deep learning problems.\n\n\n\n\n\nNov 7, 2019\n\n\n\n\n\n\n\nAirplane Classifier with Fast.ai Library\n\n\n\n\n\n\nfast.ai\n\n\nDeep Learning\n\n\n\nLearn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.\n\n\n\n\n\nNov 6, 2019\n\n\n\n\n\n\n\nCustom Data Splitter Function in Python\n\n\n\n\n\n\nPython\n\n\n\nSplitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program provides a solution.\n\n\n\n\n\nOct 31, 2019\n\n\n\n\n\n\n\nTrain XOR Logic Gate in Neural Network\n\n\n\n\n\n\nDeep Learning\n\n\nPython\n\n\n\nLearning to train a XOR logic gate with bare Python and Numpy.\n\n\n\n\n\nSep 26, 2018\n\n\n\n\n\n\n\nMap Plots in R in a Tidyverse Way\n\n\n\n\n\n\nR\n\n\nVisualisation\n\n\n\nI show how you can plot your own map in R using a few lines of code using a pipe-based workflow\n\n\n\n\n\nSep 19, 2018\n\n\n\n\n\n\nNo matching items"
+    "text": "The full archive of essays, tutorials, and project notes.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExcess Mortality in 2020\n\n\n\n\n\n\nR\n\n\nCOVID-19\n\n\n\nAnalysis of mortality dataset provided by HMD.\n\n\n\n\n\nMay 26, 2020\n\n\n14 min\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic Regression in PyTorch from Scratch\n\n\n\n\n\n\nfast.ai\n\n\nDeep Learning\n\n\nMachine Learning\n\n\n\nAn explanation of the logistic regression from the ground-up.\n\n\n\n\n\nNov 8, 2019\n\n\n6 min\n\n\n\n\n\n\n\n\n\n\n\n\nCommon Deep Learning Training Pitfalls\n\n\n\n\n\n\nfast.ai\n\n\nDeep Learning\n\n\n\nTypical mistakes and pitfalls when facing machine or deep learning problems.\n\n\n\n\n\nNov 7, 2019\n\n\n8 min\n\n\n\n\n\n\n\n\n\n\n\n\nAirplane Classifier with Fast.ai Library\n\n\n\n\n\n\nfast.ai\n\n\nDeep Learning\n\n\n\nLearn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.\n\n\n\n\n\nNov 6, 2019\n\n\n11 min\n\n\n\n\n\n\n\n\n\n\n\n\nCustom Data Splitter Function in Python\n\n\n\n\n\n\nPython\n\n\n\nSplitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program provides a solution.\n\n\n\n\n\nOct 31, 2019\n\n\n6 min\n\n\n\n\n\n\n\n\n\n\n\n\nTrain XOR Logic Gate in Neural Network\n\n\n\n\n\n\nDeep Learning\n\n\nPython\n\n\n\nLearning to train a XOR logic gate with bare Python and Numpy.\n\n\n\n\n\nSep 26, 2018\n\n\n9 min\n\n\n\n\n\n\n\n\n\n\n\n\nMap Plots in R in a Tidyverse Way\n\n\n\n\n\n\nR\n\n\nVisualisation\n\n\n\nI show how you can plot your own map in R using a few lines of code using a pipe-based workflow\n\n\n\n\n\nSep 19, 2018\n\n\n12 min\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/common-deep-learning-training-pitfalls-lesson-2/index.html",

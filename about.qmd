@@ -1,5 +1,15 @@
 ---
-title: "About"
+title: "Mark van der Broek"
+about:
+  template: trestles
+  image: images/avatar.jpeg
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/markkvdb
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/mark-van-der-broek
 ---
 
 Hello! My name is Mark van der Broek and I'm passionate about combining *operations research*, *data science*, and *computer science*.

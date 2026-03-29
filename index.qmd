@@ -1,68 +1,87 @@
 ---
-title: "Tutorials on Data Science and Operations Research"
+title: "Mark van der Broek"
 pagetitle: "Mark van der Broek"
 page-layout: full
+title-block-style: none
+body-classes: home-page
 listing:
+  id: latest-notes
   contents: posts
   type: default
   sort: "date desc"
-  max-items: 4
-  categories: true
-  fields: [title, date, categories, description]
+  max-items: 5
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  image-align: left
+  image-height: 140px
+  image-placeholder: images/chart-preview.png
+  max-description-length: 140
+  fields: [image, title, date, reading-time, description]
 ---
 
 :::{.home-shell}
-:::{.hero-banner}
-::: {.hero-copy}
+:::{.home-intro}
+::: {.home-intro-copy}
+<div class="eyebrow eyebrow-stamp" data-text="My corner of the internet">
+  <span class="eyebrow-stamp__text" data-text="My corner of the internet">
+    <span class="eyebrow-stamp__word">My</span>
+    <span class="eyebrow-stamp__word">corner</span>
+    <span class="eyebrow-stamp__word">of</span>
+    <span class="eyebrow-stamp__word">the</span>
+    <span class="eyebrow-stamp__word">internet</span>
+  </span>
+</div>
+
 # Mark van der Broek
 
-Tutorials and essays on data science, operations research, machine learning, and the craft of building useful things with code.
+I am Mark van der Broek, and this is where I write down the technical ideas, experiments, and projects that felt worth understanding properly.
 
-I use this blog to write up practical experiments, explain technical ideas clearly, and keep a public record of projects that were worth understanding properly.
+You will find practical posts on data science, operations research, machine learning, Python, and R, plus a few side quests when something interesting pulls me in.
 
-[Browse the blog](posts.qmd){.btn-primary}
-[Read about me](about.qmd){.btn-secondary}
+[Read the blog](posts.qmd){.btn-primary}
+[See projects](projects.qmd){.btn-secondary}
 
-:::{.topic-row}
-`Operations Research`
-`Data Science`
-`Machine Learning`
-`Python`
-`R`
 :::
 :::
 
-![Portrait of Mark van der Broek](images/avatar.jpeg){.hero-avatar}
+:::{.editorial-grid}
+::: {.lead-feature}
+::: {.section-label}
+A good first read
 :::
 
-:::{.feature-grid}
-::: {.feature-card}
-## Featured
-
-### [Excess Mortality in 2020](posts/excess-mortality-in-2020-covid-19/index.qmd)
+## [Excess Mortality in 2020](posts/excess-mortality-in-2020-covid-19/index.qmd)
 
 A data-driven look at pandemic-era mortality patterns using public international data.
+
+[Read the article](posts/excess-mortality-in-2020-covid-19/index.qmd){.text-link}
 :::
 
-::: {.feature-card}
-## Featured
+:::{.secondary-features}
+::: {.section-label}
+Also here
+:::
 
+::: {.secondary-feature}
+### [Projects](projects.qmd)
+
+Tools, packages, and coding work across Python, R, optimization, and data-heavy side projects.
+:::
+
+::: {.secondary-feature}
 ### [Logistic Regression in PyTorch from Scratch](posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.qmd)
 
 A from-first-principles walkthrough of a foundational model, implemented step by step.
 :::
-
-::: {.feature-card}
-## Featured
-
-### [Map Plots in R in a Tidyverse Way](posts/map-plots-in-r-in-a-tidyverse-way/index.qmd)
-
-A practical article on geospatial plotting in R with a workflow that stays readable.
 :::
 :::
 
-## Recent Writing
+## Latest Posts {.recent-heading}
 
-The latest posts from the archive.
+A selection from the archive, newest first.
+
+::: {#latest-notes}
+:::
 
 :::

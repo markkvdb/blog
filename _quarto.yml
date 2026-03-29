@@ -42,7 +42,7 @@ format:
   html:
     theme: litera
     css: styles.css
-    toc: true
+    toc: false
     code-copy: true
     anchor-sections: true
 

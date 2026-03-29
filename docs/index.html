@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-64ab08612c5848cee5f7dc6fef0fcda0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-f2692234cf7d81862717f69a0765fe88.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,20 +72,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-latest-notes .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-title','listing-date','listing-categories','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-title','listing-date','listing-reading-time','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-latest-notes'] = new List('listing-latest-notes', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -132,7 +132,7 @@ window.Quarto = {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed home-page">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -192,98 +192,72 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Q09WSUQtMTk=">COVID-19 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="RGVlcCUyMExlYXJuaW5n">Deep Learning <span class="quarto-category-count">(4)</span></div><div class="category" data-category="TWFjaGluZSUyMExlYXJuaW5n">Machine Learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHl0aG9u">Python <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="VmlzdWFsaXNhdGlvbg==">Visualisation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZmFzdC5haQ==">fast.ai <span class="quarto-category-count">(3)</span></div></div></div>
+    
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7">Mark van der Broek</h1></header>
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Tutorials on Data Science and Operations Research</h1>
-</div>
-
-
-
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
+<header id="title-block-header">
 
 
 </header>
 
 
 <div class="home-shell">
-<div class="hero-banner">
-<section id="mark-van-der-broek" class="level1 hero-copy">
+<div class="home-intro">
+<div class="home-intro-copy">
+<div class="eyebrow eyebrow-stamp" data-text="My corner of the internet">
+<p><span class="eyebrow-stamp__text" data-text="My corner of the internet"> <span class="eyebrow-stamp__word">My</span> <span class="eyebrow-stamp__word">corner</span> <span class="eyebrow-stamp__word">of</span> <span class="eyebrow-stamp__word">the</span> <span class="eyebrow-stamp__word">internet</span> </span></p>
+</div>
+<section id="mark-van-der-broek" class="level1">
 <h1>Mark van der Broek</h1>
-<p>Tutorials and essays on data science, operations research, machine learning, and the craft of building useful things with code.</p>
-<p>I use this blog to write up practical experiments, explain technical ideas clearly, and keep a public record of projects that were worth understanding properly.</p>
-<p><a href="./posts.html" class="btn-primary">Browse the blog</a> <a href="./about.html" class="btn-secondary">Read about me</a></p>
-<div class="topic-row">
-<p><code>Operations Research</code> <code>Data Science</code> <code>Machine Learning</code> <code>Python</code> <code>R</code></p>
-</div>
+<p>I am Mark van der Broek, and this is where I write down the technical ideas, experiments, and projects that felt worth understanding properly.</p>
+<p>You will find practical posts on data science, operations research, machine learning, Python, and R, plus a few side quests when something interesting pulls me in.</p>
+<p><a href="./posts.html" class="btn-primary">Read the blog</a> <a href="./projects.html" class="btn-secondary">See projects</a></p>
 </section>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/avatar.jpeg" class="hero-avatar img-fluid figure-img"></p>
-<figcaption>Portrait of Mark van der Broek</figcaption>
-</figure>
 </div>
 </div>
-<div class="feature-grid">
-<section id="featured" class="level2 feature-card">
-<h2 class="anchored" data-anchor-id="featured">Featured</h2>
-<section id="excess-mortality-in-2020" class="level3">
-<h3 class="anchored" data-anchor-id="excess-mortality-in-2020"><a href="./posts/excess-mortality-in-2020-covid-19/index.html">Excess Mortality in 2020</a></h3>
+<div class="editorial-grid">
+<div class="lead-feature">
+<div class="section-label">
+<p>A good first read</p>
+</div>
+<section id="excess-mortality-in-2020" class="level2">
+<h2 class="anchored" data-anchor-id="excess-mortality-in-2020"><a href="./posts/excess-mortality-in-2020-covid-19/index.html">Excess Mortality in 2020</a></h2>
 <p>A data-driven look at pandemic-era mortality patterns using public international data.</p>
+<p><a href="./posts/excess-mortality-in-2020-covid-19/index.html" class="text-link">Read the article</a></p>
 </section>
+</div>
+<div class="secondary-features">
+<div class="section-label">
+<p>Also here</p>
+</div>
+<section id="projects" class="level3 secondary-feature">
+<h3 class="anchored" data-anchor-id="projects"><a href="./projects.html">Projects</a></h3>
+<p>Tools, packages, and coding work across Python, R, optimization, and data-heavy side projects.</p>
 </section>
-<section id="featured-1" class="level2 feature-card">
-<h2 class="anchored" data-anchor-id="featured-1">Featured</h2>
-<section id="logistic-regression-in-pytorch-from-scratch" class="level3">
+<section id="logistic-regression-in-pytorch-from-scratch" class="level3 secondary-feature">
 <h3 class="anchored" data-anchor-id="logistic-regression-in-pytorch-from-scratch"><a href="./posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html">Logistic Regression in PyTorch from Scratch</a></h3>
 <p>A from-first-principles walkthrough of a foundational model, implemented step by step.</p>
 </section>
-</section>
-<section id="featured-2" class="level2 feature-card">
-<h2 class="anchored" data-anchor-id="featured-2">Featured</h2>
-<section id="map-plots-in-r-in-a-tidyverse-way" class="level3">
-<h3 class="anchored" data-anchor-id="map-plots-in-r-in-a-tidyverse-way"><a href="./posts/map-plots-in-r-in-a-tidyverse-way/index.html">Map Plots in R in a Tidyverse Way</a></h3>
-<p>A practical article on geospatial plotting in R with a workflow that stays readable.</p>
-</section>
-</section>
 </div>
-<section id="recent-writing" class="level2">
-<h2 class="anchored" data-anchor-id="recent-writing">Recent Writing</h2>
-<p>The latest posts from the archive.</p>
-</section>
 </div>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<section id="latest-posts" class="level2 recent-heading">
+<h2 class="recent-heading anchored" data-anchor-id="latest-posts">Latest Posts</h2>
+<p>A selection from the archive, newest first.</p>
+<div id="listing-latest-notes" class="quarto-listing quarto-listing-container-default">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ0NPVklELTE5" data-listing-date-sort="1590444000000" data-listing-file-modified-sort="1774539793414" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2797">
+<div class="quarto-post image-left" data-index="0" data-categories="UiUyQ0NPVklELTE5" data-listing-date-sort="1590444000000" data-listing-file-modified-sort="1774539793414" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2797">
+<div class="thumbnail">
+<p><a href="./posts/excess-mortality-in-2020-covid-19/index.html" class="no-external"></a></p><a href="./posts/excess-mortality-in-2020-covid-19/index.html" class="no-external">
+<p class="card-img-top"><img src="images/hmd-covid-2020/total-excess-fig-1.png" style="height: 140px;"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/excess-mortality-in-2020-covid-19/index.html" class="no-external"></a></p>
+</div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/excess-mortality-in-2020-covid-19/index.html" class="no-external">Excess Mortality in 2020</a>
 </h3>
 <div class="listing-subtitle">
 <a href="./posts/excess-mortality-in-2020-covid-19/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Q09WSUQtMTk='); return false;">
-COVID-19
-</div>
 </div>
 <div class="listing-description">
 <a href="./posts/excess-mortality-in-2020-covid-19/index.html" class="no-external">Analysis of mortality dataset provided by HMD.</a>
@@ -294,27 +268,24 @@ COVID-19
 <div class="listing-date">
 May 26, 2020
 </div>
+<div class="listing-reading-time">
+14 min
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="ZmFzdC5haSUyQ0RlZXAlMjBMZWFybmluZyUyQ01hY2hpbmUlMjBMZWFybmluZw==" data-listing-date-sort="1573167600000" data-listing-file-modified-sort="1774539793413" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1084">
+<div class="quarto-post image-left" data-index="1" data-categories="ZmFzdC5haSUyQ0RlZXAlMjBMZWFybmluZyUyQ01hY2hpbmUlMjBMZWFybmluZw==" data-listing-date-sort="1573167600000" data-listing-file-modified-sort="1774539793413" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1084">
+<div class="thumbnail">
+<p><a href="./posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html" class="no-external"></a></p><a href="./posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html" class="no-external">
+<p class="card-img-top"><img src="images/fastai-lesson2/output_10_0.png" style="height: 140px;"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html" class="no-external"></a></p>
+</div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html" class="no-external">Logistic Regression in PyTorch from Scratch</a>
 </h3>
 <div class="listing-subtitle">
 <a href="./posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZmFzdC5haQ=='); return false;">
-fast.ai
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">
-Deep Learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMExlYXJuaW5n'); return false;">
-Machine Learning
-</div>
 </div>
 <div class="listing-description">
 <a href="./posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.html" class="no-external">An explanation of the logistic regression from the ground-up.</a>
@@ -325,24 +296,24 @@ Machine Learning
 <div class="listing-date">
 Nov 8, 2019
 </div>
+<div class="listing-reading-time">
+6 min
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="ZmFzdC5haSUyQ0RlZXAlMjBMZWFybmluZw==" data-listing-date-sort="1573081200000" data-listing-file-modified-sort="1774539793412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
+<div class="quarto-post image-left" data-index="2" data-categories="ZmFzdC5haSUyQ0RlZXAlMjBMZWFybmluZw==" data-listing-date-sort="1573081200000" data-listing-file-modified-sort="1774539793412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
+<div class="thumbnail">
+<p><a href="./posts/common-deep-learning-training-pitfalls-lesson-2/index.html" class="no-external"></a></p><a href="./posts/common-deep-learning-training-pitfalls-lesson-2/index.html" class="no-external">
+<p class="card-img-top"><img src="images/fastai-lesson2/output_2_0.png" style="height: 140px;"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/common-deep-learning-training-pitfalls-lesson-2/index.html" class="no-external"></a></p>
+</div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/common-deep-learning-training-pitfalls-lesson-2/index.html" class="no-external">Common Deep Learning Training Pitfalls</a>
 </h3>
 <div class="listing-subtitle">
 <a href="./posts/common-deep-learning-training-pitfalls-lesson-2/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZmFzdC5haQ=='); return false;">
-fast.ai
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">
-Deep Learning
-</div>
 </div>
 <div class="listing-description">
 <a href="./posts/common-deep-learning-training-pitfalls-lesson-2/index.html" class="no-external">Typical mistakes and pitfalls when facing machine or deep learning problems.</a>
@@ -353,24 +324,24 @@ Deep Learning
 <div class="listing-date">
 Nov 7, 2019
 </div>
+<div class="listing-reading-time">
+8 min
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="ZmFzdC5haSUyQ0RlZXAlMjBMZWFybmluZw==" data-listing-date-sort="1572994800000" data-listing-file-modified-sort="1774539793412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2014">
+<div class="quarto-post image-left" data-index="3" data-categories="ZmFzdC5haSUyQ0RlZXAlMjBMZWFybmluZw==" data-listing-date-sort="1572994800000" data-listing-file-modified-sort="1774539793412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2014">
+<div class="thumbnail">
+<p><a href="./posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html" class="no-external"></a></p><a href="./posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html" class="no-external">
+<p class="card-img-top"><img src="images/fastai-lesson1/output_8_0.png" style="height: 140px;"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html" class="no-external"></a></p>
+</div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html" class="no-external">Airplane Classifier with Fast.ai Library</a>
 </h3>
 <div class="listing-subtitle">
 <a href="./posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('ZmFzdC5haQ=='); return false;">
-fast.ai
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('RGVlcCUyMExlYXJuaW5n'); return false;">
-Deep Learning
-</div>
 </div>
 <div class="listing-description">
 <a href="./posts/airplane-classifier-with-fast-ai-library-lesson-1/index.html" class="no-external">Learn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.</a>
@@ -381,6 +352,37 @@ Deep Learning
 <div class="listing-date">
 Nov 6, 2019
 </div>
+<div class="listing-reading-time">
+11 min
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-left" data-index="4" data-categories="UHl0aG9u" data-listing-date-sort="1572476400000" data-listing-file-modified-sort="1774539793411" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1071">
+<div class="thumbnail">
+<p><a href="./posts/custom-data-splitter-function-in-python/index.html" class="no-external"></a></p><a href="./posts/custom-data-splitter-function-in-python/index.html" class="no-external">
+<p class="card-img-top"><img src="images/chart-preview.png" style="height: 140px;"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/custom-data-splitter-function-in-python/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/custom-data-splitter-function-in-python/index.html" class="no-external">Custom Data Splitter Function in Python</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/custom-data-splitter-function-in-python/index.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="./posts/custom-data-splitter-function-in-python/index.html" class="no-external">Splitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/custom-data-splitter-function-in-python/index.html" class="no-external">
+<div class="listing-date">
+Oct 31, 2019
+</div>
+<div class="listing-reading-time">
+6 min
+</div>
 </a>
 </div>
 </div>
@@ -388,7 +390,14 @@ Nov 6, 2019
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div></main> <!-- /main -->
+</div>
+</section>
+</div>
+
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

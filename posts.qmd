@@ -5,8 +5,12 @@ listing:
   contents: posts
   type: default
   sort: "date desc"
+  sort-ui: false
+  image-align: left
+  image-height: 140px
+  image-placeholder: images/chart-preview.png
   categories: true
-  fields: [title, date, categories, description]
+  fields: [image, title, date, reading-time, categories, description]
 ---
 
 The full archive of essays, tutorials, and project notes.

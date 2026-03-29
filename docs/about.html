@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About – Mark van der Broek</title>
+<title>Mark van der Broek</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
@@ -72,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -132,48 +131,43 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#history" id="toc-history" class="nav-link active" data-scroll-target="#history">History</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
+<div class="quarto-about-trestles">
+  <div class="about-entity">
+    <img src="images/avatar.jpeg" class="about-image
+  rounded " style="width: 20em;">
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">Mark van der Broek</h1>
 </div>
-
-
-
 <div class="quarto-title-meta">
-
-    
-  
-    
   </div>
-  
-
-
 </header>
-
-
+    <div class="about-links">
+  <a href="https://github.com/markkvdb" class="about-link" rel="" target="">
+    <i class="bi bi-github"></i>
+     <span class="about-link-text">Github</span>
+  </a>
+  <a href="https://linkedin.com/in/mark-van-der-broek" class="about-link" rel="" target="">
+    <i class="bi bi-linkedin"></i>
+     <span class="about-link-text">LinkedIn</span>
+  </a>
+</div>
+  </div>
+  <div class="about-contents"><main class="content" id="quarto-document-content">
 <p>Hello! My name is Mark van der Broek and I’m passionate about combining <em>operations research</em>, <em>data science</em>, and <em>computer science</em>.</p>
 <section id="history" class="level2">
-<h2 class="anchored" data-anchor-id="history">History</h2>
+<h2 data-anchor-id="history">History</h2>
 <p>At the age of 12 I discovered the fun of programming by making small hobby websites using <em>HTML</em>, <em>CSS</em>, and <em>PHP</em>. During my undergraduate degree in Econometrics and Operations Research I found my love for modeling real-world problems in applications like finance, actuarial science, logistics, and data analytics.</p>
 <p>I quickly realized that becoming fluent in languages like <em>Python</em>, <em>R</em>, and <em>C++</em> was fundamental for applying these mathematical models in practice. That led me to an extra-curricular C++ programming course by <a href="http://www.icce.rug.nl/edu/">Frank Brokken and Jurjen Bokma</a>. More recently, with the increasing popularity of <em>machine learning</em> and <em>deep learning</em>, I started following the hands-on <a href="https://www.fast.ai/">fast.ai</a> course.</p>
 <p>If you need my full resume, please send me an email.</p>
 
 
 </section>
-
-</main> <!-- /main -->
+</main></div>
+</div>
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -194,13 +188,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
