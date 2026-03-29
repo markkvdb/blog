@@ -1,17 +1,20 @@
 ---
-title: "Mark van der Broek"
-about:
-  template: trestles
-  image: images/avatar.jpeg
-  links:
-    - icon: github
-      text: Github
-      href: https://github.com/markkvdb
-    - icon: linkedin
-      text: LinkedIn
-      href: https://linkedin.com/in/mark-van-der-broek
+title: "About"
+title-block-style: none
+body-classes: about-page
 ---
 
+:::{.about-shell}
+:::{.about-sidebar}
+![](images/avatar.jpeg){.about-portrait}
+
+# Mark van der Broek
+
+[Github](https://github.com/markkvdb){.about-link}
+[LinkedIn](https://linkedin.com/in/mark-van-der-broek){.about-link}
+:::
+
+:::{.about-main}
 Hello! My name is Mark van der Broek and I'm passionate about combining *operations research*, *data science*, and *computer science*.
 
 ## History
@@ -21,4 +24,5 @@ At the age of 12 I discovered the fun of programming by making small hobby websi
 I quickly realized that becoming fluent in languages like *Python*, *R*, and *C++* was fundamental for applying these mathematical models in practice. That led me to an extra-curricular C++ programming course by [Frank Brokken and Jurjen Bokma](http://www.icce.rug.nl/edu/). More recently, with the increasing popularity of *machine learning* and *deep learning*, I started following the hands-on [fast.ai](https://www.fast.ai/) course.
 
 If you need my full resume, please send me an email.
-
+:::
+:::

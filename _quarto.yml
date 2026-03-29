@@ -40,7 +40,7 @@ website:
 
 format:
   html:
-    theme: litera
+    theme: theme.scss
     css: styles.css
     toc: false
     code-copy: true

@@ -23,15 +23,9 @@ listing:
 :::{.home-shell}
 :::{.home-intro}
 ::: {.home-intro-copy}
-<div class="eyebrow eyebrow-stamp" data-text="My corner of the internet">
-  <span class="eyebrow-stamp__text" data-text="My corner of the internet">
-    <span class="eyebrow-stamp__word">My</span>
-    <span class="eyebrow-stamp__word">corner</span>
-    <span class="eyebrow-stamp__word">of</span>
-    <span class="eyebrow-stamp__word">the</span>
-    <span class="eyebrow-stamp__word">internet</span>
-  </span>
-</div>
+::: {.eyebrow}
+My corner of the internet
+:::
 
 # Mark van der Broek
 
