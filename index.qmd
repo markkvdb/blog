@@ -1,79 +1,26 @@
 ---
-title: "Mark van der Broek"
-pagetitle: "Mark van der Broek"
+title: "Mark van der Broek's Blog"
+subtitle: Notes on applied machine learning, operations research, and its applications to the electricity market.
 page-layout: full
-title-block-style: none
 body-classes: home-page
 listing:
-  id: latest-notes
+  id: latest-blog-posts
+  feed: true
   contents: posts
-  type: default
-  sort: "date desc"
-  max-items: 5
-  categories: false
   sort-ui: false
-  filter-ui: false
-  image-align: left
-  image-height: 140px
+  type: table
+  sort: "sdate desc"
   image-placeholder: images/chart-preview.png
   max-description-length: 140
-  fields: [image, title, date, reading-time, description]
+  fields: [title, description, date]
 ---
 
-:::{.home-shell}
-:::{.home-intro}
-::: {.home-intro-copy}
+## About Me
 
-# Mark van der Broek
+Programming has been my hobby, since I'm 12 years old. I'm a ML engineer with over 6 years of experience in the electricity market. I've worked on forecasts for renewable energy assets (such as solar plants and wind mills) by integrating (massive!) spatiotemporal datasets, and market data forecasts.
 
-This is my personal website where I post my projects, ideas and thoughts about data science, operations research, machine learning and the electricity market. 
+Recently, I've started working with tabular foundational models (such as [TabICL](https://github.com/soda-inria/tabicl) and [TabPFN](https://github.com/PriorLabs/TabPFN)) that finally manages to beat boosting methods for time-series and tabular data. Another hot topic that keeps me busy is how LLMs continue to further disrupt our lives. However, I believe that these tools are most effective when the human is in control and uses LLMs to upskill. That's also why I'm a huge advocate for the [SolveIt](https://solve.it.com/) method (have a look if you're curious!).
 
-::: {.home-intro-actions}
-[Read a post](posts.qmd){.btn-primary}
-[Browse projects](projects.qmd){.btn-secondary}
-:::
+## Latest Posts
 
-:::{.editorial-grid}
-::: {.lead-feature}
-::: {.section-label}
-Start here
-:::
-
-## [Excess Mortality in 2020](posts/excess-mortality-in-2020-covid-19/index.qmd)
-
-A data-driven look at pandemic-era mortality patterns using public international data.
-
-[Read the article](posts/excess-mortality-in-2020-covid-19/index.qmd){.text-link}
-:::
-
-:::{.secondary-features}
-::: {.section-label}
-Around the house
-:::
-
-::: {.secondary-feature}
-### [Projects](projects.qmd)
-
-Tools, packages, and longer-form experiments across Python, R, optimization, and data-heavy side projects.
-
-[Open the projects shelf](projects.qmd){.text-link}
-:::
-
-::: {.secondary-feature}
-### [About Mark](about.qmd)
-
-A quick sketch of the path from hobby websites to operations research, machine learning, and careful technical writing.
-
-[Meet the person behind the posts](about.qmd){.text-link}
-:::
-:::
-:::
-
-## From the archive {.recent-heading}
-
-A few pieces worth pulling back off the shelf.
-
-::: {#latest-notes}
-:::
-
-:::
+::: {#latest-blog-posts}

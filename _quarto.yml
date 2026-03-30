@@ -14,29 +14,29 @@ project:
 website:
   title: "Mark van der Broek"
   site-url: "https://mvanderbroek.com"
+  llms-txt: true
   description: "Tutorials on data science and operations research"
   favicon: images/favicon.ico
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - href: about.qmd
-        text: About
+      - href: blog.qmd
+        text: Blog
       - href: projects.qmd
         text: Projects
-      - href: useful-links.qmd
-        text: Useful Links
-      - href: posts.qmd
-        text: Blog
+      - href: notes.qmd
+        text: Notes
     right:
       - icon: github
         href: "https://github.com/markkvdb"
-        text: GitHub
         aria-label: "Mark van der Broek on GitHub"
       - icon: linkedin
         href: "https://www.linkedin.com/in/mark-van-der-broek"
-        text: LinkedIn
         aria-label: "Mark van der Broek on LinkedIn"
+      - icon: rss
+        href: index.xml
+        aria-label: "RSS Feed"
   page-footer:
     left: "Copyright 2026 Mark van der Broek"
     right: "Built with Quarto"
@@ -44,9 +44,7 @@ website:
 
 format:
   html:
-    theme: theme.scss
-    css: styles.css
-    include-after-body: site-footer.html
+    theme: cyborg
     toc: false
     code-copy: true
     anchor-sections: true
