@@ -27,8 +27,10 @@ $border-radius: 0.25rem;
   --paper-soft: #f3f9fc;
   --surface: #ffffff;
   --surface-soft: #f8fcfe;
+  --surface-warm: #eef7fb;
   --ink: #123043;
   --ink-soft: #557080;
+  --ink-muted: #6d8694;
   --edge: #173042;
   --line: #c9dfeb;
   --accent: #2f86b5;
@@ -43,6 +45,12 @@ $border-radius: 0.25rem;
   --shadow-soft: 2px 2px 0 rgba(23, 48, 66, 0.1);
   --content-width: 1120px;
   --reading-width: 66ch;
+  --space-2xs: clamp(0.35rem, 0.32rem + 0.12vw, 0.45rem);
+  --space-xs: clamp(0.55rem, 0.5rem + 0.18vw, 0.75rem);
+  --space-sm: clamp(0.8rem, 0.72rem + 0.3vw, 1rem);
+  --space-md: clamp(1.1rem, 1rem + 0.45vw, 1.45rem);
+  --space-lg: clamp(1.6rem, 1.35rem + 0.8vw, 2.2rem);
+  --space-xl: clamp(2.35rem, 2rem + 1.2vw, 3.4rem);
 }
 
 html {
@@ -53,10 +61,11 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 0.98rem;
-  line-height: 1.68;
+  font-size: 1rem;
+  line-height: 1.72;
   font-kerning: normal;
   font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
 }
 
 p,
@@ -105,6 +114,17 @@ a:hover,
 a:focus-visible {
   color: var(--accent);
   text-decoration-color: rgba(47, 134, 181, 0.55);
+}
+
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+.navbar-brand:focus-visible,
+.about-link:focus-visible,
+.card-clickable:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 72%, white 28%);
+  outline-offset: 3px;
 }
 
 img {
@@ -192,8 +212,8 @@ tbody tr:nth-child(even) {
 }
 
 #quarto-header .navbar {
-  padding-top: 0.72rem;
-  padding-bottom: 0.72rem;
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
   background: transparent;
 }
 
@@ -205,7 +225,7 @@ tbody tr:nth-child(even) {
 }
 
 #quarto-header .navbar-brand {
-  padding: 0.35rem 0.7rem;
+  padding: 0.45rem 0.8rem;
   border: var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -219,8 +239,12 @@ tbody tr:nth-child(even) {
 }
 
 #quarto-header .navbar-nav .nav-link {
-  padding: 0.28rem 0.14rem;
-  margin: 0 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0.4rem 0.18rem;
+  margin: 0 0.45rem;
   border-bottom: 2px solid transparent;
   font-family: var(--font-display);
   font-size: 0.84rem;
@@ -245,11 +269,11 @@ tbody tr:nth-child(even) {
 
 #quarto-content {
   max-width: var(--content-width);
-  padding-top: 0.55rem;
+  padding-top: var(--space-xs);
 }
 
 main.content {
-  padding-bottom: 2.8rem;
+  padding-bottom: var(--space-xl);
 }
 
 .home-page #quarto-content {
@@ -268,7 +292,7 @@ main.content {
 }
 
 #title-block-header {
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--space-2xs);
   padding-bottom: 0.16rem;
   border-bottom: var(--rule);
   background: transparent;
@@ -281,6 +305,7 @@ main.content {
 .title {
   margin: 0;
   font-size: clamp(1.85rem, 3.2vw, 2.55rem);
+  letter-spacing: -0.04em;
 }
 
 .title-meta,
@@ -304,8 +329,8 @@ main.content {
 #quarto-content.page-layout-article #title-block-header .description {
   max-width: 36rem;
   color: var(--ink);
-  font-size: 1.04rem;
-  line-height: 1.58;
+  font-size: 1.08rem;
+  line-height: 1.64;
 }
 
 #quarto-content.page-layout-article .quarto-title-meta {
@@ -346,16 +371,16 @@ main.content {
 
 #quarto-content.page-layout-article #quarto-document-content > p,
 #quarto-content.page-layout-article #quarto-document-content section > p {
-  margin-bottom: 1rem;
-  font-size: 0.98rem;
-  line-height: 1.72;
+  margin-bottom: var(--space-sm);
+  font-size: 1rem;
+  line-height: 1.76;
 }
 
 #quarto-content.page-layout-article #quarto-document-content > p:first-of-type {
   max-width: 42rem;
   color: var(--ink);
-  font-size: 1.08rem;
-  line-height: 1.6;
+  font-size: 1.12rem;
+  line-height: 1.65;
 }
 
 #quarto-content.page-layout-article #quarto-document-content ul,

@@ -23,26 +23,20 @@ listing:
 :::{.home-shell}
 :::{.home-intro}
 ::: {.home-intro-copy}
-::: {.eyebrow}
-My corner of the internet
-:::
 
 # Mark van der Broek
 
-I am Mark van der Broek, and this is where I write down the technical ideas, experiments, and projects that felt worth understanding properly.
+This is my personal website where I post my projects, ideas and thoughts about data science, operations research, machine learning and the electricity market. 
 
-You will find practical posts on data science, operations research, machine learning, Python, and R, plus a few side quests when something interesting pulls me in.
-
-[Read the blog](posts.qmd){.btn-primary}
-[See projects](projects.qmd){.btn-secondary}
-
-:::
+::: {.home-intro-actions}
+[Read a post](posts.qmd){.btn-primary}
+[Browse projects](projects.qmd){.btn-secondary}
 :::
 
 :::{.editorial-grid}
 ::: {.lead-feature}
 ::: {.section-label}
-A good first read
+Start here
 :::
 
 ## [Excess Mortality in 2020](posts/excess-mortality-in-2020-covid-19/index.qmd)
@@ -54,26 +48,30 @@ A data-driven look at pandemic-era mortality patterns using public international
 
 :::{.secondary-features}
 ::: {.section-label}
-Also here
+Around the house
 :::
 
 ::: {.secondary-feature}
 ### [Projects](projects.qmd)
 
-Tools, packages, and coding work across Python, R, optimization, and data-heavy side projects.
+Tools, packages, and longer-form experiments across Python, R, optimization, and data-heavy side projects.
+
+[Open the projects shelf](projects.qmd){.text-link}
 :::
 
 ::: {.secondary-feature}
-### [Logistic Regression in PyTorch from Scratch](posts/logistic-regression-in-pytorch-from-scratch-lesson-2/index.qmd)
+### [About Mark](about.qmd)
 
-A from-first-principles walkthrough of a foundational model, implemented step by step.
+A quick sketch of the path from hobby websites to operations research, machine learning, and careful technical writing.
+
+[Meet the person behind the posts](about.qmd){.text-link}
 :::
 :::
 :::
 
-## Latest Posts {.recent-heading}
+## From the archive {.recent-heading}
 
-A selection from the archive, newest first.
+A few pieces worth pulling back off the shelf.
 
 ::: {#latest-notes}
 :::

@@ -31,8 +31,12 @@ website:
     right:
       - icon: github
         href: "https://github.com/markkvdb"
+        text: GitHub
+        aria-label: "Mark van der Broek on GitHub"
       - icon: linkedin
         href: "https://www.linkedin.com/in/mark-van-der-broek"
+        text: LinkedIn
+        aria-label: "Mark van der Broek on LinkedIn"
   page-footer:
     left: "Copyright 2026 Mark van der Broek"
     right: "Built with Quarto"
@@ -42,6 +46,7 @@ format:
   html:
     theme: theme.scss
     css: styles.css
+    include-after-body: site-footer.html
     toc: false
     code-copy: true
     anchor-sections: true

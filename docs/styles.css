@@ -18,7 +18,7 @@ h2.recent-heading,
   font-family: var(--font-display);
   font-size: 0.74rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-decoration: none;
   text-transform: uppercase;
   box-shadow: var(--shadow-soft);
@@ -33,14 +33,16 @@ h2.recent-heading,
 .lead-feature,
 .secondary-feature,
 .quarto-post,
-.about-sidebar {
+.about-sidebar,
+.home-note {
   border: var(--border);
   border-radius: var(--radius);
   background: var(--surface);
 }
 
 .lead-feature,
-.about-sidebar {
+.about-sidebar,
+.home-note {
   box-shadow: var(--shadow-strong);
 }
 
@@ -57,8 +59,9 @@ button,
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.72rem 1rem;
-  margin: 0.25rem 0.45rem 0 0;
+  min-height: 44px;
+  padding: 0.78rem 1.08rem;
+  margin: 0;
   border: var(--border);
   border-radius: var(--radius);
   font-family: var(--font-display);
@@ -95,7 +98,8 @@ button:focus-visible,
 
 .text-link {
   display: inline-block;
-  padding: 0.15rem 0;
+  min-height: 44px;
+  padding: 0.45rem 0 0.15rem;
   border-bottom: 2px solid var(--accent);
   color: var(--ink);
   font-family: var(--font-display);
@@ -117,19 +121,20 @@ button:focus-visible,
 
 .home-shell {
   display: grid;
-  gap: 2.6rem;
+  gap: var(--space-xl);
 }
 
 .home-intro {
-  padding-bottom: 1.8rem;
+  padding-bottom: var(--space-lg);
   border-bottom: var(--rule);
 }
 
 .home-intro-copy {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 0.75rem;
+  gap: var(--space-sm);
   align-items: start;
+  max-width: 56rem;
 }
 
 .home-intro-copy .level1 {
@@ -142,41 +147,68 @@ button:focus-visible,
 }
 
 .home-intro-copy h1 {
-  max-width: 12ch;
   margin: 0;
-  font-size: clamp(2.7rem, 5vw, 4.2rem);
+  font-size: clamp(3rem, 5.8vw, 4.8rem);
   letter-spacing: -0.045em;
+  text-wrap: balance;
 }
 
 .home-intro-copy p {
-  max-width: 44rem;
-  margin: 0 0 0.95rem;
-  font-size: 1rem;
-}
-
-.home-intro-copy .level1 > p:first-of-type {
   max-width: 46rem;
-  padding: 0.25rem 0 0.25rem 1rem;
-  border-left: 3px solid var(--accent);
-  background: var(--paper-soft);
-  color: var(--ink);
-  font-size: 1.04rem;
-  line-height: 1.58;
+  margin: 0;
+  font-size: 1.02rem;
 }
 
-.home-intro-copy .level1 > p:last-of-type {
-  margin-bottom: 0;
+.home-intro-copy .level1>p:first-of-type {
+  max-width: 48rem;
+  padding: 0.35rem 0 0.35rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface-warm);
+  color: var(--ink);
+  font-size: 1.08rem;
+  line-height: 1.62;
+}
+
+.home-intro-copy .level1>p:last-of-type {
+  color: var(--ink-soft);
+}
+
+.home-intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding-top: var(--space-xs);
+}
+
+.home-intro-actions p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: 0;
+}
+
+.home-note {
+  width: min(100%, 34rem);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface-warm);
+}
+
+.home-note p,
+.home-note {
+  color: var(--ink);
+  font-size: 0.98rem;
+  line-height: 1.6;
 }
 
 .editorial-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(19rem, 1fr);
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.9fr);
+  gap: var(--space-md);
   align-items: start;
 }
 
 .lead-feature {
-  padding: 1.2rem;
+  padding: var(--space-md);
 }
 
 .lead-feature h2 {
@@ -191,11 +223,11 @@ button:focus-visible,
 
 .secondary-features {
   display: grid;
-  gap: 0.95rem;
+  gap: var(--space-sm);
 }
 
 .secondary-feature {
-  padding: 0.95rem 1rem 1rem;
+  padding: var(--space-sm) var(--space-md) var(--space-md);
   background: var(--surface-soft);
 }
 
@@ -213,9 +245,10 @@ button:focus-visible,
   margin: 0;
 }
 
-.recent-heading + p {
+.recent-heading+p {
   max-width: 34rem;
-  margin: 0.55rem 0 1rem;
+  margin: var(--space-xs) 0 var(--space-md);
+  color: var(--ink);
 }
 
 /* -------------------- */
@@ -224,7 +257,7 @@ button:focus-visible,
 
 .quarto-listing .list {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-sm);
 }
 
 .quarto-post {
@@ -233,9 +266,14 @@ button:focus-visible,
   grid-template-areas:
     "thumb title meta"
     "thumb desc meta";
-  gap: 0.85rem 1rem;
+  gap: 0.85rem var(--space-sm);
   align-items: start;
-  padding: 0.95rem 1rem;
+  padding: var(--space-sm) var(--space-md);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
 }
 
 .quarto-post .thumbnail {
@@ -272,8 +310,9 @@ button:focus-visible,
 .quarto-post .listing-title {
   grid-area: title;
   margin: 0;
-  font-size: clamp(1.15rem, 1.7vw, 1.4rem);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
   line-height: 1.08;
+  text-wrap: balance;
 }
 
 .quarto-post .listing-title a {
@@ -290,8 +329,9 @@ button:focus-visible,
   grid-area: desc;
   max-width: 54ch;
   margin-top: 0.05rem;
-  font-size: 0.92rem;
-  line-height: 1.55;
+  font-size: 0.96rem;
+  line-height: 1.62;
+  overflow-wrap: anywhere;
 }
 
 .listing-description a {
@@ -310,12 +350,29 @@ button:focus-visible,
   display: grid;
   gap: 0.15rem;
   align-items: start;
-  padding: 0.42rem 0.58rem;
+  min-height: 44px;
+  padding: 0.52rem 0.62rem;
   border: var(--border);
   border-radius: var(--radius);
   background: var(--paper-soft);
   box-shadow: var(--shadow-soft);
   text-decoration: none;
+}
+
+.card-clickable,
+.card-clickable .listing-title a,
+.card-clickable .text-link {
+  cursor: pointer;
+}
+
+.card-clickable:hover,
+.card-clickable:focus-visible {
+  transform: translate(1px, 1px);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--edge) 68%);
+}
+
+.card-clickable:hover {
+  box-shadow: 1px 1px 0 rgba(23, 48, 66, 0.16);
 }
 
 .metadata a:hover,
@@ -330,12 +387,12 @@ button:focus-visible,
 .listing-date {
   display: block;
   margin-bottom: 0;
-  color: var(--ink-soft);
+  color: var(--ink-muted);
   font-family: var(--font-display);
-  font-size: 0.76rem;
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  line-height: 1.1;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
@@ -381,8 +438,8 @@ button:focus-visible,
 
 .about-shell {
   display: grid;
-  grid-template-columns: 15rem minmax(0, 52rem);
-  gap: 1.75rem;
+  grid-template-columns: 16rem minmax(0, 50rem);
+  gap: var(--space-lg);
   width: min(100%, 69rem);
   margin: 0 auto;
 }
@@ -391,7 +448,8 @@ button:focus-visible,
   align-self: start;
   position: sticky;
   top: 5.8rem;
-  padding: 1rem;
+  padding: var(--space-md);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-warm) 100%);
 }
 
 .about-portrait {
@@ -407,7 +465,8 @@ button:focus-visible,
   font-size: clamp(1.85rem, 2.4vw, 2.3rem);
 }
 
-.about-sidebar > p:last-child {
+.about-sidebar>p:last-child,
+.about-sidebar .level1>p:last-child {
   margin-bottom: 0;
 }
 
@@ -415,14 +474,15 @@ button:focus-visible,
   min-width: 0;
 }
 
-.about-main > p,
-.about-main section > p,
+.about-main>p,
+.about-main section>p,
 .about-main li {
-  max-width: 78ch;
+  max-width: 70ch;
 }
 
 .about-main h2 {
   font-size: clamp(1.55rem, 2.4vw, 2rem);
+  margin-top: var(--space-lg);
 }
 
 .about-link {
@@ -430,6 +490,7 @@ button:focus-visible,
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-height: 44px;
   margin-bottom: 0.55rem;
   padding: 0.55rem 0.72rem;
   border: var(--border);
@@ -450,6 +511,21 @@ button:focus-visible,
   color: var(--ink);
   transform: translate(1px, 1px);
   box-shadow: none;
+}
+
+.about-sidebar .level1>p {
+  display: grid;
+  gap: var(--space-xs);
+  margin: 0;
+}
+
+.about-main ul {
+  max-width: 56ch;
+  padding-left: 1.2rem;
+}
+
+.about-main li+li {
+  margin-top: 0.45rem;
 }
 
 /* -------------------- */
@@ -502,12 +578,24 @@ button:focus-visible,
 
   .home-intro-copy h1 {
     max-width: 11ch;
-    font-size: 2.45rem;
+    font-size: 2.75rem;
   }
 
-  .home-intro-copy .level1 > p:first-of-type {
+  .home-intro-copy .level1>p:first-of-type {
     padding: 0.2rem 0 0.2rem 0.8rem;
     font-size: 1rem;
+  }
+
+  .home-intro-actions {
+    flex-direction: column;
+  }
+
+  .home-intro-actions p {
+    flex-direction: column;
+  }
+
+  .home-note {
+    width: 100%;
   }
 
   .quarto-post {
@@ -561,7 +649,6 @@ button:focus-visible,
   button,
   .btn {
     width: 100%;
-    margin-right: 0;
   }
 }
 

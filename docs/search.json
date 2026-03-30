@@ -175,18 +175,25 @@
     "text": "Excess Mortality in 2020\nA data-driven look at pandemic-era mortality patterns using public international data.\nRead the article"
   },
   {
-    "objectID": "index.html#latest-posts",
-    "href": "index.html#latest-posts",
+    "objectID": "index.html#from-the-archive",
+    "href": "index.html#from-the-archive",
     "title": "Mark van der Broek",
-    "section": "Latest Posts",
-    "text": "Latest Posts\nA selection from the archive, newest first.\n\n\n\n\n\n\n\n\n\n\nExcess Mortality in 2020\n\n\n\n\n\nAnalysis of mortality dataset provided by HMD.\n\n\n\n\n\nMay 26, 2020\n\n\n14 min\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic Regression in PyTorch from Scratch\n\n\n\n\n\nAn explanation of the logistic regression from the ground-up.\n\n\n\n\n\nNov 8, 2019\n\n\n6 min\n\n\n\n\n\n\n\n\n\n\n\n\nCommon Deep Learning Training Pitfalls\n\n\n\n\n\nTypical mistakes and pitfalls when facing machine or deep learning problems.\n\n\n\n\n\nNov 7, 2019\n\n\n8 min\n\n\n\n\n\n\n\n\n\n\n\n\nAirplane Classifier with Fast.ai Library\n\n\n\n\n\nLearn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.\n\n\n\n\n\nNov 6, 2019\n\n\n11 min\n\n\n\n\n\n\n\n\n\n\n\n\nCustom Data Splitter Function in Python\n\n\n\n\n\nSplitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program…\n\n\n\n\n\nOct 31, 2019\n\n\n6 min\n\n\n\n\n\n\nNo matching items"
+    "section": "From the archive",
+    "text": "From the archive\nA few pieces worth pulling back off the shelf.\n\n\n\n\n\n\n\n\n\n\nExcess Mortality in 2020\n\n\n\n\n\nAnalysis of mortality dataset provided by HMD.\n\n\n\n\n\nMay 26, 2020\n\n\n14 min\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic Regression in PyTorch from Scratch\n\n\n\n\n\nAn explanation of the logistic regression from the ground-up.\n\n\n\n\n\nNov 8, 2019\n\n\n6 min\n\n\n\n\n\n\n\n\n\n\n\n\nCommon Deep Learning Training Pitfalls\n\n\n\n\n\nTypical mistakes and pitfalls when facing machine or deep learning problems.\n\n\n\n\n\nNov 7, 2019\n\n\n8 min\n\n\n\n\n\n\n\n\n\n\n\n\nAirplane Classifier with Fast.ai Library\n\n\n\n\n\nLearn to distinguish Airbus A320s from Boeing 737 using the fast.ai software.\n\n\n\n\n\nNov 6, 2019\n\n\n11 min\n\n\n\n\n\n\n\n\n\n\n\n\nCustom Data Splitter Function in Python\n\n\n\n\n\nSplitting a folder of photos in a random subset of training and testing photos is not readily available as a program. This little program…\n\n\n\n\n\nOct 31, 2019\n\n\n6 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html#what-youll-find-here",
+    "href": "about.html#what-youll-find-here",
+    "title": "About",
+    "section": "What you’ll find here",
+    "text": "What you’ll find here\n\nPractical writing about operations research, data science, and machine learning\nSome thoughts about AI and how it affects the job of programmers\nSometime interesting projects that popped up"
   },
   {
     "objectID": "about.html#history",
     "href": "about.html#history",
     "title": "About",
     "section": "History",
-    "text": "History\nAt the age of 12 I discovered the fun of programming by making small hobby websites using HTML, CSS, and PHP. During my undergraduate degree in Econometrics and Operations Research I found my love for modeling real-world problems in applications like finance, actuarial science, logistics, and data analytics.\nI quickly realized that becoming fluent in languages like Python, R, and C++ was fundamental for applying these mathematical models in practice. That led me to an extra-curricular C++ programming course by Frank Brokken and Jurjen Bokma. More recently, with the increasing popularity of machine learning and deep learning, I started following the hands-on fast.ai course.\nIf you need my full resume, please send me an email."
+    "text": "History\nAt the age of 12 I discovered the fun of programming by making small hobby websites using HTML, CSS, and PHP. During my undergraduate degree in Econometrics and Operations Research I found my love for modeling real-world problems in applications like finance, actuarial science, logistics, and data analytics.\nI quickly realized that becoming fluent in languages like Python, R, and C++ was fundamental for applying these mathematical models in practice. That led me to an extra-curricular C++ programming course by Frank Brokken and Jurjen Bokma. More recently, with the increasing popularity of machine learning and deep learning, I started following the hands-on fast.ai course.\nIf you’d like the best way into the site, start with the blog, then wander through the projects. If you need my full resume, please send me an email."
   },
   {
     "objectID": "posts.html",

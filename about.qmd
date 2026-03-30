@@ -6,16 +6,24 @@ body-classes: about-page
 
 :::{.about-shell}
 :::{.about-sidebar}
-![](images/avatar.jpeg){.about-portrait}
+<img src="images/avatar.jpeg" alt="Portrait of Mark van der Broek" class="about-portrait img-fluid">
 
 # Mark van der Broek
 
-[Github](https://github.com/markkvdb){.about-link}
+[GitHub](https://github.com/markkvdb){.about-link}
 [LinkedIn](https://linkedin.com/in/mark-van-der-broek){.about-link}
 :::
 
 :::{.about-main}
-Hello! My name is Mark van der Broek and I'm passionate about combining *operations research*, *data science*, and *computer science*.
+I like turning messy real-world questions into models, code, and explanations that people can actually use.
+
+This site is my working bookshelf: a place for technical notes, patient write-ups, and the occasional side quest that starts small and gets surprisingly interesting.
+
+## What you'll find here
+
+- Practical writing about *operations research*, *data science*, and *machine learning*
+- Some thoughts about AI and how it affects the job of programmers
+- Sometime interesting projects that popped up
 
 ## History
 
@@ -23,6 +31,6 @@ At the age of 12 I discovered the fun of programming by making small hobby websi
 
 I quickly realized that becoming fluent in languages like *Python*, *R*, and *C++* was fundamental for applying these mathematical models in practice. That led me to an extra-curricular C++ programming course by [Frank Brokken and Jurjen Bokma](http://www.icce.rug.nl/edu/). More recently, with the increasing popularity of *machine learning* and *deep learning*, I started following the hands-on [fast.ai](https://www.fast.ai/) course.
 
-If you need my full resume, please send me an email.
+If you'd like the best way into the site, start with the [blog](posts.qmd), then wander through the [projects](projects.qmd). If you need my full resume, please send me an email.
 :::
 :::
