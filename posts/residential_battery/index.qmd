@@ -1,0 +1,266 @@
+---
+title: "Building a home battery controller in the Netherlands with Home Assistant"
+date: "2026-05-26"
+description: "I show how you can build a home battery controller in the Netherlands with Home Assistant and EMHASS"
+categories:
+  - Home Assistant
+  - EMHASS
+  - Battery
+  - Netherlands
+format:
+  html:
+    code-fold: true
+---
+
+## The Dutch situation in 2026
+
+Dutch households with solar panels still benefit from saldering until the end of 2026. On the annual bill, exported solar electricity can be netted against imported electricity. If you import 3,000 kWh and export 2,000 kWh, you are charged for the net 1,000 kWh. That is the simple version. The details depend on the contract, but the main idea is that an exported kWh can cancel an imported kWh.
+
+That matters a lot for a battery.
+
+Under saldering, exported solar is not necessarily wasted. If I export one kWh during a sunny afternoon and import one kWh in the evening, saldering can make those two flows cancel each other. With a dynamic contract, the timing still matters, because the hourly price at export and import is not the same. But the battery is mostly playing a price game. Charge when electricity is cheap. Discharge when electricity is expensive. The house load and solar production matter less than you might expect.
+
+This is different from a fixed or variable contract. In those contracts the price is usually not changing hour by hour for the household, and many suppliers now charge terugleverkosten for solar households. These are extra feed-in costs, or production penalties in plain English. They exist because suppliers have to deal with lots of solar export at times when the market value of electricity is low, while saldering still forces them to credit households in a much more generous way. The result is strange. A household with solar can have a good annual energy balance and still be pushed toward a worse contract because the supplier adds fees for exported energy.
+
+Dynamic contracts avoid some of that blunt pricing. The import and export value are closer to the real hourly market value. If solar is exported at 13:00 on a sunny Sunday, it gets the 13:00 price. If electricity is imported at 19:00, it gets the 19:00 price. That makes the battery problem cleaner. It also makes it programmable.
+
+```{python}
+#| label: fig-saldering
+#| fig-cap: "Why production netting is costly for the supplier"
+#| fig-alt: "A graph showing the value of exported solar electricity and the value of imported electricity"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Illustrative Dutch-ish day-ahead price curve, in ct/kWh.
+# Smooth curve: low night, morning peak, midday solar trough, evening peak.
+t = np.linspace(0, 24, 241)
+market = (
+    10
+    + 9  * np.exp(-((t - 8.0) / 1.8) ** 2)     # morning peak
+    + 21 * np.exp(-((t - 19.2) / 2.6) ** 2)    # evening peak
+    - 11 * np.exp(-((t - 13.2) / 2.8) ** 2)    # solar trough
+    + 2  * np.exp(-((t - 23.0) / 3.5) ** 2)    # late evening shoulder
+)
+market = np.clip(market, -3, None)
+
+static_retail = np.full_like(t, 25.0)  # all-in fixed retail price, ct/kWh
+export_window = (t >= 10) & (t <= 16)
+
+plt.rcParams.update({
+    "figure.facecolor": "white",
+    "axes.facecolor": "white",
+    "font.family": "DejaVu Sans",
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+})
+
+phi = (1 + np.sqrt(5)) / 2
+fig, ax = plt.subplots(figsize=(8.0, 8.0 / phi))
+
+
+ax.plot(t, static_retail, color="#c65d4b", lw=3.2, label="customer value under saldering: 25 ct/kWh")
+ax.plot(t, market, color="#455c9f", lw=3.2, label="supplier market value of exported solar")
+
+ax.fill_between(
+    t,
+    market,
+    static_retail,
+    where=export_window & (static_retail > market),
+    color="#c65d4b",
+    alpha=0.20,
+    label="netting loss during solar-export hours",
+)
+
+ax.set_title("Why production netting is costly for the supplier", fontsize=17, weight="bold", pad=16)
+ax.set_xlabel("hour of day")
+ax.set_ylabel("value of one exported kWh, ct/kWh")
+ax.set_xlim(0, 24)
+ax.set_ylim(-4, 36)
+ax.set_xticks([0, 6, 10, 13, 16, 20, 24])
+ax.grid(axis="y", color="#dddddd")
+
+ax.annotate(
+    "Household credit:\none exported kWh can cancel\n25 ct of later consumption",
+    xy=(12.8, 25), xytext=(3.0, 29.5),
+    arrowprops=dict(arrowstyle="->", lw=1.2, color="#333333"),
+    fontsize=10.5,
+)
+
+ax.text(
+    13, 17,
+    "cost of netting",
+    ha="center", va="center",
+    color="#8f3f34", fontsize=12, weight="bold",
+)
+
+ax.legend(frameon=False, loc="upper right")
+plt.tight_layout()
+plt.show()
+```
+
+This red block in the graph shows the time that clients export electricity back to the grid. Clients get the full retail price for these hours but the utility needs only gets very low prices or even have to pay negative prices for this "unwanted" production. This is where the terugleveringskosten come from.
+
+Now, let's get back to batteries and what setup I used.
+
+## Why use open-source software
+
+Most home battery systems already come with some sort of smart mode. The app might know the day-ahead prices. It may charge when prices are low and discharge when prices are high. That is fine if the goal is to get something working without the huzzle. Often, these systems work better if you also buy solar panels and EV chargers from the same manufacturer. This is a big restriction because many households already have their PV system and don't want to restricted to a single supplier. Electricity is electricity, I believe that these devices should work across brands.
+
+Home Assistant is a good base for this. You can connect virtually all smart devices in a single interface and create automations based on all the data available. It already has the sensors: grid import and export, PV production, battery state of charge, battery power, electricity prices, and sometimes solar forecasts.
+
+Before talking how I connected all my devices to home assistant, let's discuss my current choice for the battery optimisation. I decided to use [EMHASS](https://emhass.readthedocs.io/en/latest/) because it's the only home assistant app I could find that provides a lot of customisation, and, importantly, allows me to create an "optimal" battery plan. Most of the tools out there make use of simple heuristics to decide whether to charge or to discharge the battery without taking into account the full planning horizon.
+
+## Setup
+
+There are two seperate PV systems: one 14 panel (250 pWc) unit on the garage and an 8 panel (400 pWc) unit on the roof. The garage unit is connected to a [FORGOT BRAND] inverter and the roof unit has a SolarEdge inverter. Now, SolarEdge can be connected directly to HomeAssistant [via the Modbus](https://github.com/binsentsu/home-assistant-solaredge-modbus) but the garage unit is from 2012 and is much harder to connect. That's why I added a Shelly 3EM Pro device in my electrical installation to measure the real-time production of PV systems + the home battery.
+
+The home battery is a Zendure 2400AC+ with a total capacity of 16 kWh. This is battery that can be plugged into a socket, but in the Netherlands you can only use a 800 W (dis)charge, but with a professional installation you can use the full 2.4 kW. Zendure has a nice home assistant integration that I'll use to take over control of the battery inside Home Assistant to manual set the (dis)charge rate as well as reading all kinds of information about the battery state.
+
+## The basic idea behind the battery schedule
+
+A battery controller has to answer a boring question all day long: should the battery charge, discharge, or do nothing?
+
+With dynamic prices, the first answer is obvious. If electricity is cheap now and expensive later, charge. If electricity is expensive now and cheap later, discharge. If the price difference is too small, do nothing, because batteries are not free. There are round-trip losses, inverter limits, and battery wear.
+
+EMHASS is good at this sort of problem. You give it a horizon, usually today and maybe part of tomorrow. You give it price forecasts, solar forecasts, a load forecast, battery capacity, charge limits, and state of charge. It solves a linear programming problem and returns a plan. A plan might say something like this:
+
+- Charge between 12:00 and 15:00 because prices are low.
+- Do nothing between 15:00 and 18:00.
+- Discharge between 18:00 and 21:00 because prices are high.
+- Keep enough charge for tomorrow morning.
+
+That already gives a useful result under the current Dutch rules. Saldering means the battery does not need to obsess over each individual solar kWh. If solar is exported at noon and electricity is imported in the evening, the annual netting scheme still does a lot of the economic work. The battery mostly improves the timing of the money, not the physical matching of generation and load.
+
+That is why a day-ahead schedule can work surprisingly well in 2026. Under saldering, the best battery plan is almost independent of what the rest of the house is doing. If the battery discharges at 19:00, it does not matter much whether that power is used by the house or exported to the grid. In the end, the battery sees the same hourly price signal. The question is simply whether storing energy now and using or selling it later earns enough to cover losses and battery wear.
+
+EMHASS still takes load and solar forecasts as inputs, and those forecasts will never be perfect. Some days they may be quite wrong. For the 2026 version of the problem, that is not fatal. The schedule can still be used directly as a charge and discharge plan, because the main driver is the price curve. Load and solar forecasts become much more important once saldering ends, because then a kWh used inside the house and a kWh exported to the grid no longer have the same value.
+
+## What changes in 2027
+
+The salderingsregeling stops on January 1, 2027. From that point, exported electricity can no longer be netted against imported electricity in the same way. Export still receives compensation, but import and export become separate economic events. The difference is not just administrative. It changes the control problem. An imported kWh includes the market price, energy tax, VAT, and supplier costs. An exported kWh is paid as exported electricity. It does not cancel the full retail value of a later imported kWh.
+
+> That means a kWh used inside the house is worth more than a kWh sent to the grid.
+
+Because the import and export price are no longer identical, it means that the optimal battery plan no longer depends only on the price difference across time, but also whether the house is currently importing or exporting. If the house is exporting (solar surplus), then the battery can charge for the export price. When the house is importing, then it can prevent paying the import price by discharging the battery. This is the main idea behind using the battery for self-consumption.
+
+However, just using self-consumption and ignoring the price evolution over time is likely to be suboptimal. Imagine that the house is reaching the evening and running a pv deficit (consuming more) and the price is currently 10ct/kWh and 30ct/kWh in one hour. A pure self-consumption mode battery would discharge the battery immediately and preventing the 10ct/kWh but might be empty for the next hour and import for 30ct/kWh. It's not hard to see that it's better to wait with discharging and use the battery for the higher prices.
+
+Another complication is hidden inside the planning interval itself. A 15 minute plan only sees averages, but the house does not behave like an average. Clouds pass over the panels. A kettle turns on. A heat pump starts. Someone plugs in a charger. So even if the forecast says the house will have zero net load during a 15 minute block, the real power flow may jump back and forth between import and export many times inside that block.
+
+While saldering exists, this is mostly harmless. After saldering, it is not. Suppose that during one 15 minute period the house exports 1 kW for half the time and imports 1 kW for the other half. The average net load is exactly zero, so the forecast looks perfect. But economically it is not zero. The exported energy is paid at the export price, while the imported energy is bought back at the import price. If the import price is 35 ct/kWh and the export price is 5 ct/kWh, every kWh that crosses the meter in both directions loses 30 ct.
+
+```{python}
+#| label: fig-intra-planning-period
+#| fig-cap: "A perfect 15 minute forecast can still lose money inside the planning period"
+#| fig-alt: "A graph showing the net power at the grid meter and the average power seen by the planner inside the planning period"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+import_price = 0.35   # euro/kWh
+export_price = 0.05   # euro/kWh
+
+# One 15 minute planning period, sampled every 10 seconds
+minutes = np.linspace(0, 15, 91)
+
+# Alternating import/export inside the quarter.
+# Positive = import from grid, negative = export to grid.
+net_power = np.where((minutes % 4) < 2, 1.0, -1.0)
+
+dt_hours = (minutes[1] - minutes[0]) / 60
+import_kwh = np.sum(np.clip(net_power, 0, None)) * dt_hours
+export_kwh = np.sum(np.clip(-net_power, 0, None)) * dt_hours
+
+real_cost = import_kwh * import_price - export_kwh * export_price
+daily_cost = real_cost * 96
+average_power = 0
+
+plt.rcParams.update({
+    "figure.facecolor": "white",
+    "axes.facecolor": "white",
+    "font.family": "DejaVu Sans",
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+})
+
+phi = (1 + np.sqrt(5)) / 2
+fig, ax = plt.subplots(figsize=(8.0, 8.0 / phi))
+
+ax.plot(minutes, net_power, color="#333333", lw=2.6, label="real net load at the smart meter")
+ax.axhline(0, color="#555555", lw=1.2)
+ax.axhline(average_power, color="#c65d4b", lw=3.0, ls="--", label="15 minute average seen by the planner")
+
+ax.fill_between(
+    minutes, 0, net_power,
+    where=net_power > 0,
+    step="mid",
+    color="#c65d4b",
+    alpha=0.28,
+    label="import: bought at 35 ct/kWh",
+)
+
+ax.fill_between(
+    minutes, 0, net_power,
+    where=net_power < 0,
+    step="mid",
+    color="#455c9f",
+    alpha=0.28,
+    label="export: sold at 5 ct/kWh",
+)
+
+ax.set_title("A perfect 15 minute forecast can still lose money", fontsize=17, weight="bold", pad=16)
+ax.set_xlabel("minutes inside one 15 minute planning period")
+ax.set_ylabel("net power at the grid meter, kW")
+ax.set_xlim(0, 15)
+ax.set_ylim(-1.35, 1.35)
+ax.set_xticks([0, 3, 6, 9, 12, 15])
+ax.set_yticks([-1, 0, 1])
+ax.set_yticklabels(["export", "zero", "import"])
+ax.grid(axis="y", color="#dddddd")
+
+ax.legend(frameon=False, loc="upper right")
+plt.tight_layout()
+plt.show()
+```
+
+This gives a net energy use of zero for the day, but a cost of EUR 3.60. Nothing went wrong in the 15 minute forecast. The average was right. The loss comes from the fact that import and export are now priced separately, while the real house load moves faster than the battery schedule.
+
+That means a practical controller needs more than a day-ahead plan. The plan can still say what the battery should roughly do over the next hours, but a faster local control loop is needed to catch short-term import and export at the meter. Otherwise the battery may be following the optimal 15 minute schedule while the smart meter is quietly recording expensive imports and cheap exports inside each interval.
+
+## Why EMHASS is not the whole controller
+
+EMHASS is a planner. That is its strength. It can look ahead over many hours and decide that the battery should be nearly full before a price spike, or nearly empty before a long period of cheap solar. It can include constraints that are annoying to write by hand. It can use forecasts. It can run on a small machine. But a planner is not the same thing as a real-time controller. A day-ahead or 15-minute schedule says what should happen in a time bucket. The house does not live in time buckets. Clouds move in seconds. Appliances switch on without asking EMHASS. The inverter has physical limits. The meter reports a live grid flow. The battery has a current state of charge that may differ from the planned one.
+
+This is where a lot of home battery control gets messy. The plan says "charge at 1,000 W", but the live house balance says something else. Maybe there is only 300 W of solar surplus. Charging at 1,000 W would import 700 W from the grid. That can be fine if the price is negative or very low. It is stupid if the whole point was to store free solar. The opposite can happen in the evening. The plan says "discharge at 1,500 W", but the house is only using 400 W. The extra 1,100 W goes to the grid. Under saldering this might still be acceptable. After 2027, exporting stored energy at the wrong time is usually a bad trade.
+
+This is why I do not see EMHASS as the final control layer for the Dutch post-saldering case. It is the slow brain. It should decide the economic intent: roughly how full the battery should be, which hours are cheap, which hours are expensive, and how much capacity should be saved.
+
+The fast layer should sit closer to the meter and inverter. It should read the live grid power, the live PV output, the live load, and the actual state of charge. Then it should adjust the battery power every few seconds or every minute. In practice, that means the EMHASS schedule becomes a guide, not a command.
+
+## The controller I actually want
+
+The control architecture I want is simple enough to run at home.
+
+EMHASS runs the longer planning problem. It uses the day-ahead prices, solar forecast, load forecast, battery capacity, and power limits. It returns a schedule. More importantly, it gives a target direction: charge now, discharge later, keep some headroom, avoid being empty tomorrow morning. Home Assistant runs the fast correction loop. It takes the EMHASS plan and compares it with the live grid meter.
+
+If the plan says the house may import 500 W, then the fast loop tries to keep the grid around that value. If live import rises too much, it asks the battery to discharge more. If live export rises too much, it asks the battery to charge more. The correction is limited by the battery power, state of charge, and a deadband, because a battery should not chase every tiny sensor fluctuation. This already fixes many practical problems. It prevents the battery from blindly charging while the house is importing at a bad time. It prevents discharge from spilling into export when the house load drops. It also makes the system more tolerant of bad forecasts.
+
+There is a more economic version of the same idea. Instead of tracking a fixed grid target, the fast controller can use a shadow price for the battery state of charge. That sounds fancy, but the idea is simple. A battery at 20 percent is not worth the same as a battery at 80 percent. The value depends on the next few hours. If expensive hours are coming, stored energy is valuable. If a long stretch of negative prices is coming, empty capacity is valuable.
+
+The slow planner can estimate that value. The fast controller can then make local decisions against it. Discharge if the live value of avoiding import is higher than the value of keeping energy in the battery. Charge if the live value of absorbing surplus or cheap grid power is higher than the value of keeping empty capacity. Do nothing if the difference is too small.
+
+## What I learned so far
+
+Looking back, it took quite a bit of work to get all of this running.
+
+The first step was finding something that could make a battery plan. I looked at a few options, but EMHASS was the most flexible one I found. That mattered to me because I already knew the linear programming approach behind it, and I wanted something I could inspect and adapt. The documentation is extensive, but I did not always find it easy to follow. In particular, it took me a while to understand how to feed the right input data into the planner.
+
+That input data turned out to be a project of its own. Home Assistant is very good at showing live sensor values and recent history, but it is less convenient when those values need to become data for an optimizer. Forecasts are awkward too. Home Assistant can show forecast data in the energy dashboard, but future values are not treated as first-class time series in the same way as sensor history. Long-term history has another limitation: older sensor data is rolled up, so raw high-resolution data is not kept forever. For this kind of project, proper support for something like TimescaleDB or ClickHouse would be useful.
+
+The same fragmentation shows up around prices and forecasts. There are integrations for market prices, solar forecasts, and device data, but getting all of that into the shape EMHASS expects still takes effort. It works, but it feels like plumbing.
+
+The main thing I learned is that the real-time part of the controller matters more than I first thought. Under saldering, a day-ahead battery plan can already do useful work. After the salderingsregeling ends, that will not be enough. The battery will need to respond to what is happening at the meter right now, not just to what the 15 minute plan expected.
+
+Now, since EMHASS doesn't support this, I plan on building a light-weight EMHASS solution that adds this real-time controller for the fast corrections. I also want to add a simple installation flow, because the current setup still takes too much manual work. The first version will probably be aimed at Dutch households, since the change in 2027 makes the problem very concrete here.
+

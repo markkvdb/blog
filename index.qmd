@@ -8,7 +8,7 @@ listing:
   contents: posts
   sort-ui: false
   type: table
-  sort: "sdate desc"
+  sort: "date desc"
   image-placeholder: images/chart-preview.png
   max-description-length: 140
   fields: [title, description, date]
