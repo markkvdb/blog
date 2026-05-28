@@ -5,7 +5,6 @@ page-layout: full
 body-classes: home-page
 listing:
   id: latest-blog-posts
-  feed: true
   contents: posts
   sort-ui: false
   type: table

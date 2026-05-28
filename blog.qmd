@@ -1,5 +1,12 @@
 ---
 title: "Blog"
-listing: default
-contents: posts
+listing:
+    type: default
+    contents: posts
+    image-height: 80px
+    fields: [image, date, title, subtitle, description, categories]
+    feed:
+        items: 100
+        type: partial
+        language: en
 ---
