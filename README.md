@@ -4,16 +4,23 @@ Personal blog built with [Quarto](https://quarto.org/).
 
 ## Local Development
 
+Install project tools and Python dependencies:
+
+```bash
+mise install
+mise run sync
+```
+
 Preview the site with live reload:
 
 ```bash
-quarto preview
+uv run quarto preview
 ```
 
 Render the static site into `docs/`:
 
 ```bash
-quarto render
+mise run render
 ```
 
 ## Project Structure

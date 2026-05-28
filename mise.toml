@@ -1,0 +1,13 @@
+[tools]
+python = "3.14"
+uv = "0.11.16"
+"github:quarto-dev/quarto-cli" = "v1.9.38"
+
+[tasks.sync]
+description = "Install Python dependencies"
+run = "uv sync --locked"
+
+[tasks.render]
+description = "Render Quarto site"
+depends = ["sync"]
+run = "uv run quarto render"
