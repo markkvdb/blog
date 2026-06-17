@@ -43,6 +43,7 @@ website:
 format:
   html:
     theme: cyborg
+    css: styles.css
     respect-user-color-scheme: true
     toc: false
     code-copy: true

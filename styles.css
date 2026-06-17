@@ -1,0 +1,8 @@
+/* Ensure all images and figures scale down fluidly on small screens */
+img,
+figure,
+.quarto-figure {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
