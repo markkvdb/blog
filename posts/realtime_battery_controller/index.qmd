@@ -255,10 +255,12 @@ If the planning problem is a linear program, the solver can often give dual valu
 
 If the planning problem is a MILP, the dual values are less clean. A simple method is to solve the future planning problem several times with different initial battery energies.
 
-For example:
+Note that we don't have to consider a very wide range of initial battery energies, because inside the 15 minute window, we can only charge or discharge the battery by $\frac{1}{4} P_{\text{battery}}$ kWh.
+
+To estimate our value curve we can for example solve the planning problem for
 
 $$
-E \in \{0, 2.5, 5.0, 7.5, 10.0\}\text{ kWh}
+E_{\text{init,perturbed}} \in \{E_{\text{init}}-\frac{1}{4} P_{\text{battery}}, E_{\text{init}}-\frac{1}{8} P_{\text{battery}}, E_{\text{init}}+\frac{1}{8} P_{\text{battery}}, E_{\text{init}}+\frac{1}{4} P_{\text{battery}}\}\text{ kWh}
 $$
 
 For each value, solve the future problem and record the optimal profit:
