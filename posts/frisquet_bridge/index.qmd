@@ -1,0 +1,105 @@
+---
+title: "Replacing Frisquet Connect with a simpler Home Assistant bridge"
+subtitle: "A local radio bridge for a boiler that was never designed for Home Assistant"
+author: "Mark van der Broek"
+date: "2026-06-24"
+description: "I built a small Home Assistant bridge for a Frisquet boiler, using the boiler's own radio protocol instead of the Frisquet Connect control path."
+categories:
+  - Home Assistant
+  - Heating
+  - Reverse engineering
+  - Automation
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+---
+
+I like my home automation boring. Local if possible, fast if possible, and with as few cloud services as I can get away with.
+
+Heating is one of the places where that matters most. If the lights take an extra second to turn on, fine. If the heating schedule depends on a vendor app, a remote API, and a little box that may or may not receive a command, I get itchy.
+
+At home we have a Frisquet boiler. Mechanically, it is a very good boiler. Frisquet has a solid reputation there, and I have no complaint about the heating hardware. The problem is the control side.
+
+Frisquet does not support OpenTherm. That is a shame, because OpenTherm gives users and integrators a clean way to talk to a boiler. With Frisquet, you are mostly limited to the small radio system they sell around the boiler.
+
+That system works. It is also not the system I want to build my house around.
+
+## The Frisquet setup
+
+The Frisquet radio system has three main parts.
+
+The first is the thermostat, which Frisquet calls a satellite. It is a wall controller for a heating zone. You can set a weekly schedule in half-hour blocks, switch between comfort, eco, anti-frost, and automatic mode, and read the room temperature. It feels like a product from a time when the thermostat was expected to be the brain of the house.
+
+The second is the outdoor temperature sensor. Frisquet sells it as a separate radio module for about 100 euros. Its job is simple: report the outside temperature to the boiler so the boiler can regulate itself better.
+
+The third is the Frisquet Connect box, also about 100 euros. It gives access to the boiler from a phone app. The app can change settings, but I never found it pleasant to use, and it still leaves you inside the Frisquet way of thinking about schedules and commands.
+
+My first hack was the outdoor sensor.
+
+I did not want to buy a 100 euro radio thermometer when Home Assistant already knew the outside temperature. I had weather data there, updated locally, and good enough for heating regulation. So I used a small radio module and the [`frisquet-connect`](https://github.com/d33d33/frisquet-connect) project to send that temperature to the boiler. The boiler believed it was hearing from the official outdoor sensor.
+
+That ran for more than two years.
+
+Later I also used an unofficial Home Assistant route to control my Connect box. Then Frisquet emailed me about it. I will not quote the email here, but the message was clear enough: the official path was not a stable base for my heating automation.
+
+So I started looking at the radio traffic.
+
+## What the radio traffic showed
+
+The lucky part is that I did not have to start from zero. [`OpenFrisquetVisio`](https://github.com/freedomnx/OpenFrisquetVisio) had already done a lot of the hard reverse-engineering work. My project builds on that and turns it into a practical bridge for Home Assistant.
+
+The Frisquet radio system is both simple and awkward.
+
+The boiler is the hub. The satellites, Connect box, and outdoor sensor are all little radio devices with fixed roles. The Connect box does not directly control every zone. For many changes, it asks the boiler to relay a command to the satellite.
+
+But the satellite is battery powered, so it sleeps most of the time.
+
+That one detail explains a lot. From the traffic I saw, if the Connect box sends a command while the satellite is asleep, the boiler relays it immediately and the message is lost. The boiler does not keep it for later. The official app appears to deal with this by sending the same command again and again, hoping one attempt lands during the satellite's short wake window.
+
+This is not elegant, but it makes sense once you see the system it has to work with.
+
+It also explains why trying to control a physical satellite from Home Assistant will never feel great. You can make it work, but you are fighting the system. Sometimes the command lands. Sometimes it waits. Sometimes you press the physical button on the satellite and suddenly everything catches up because the thing woke up.
+
+Halfway through building my bridge, I realized I was copying too much of the old model.
+
+Why should the weekly schedule live in the satellite at all?
+
+That made sense when the satellite was the main controller. It does not make much sense when Home Assistant is already the brain of the house. Home Assistant knows if we are home. It knows the weather. It knows room temperatures from better sensors. It can handle holidays, presence, TRVs, virtual thermostats, and whatever odd rule I want to add later.
+
+So I stopped trying to reproduce the full Frisquet Connect experience. The bridge only needs to give Home Assistant a small, reliable interface.
+
+## What frisquet-bridge does
+
+That is what [`frisquet-bridge`](https://github.com/markkvdb/frisquet-bridge) does.
+
+It can still observe or bridge a real Frisquet Connect setup. That is useful for debugging, migration, and people who want to keep the official hardware. But the part I am happiest with is the simple thermostat mode.
+
+In that mode, the bridge pretends to be a satellite. The boiler thinks it is talking to a normal Frisquet thermostat. In reality, Home Assistant provides the target temperature, the ambient temperature, the heating mode, and optionally the outside temperature.
+
+The bridge sends that state to the boiler over the direct satellite path, which the boiler acknowledges immediately.
+
+No half-hour schedule hidden in a wall unit. No repeated push commands to a sleeping satellite. No app logic. No cloud.
+
+Home Assistant owns the automation. The bridge owns the radio protocol.
+
+That separation is the whole point. I do not want the bridge to be clever about heating. I want it to be a boring adapter between Home Assistant and the boiler.
+
+If everyone leaves the house, Home Assistant can switch to eco mode. If a virtual thermostat decides a room needs heat, that logic stays in Home Assistant. If I want to add TRVs, presence rules, or a better weather source later, the boiler does not need to know. It receives the state it expects from devices it already understands: an outdoor sensor, a satellite, and optionally a Connect-like reader.
+
+## Why this is better than driving the old setup
+
+The old model puts too much responsibility in the satellite.
+
+That is fine if the thermostat is the main user interface. It is less fine if Home Assistant is already making the decisions. In that case, the satellite becomes a slow radio endpoint with its own schedule, its own state, and its own sleeping behavior.
+
+The bridge removes that extra layer.
+
+Instead of asking the Connect box to ask the boiler to ask the satellite to change something, Home Assistant sends the current heating state to the bridge, and the bridge sends a satellite-style message to the boiler. The boiler sees a device it already knows how to talk to.
+
+That makes the system faster. It also makes it easier to understand. When Home Assistant says the target temperature is 19 degrees, the bridge sends 19 degrees. There is no hidden weekly schedule in the wall controller, no retry loop waiting for a sleeping device, and no separate app model to keep in sync.
+
+This is the part I like about the project. It does not try to make the Frisquet system modern by pretending the old control model is good. It keeps the useful part, the boiler and its radio protocol, and moves the actual decisions somewhere better suited for them.
+
+The project is here: [`frisquet-bridge`](https://github.com/markkvdb/frisquet-bridge).
