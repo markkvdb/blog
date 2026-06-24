@@ -42,7 +42,7 @@ I did not want to buy a 100 euro radio thermometer when Home Assistant already k
 
 That ran for more than two years.
 
-Later I also used an unofficial Home Assistant route to control my Connect box. Then Frisquet emailed me about it. I will not quote the email here, but the message was clear enough: the official path was not a stable base for my heating automation.
+Later I also used a custom Home Assistant add-on to control the Connect box through the Frisquet API. It was the same route the phone app used, just from Home Assistant. Then Frisquet emailed me about it. I will not quote the email here, but the message was clear enough: that path was not a stable base for my heating automation.
 
 So I started looking at the radio traffic.
 
@@ -83,6 +83,63 @@ The bridge sends that state to the boiler over the direct satellite path, which 
 No half-hour schedule hidden in a wall unit. No repeated push commands to a sleeping satellite. No app logic. No cloud.
 
 Home Assistant owns the automation. The bridge owns the radio protocol.
+
+At that point, the two control paths look like this.
+
+With the old setup, both the phone app and my Home Assistant add-on used the Frisquet API. From there, the command went to the Connect box, then to the boiler, and only then to the satellite.
+
+```{mermaid}
+flowchart TB
+  app["Phone app<br/>schedule and mode"]
+  addon["Home Assistant<br/>custom add-on"]
+  api["Frisquet API<br/>same path as the app"]
+  connect["Frisquet Connect box"]
+  boiler["Boiler<br/>radio hub"]
+  satellite["Battery-powered satellite<br/>room temperature and mode"]
+  outdoor["Outdoor sensor<br/>outside temperature"]
+
+  app -->|"user change"| api
+  addon -->|"automation change"| api
+  api -->|"remote command"| connect
+  connect -->|"radio command"| boiler
+  boiler -->|"relay command when needed"| satellite
+  satellite -->|"current room state"| boiler
+  outdoor -->|"outside temperature"| boiler
+
+  classDef appNode fill:#26364a,stroke:#79a7d3,color:#ffffff
+  classDef apiNode fill:#4b3f2d,stroke:#d0aa6a,color:#ffffff
+  classDef frisquetNode fill:#3f3154,stroke:#b69ad7,color:#ffffff
+  classDef boilerNode fill:#2f5542,stroke:#8ed1a1,color:#ffffff
+  classDef sleepyNode fill:#5a4630,stroke:#d4aa61,color:#ffffff
+
+  class app,addon appNode
+  class api apiNode
+  class connect,outdoor frisquetNode
+  class boiler boilerNode
+  class satellite sleepyNode
+```
+
+With `frisquet-bridge`, Home Assistant sends the current heating state directly to a small radio bridge. The boiler still sees a normal Frisquet-style device.
+
+```{mermaid}
+flowchart LR
+  ha["Home Assistant<br/>automation and schedules"]
+  bridge["frisquet-bridge<br/>radio adapter"]
+  boiler["Boiler<br/>radio hub"]
+
+  ha -->|"target temperature"| bridge
+  ha -->|"room temperature"| bridge
+  ha -->|"mode and outside temperature"| bridge
+  bridge -->|"satellite-style radio message"| boiler
+
+  classDef homeNode fill:#234856,stroke:#74c7d5,color:#ffffff
+  classDef bridgeNode fill:#4f3d2d,stroke:#d1a36f,color:#ffffff
+  classDef boilerNode fill:#2f5542,stroke:#8ed1a1,color:#ffffff
+
+  class ha homeNode
+  class bridge bridgeNode
+  class boiler boilerNode
+```
 
 That separation is the whole point. I do not want the bridge to be clever about heating. I want it to be a boring adapter between Home Assistant and the boiler.
 
