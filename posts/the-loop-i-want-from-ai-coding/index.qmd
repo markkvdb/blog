@@ -1,0 +1,118 @@
+---
+title: "The Loop I Want From AI Coding"
+date: "2026-08-04"
+description: "An essay on why the best AI coding systems will improve our judgment while they help us build software."
+categories:
+  - AI coding
+  - Programming
+---
+
+I think the best AI coding systems will improve our judgment while they help us build software. Continuous execution has a place, but the quality of the loop matters more than its length.
+
+People often describe an agent loop as a repeated cycle of deciding, using a tool, observing the result, and deciding again. This cycle measures progress through activity. The agent keeps moving until it reaches a stopping condition or runs out of context.
+
+I care more about a learning loop. We form a hypothesis, run a small experiment, inspect the result, and update our understanding. Each step should reduce uncertainty. Some steps will involve an autonomous agent. Others require the developer to choose which question deserves attention.
+
+The difference matters. An agent can execute hundreds of actions without teaching us much about the problem.
+
+## We control the environment around the model
+
+We cannot control the model's internal reasoning. We can choose which tools it can use and what context it receives. We can also give it rules about when to act, when to stop, and how to involve the developer.
+
+People often call this surrounding software the harness. I think it deserves more attention than it gets.
+
+Many coding agents treat context as an append-only record. You start a session with a prompt. The agent reads files, runs commands, follows several hypotheses, encounters errors, and produces a large amount of tool output. It may continue working even after the useful part of the task is complete.
+
+Every action becomes part of the conversation. The transcript records what happened, but it soon becomes a poor briefing for the next decision.
+
+A correction does not remove the original mistake. The next response sees the mistake, the correction, and perhaps several failed attempts to correct the correction. Irrelevant output remains beside useful evidence. A larger context window lets the model retain more of this material. It does not tell the model which parts deserve its attention.
+
+Context should be maintained as working state, not collected as exhaust.
+
+## Solveit makes context editable
+
+[Solveit](https://www.answer.ai/posts/2025-10-01-solveit-full.html) uses a notebook-like interface with note, code, and prompt cells. A prompt receives the relevant cells above it. Code cells execute Python, while prompt cells call the language model. The resulting answer becomes another editable part of the notebook.
+
+This gives context a visible structure. Moving a prompt changes the history available to it. A developer can hide an irrelevant exploration, pin an important instruction, remove a failed direction, or rewrite a model response into a better answer.
+
+Answer.AI calls this practice [dialog engineering](https://www.answer.ai/posts/2025-10-01-solveit-full.html#ai-dialog-engineering-keeps-context-useful). The developer edits the conversation into a useful account of the problem.
+
+That differs from correcting a model in an ordinary chat. A correction adds another message to the history. Editing the earlier response removes the bad example from the model's next input.
+
+This distinction becomes important during long sessions. A normal transcript tends to get worse as it grows. An editable dialog can get better.
+
+## Good examples improve later work
+
+Skills show why editable context is useful.
+
+A written skill gives the model rules. It still has to infer how those rules apply to a particular task. Several good examples remove much of that uncertainty.
+
+Suppose I ask the model to apply a skill and its first attempt is close, but too broad. I can edit the response into the version I wanted. The next request now includes an example of the skill applied at the right level. After several such interactions, the notebook contains both the instructions and a record of successful applications.
+
+These examples can carry details that are hard to express as general rules. They show how much work is appropriate, which evidence matters, what a finished answer looks like, and where the model should return control to me.
+
+The notebook becomes a small, task-specific learning environment. I am programming the next inference by improving the examples in its context.
+
+## Fast feedback beats long speculation
+
+Solveit encourages small pieces of executable code with visible results. The developer writes or requests a few lines, runs them, and checks the output before combining them into a larger solution.
+
+This produces fast feedback. It also changes how the model should respond to uncertainty.
+
+A weak response to uncertainty is to do more work. The agent searches more files, runs more commands, and generates more code. This may eventually reveal the answer, but it can also bury the useful evidence.
+
+A better response is to ask which observation would separate the current hypotheses. One small experiment may answer a question that ten minutes of undirected activity would leave unresolved.
+
+I want loops that increase information with each action. The number of agent steps is a poor measure of that.
+
+## The model should act as a partner
+
+Answer.AI's [Claude system prompt](https://github.com/AnswerDotAI/aai-coding/blob/main/prompts/sysp.md) distinguishes between consultant mode and partner mode.
+
+A consultant quickly narrows the problem. It presents a list of options, investigates them, and asks the developer to choose. The model has already decided how to frame the problem and which possibilities deserve work.
+
+A partner leaves the frame open for longer. It states the directions it can see and admits when the list is incomplete. It treats the developer's unfinished ideas as leads. It waits to perform expensive checks until both participants agree that a direction is worth pursuing.
+
+The prompt contains a useful rule: "There is no such thing as momentum." Permission to complete one task does not include permission to make the next decision. Approval for a local change does not cover a new public interface. A question does not authorize code changes.
+
+This matters because agentic models tend to interpret every message as another chance to make progress. If I ask why something failed, the agent may answer by modifying the code, running the tests, and repairing nearby problems. I asked for an explanation. The model silently changed the scope of the task.
+
+The prompt prevents that behavior. Questions receive answers before work resumes. The model does not treat a question as approval. It also avoids asking the developer what it should do next, since the developer already controls the process.
+
+These rules determine who frames the problem and who makes each decision.
+
+## Evidence should come before action
+
+The same system prompt gives good debugging advice. The model should read the evidence already available before generating more of it. It should prefer observations that distinguish between hypotheses. It should fix a problem at its source instead of hiding it behind a workaround.
+
+Answer.AI's shorter [core prompt](https://github.com/AnswerDotAI/aai-coding/blob/main/prompts/core.md) adds another useful check. Before changing system state, the agent should confirm that the evidence supports that action. A familiar symptom can have a different cause.
+
+The core prompt also separates assessment from implementation. When someone describes a problem or asks a question, the requested result is an assessment. The agent should report what it found and stop. It should make a change only when the person asks for one.
+
+This sounds modest, but many coding agents blur that line. Tool access creates pressure to use tools. The ability to edit a file becomes a reason to edit it. A well-designed system prompt limits that reflex.
+
+The core prompt also asks the model to lead with the outcome and value readability over compressed writing. This helps the developer inspect what the agent found. Dense status fragments save tokens while shifting the work of interpretation back to the reader.
+
+The system prompt is part of the user interface. It governs when the model acts, what it reports, and when the developer gets a chance to intervene.
+
+## Continuous agents still have a place
+
+I still want agents that can run for a long time. A repository-wide migration may contain many mechanical changes. An agent can also monitor a process, investigate test failures, or repeat a known procedure across many files.
+
+Such a loop needs a clear boundary and a stopping condition. It also needs a way to return evidence without flooding the next context with every intermediate action.
+
+The developer can then reduce the run to the facts that matter. These may include the plan, the changes made, failed cases, test results, and unresolved decisions. The tool log can remain available without becoming the model's main briefing.
+
+This gives autonomous work a useful role inside a larger learning process. The agent executes an agreed plan. It returns when it encounters a new decision. The developer inspects the evidence, updates the notebook, and starts the next loop with better context.
+
+## Keeping the developer in the work
+
+Hands-off coding creates a form of understanding debt. The model can produce correct code while the developer's mental model remains unchanged. When something breaks, the developer responds with another prompt because the code offers few clues they can use themselves.
+
+Solveit adds friction at this point. Model-generated code does not automatically become executed program state. The developer has a chance to read it, alter it, and test a small part.
+
+That pause is where learning happens. It is also where the developer notices that the model solved the wrong problem, added an unnecessary abstraction, or relied on an assumption that has not been checked.
+
+I want an AI coding environment in which the model may spend an hour carrying out an approved plan. When it reaches a new choice, it should return with the evidence needed to make that choice. I can then edit the shared record so the next prompt sees the decision rather than the entire argument that preceded it.
+
+When I reopen the notebook tomorrow, I want to see the question, the evidence, the decision, and the code that followed. The dead-end tool calls can stay out of view.

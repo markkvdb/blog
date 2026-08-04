@@ -18,3 +18,4 @@ __pycache__
 **/*.quarto_ipynb
 docs/
 _freeze/
+.DS_Store
